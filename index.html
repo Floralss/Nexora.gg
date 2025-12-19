@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Donate | Minecraft Server</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #020617;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,.5);
+}
+
+.card h2 {
+  margin: 10px 0;
+}
+
+.price {
+  color: #3b82f6;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+button {
+  background: #3b82f6;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+.hidden {
+  display: none;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💎 Донат магазин</h1>
+
+<!-- ВЫБОР ПРИВИЛЕГИИ -->
+<div class="cards" id="shop">
+  <div class="card"><h2>Shadow Lord</h2><div class="price">200 грн</div><button onclick="buy('Shadow Lord',200)">Купить</button></div>
+  <div class="card"><h2>Magister</h2><div class="price">150 грн</div><button onclick="buy('Magister',150)">Купить</button></div>
+  <div class="card"><h2>Oracle</h2><div class="price">85 грн</div><button onclick="buy('Oracle',85)">Купить</button></div>
+  <div class="card"><h2>Executor</h2><div class="price">50 грн</div><button onclick="buy('Executor',50)">Купить</button></div>
+  <div class="card"><h2>Whisper</h2><div class="price">25 грн</div><button onclick="buy('Whisper',25)">Купить</button></div>
+  <div class="card"><h2>Smith</h2><div class="price">10 грн</div><button onclick="buy('Smith',10)">Купить</button></div>
+</div>
+
+<!-- ОПЛАТА -->
+<div class="card hidden" id="pay">
+  <h2 id="title"></h2>
+  <p id="price"></p>
+  <input id="nick" placeholder="Введите ник в Minecraft">
+  <button onclick="confirmPay()">Оплатить</button>
+</div>
+
+<!-- ПОДТВЕРЖДЕНИЕ -->
+<div class="card hidden" id="confirm">
+  <h2>Подтверждение оплаты</h2>
+  <p id="info"></p>
+  <p>Оплатите через:</p>
+  <p>💳 Privat24 / Monobank</p>
+  <p><b>После оплаты напишите администратору</b></p>
+</div>
+
+</div>
+
+<script>
+let selected = {};
+
+function buy(name, price) {
+  selected = {name, price};
+  document.getElementById("shop").classList.add("hidden");
+  document.getElementById("pay").classList.remove("hidden");
+  document.getElementById("title").innerText = name;
+  document.getElementById("price").innerText = price + " грн";
+}
+
+function confirmPay() {
+  let nick = document.getElementById("nick").value;
+  if (!nick) return alert("Введите ник!");
+
+  document.getElementById("pay").classList.add("hidden");
+  document.getElementById("confirm").classList.remove("hidden");
+
+  document.getElementById("info").innerText =
+    `Привилегия: ${selected.name}
+Ник: ${nick}
+Сумма: ${selected.price} грн`;
+}
+</script>
+
+</body>
+</html>
