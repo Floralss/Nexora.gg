@@ -63,6 +63,11 @@ const url = new URLSearchParams(window.location.search);
 document.getElementById("item").innerText = url.get("item");
 document.getElementById("price").innerText =
   url.get("price") + " грн";
+  function goPay(name, price) {
+  window.location.href =
+    `pay.html?item=${name}&price=${price}`;
+}
+
 </script>
 
 </body>
