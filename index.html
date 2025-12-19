@@ -143,6 +143,10 @@ button:active {
 <script>
 let selected = {};
 
+function goPay(name, price) {
+  window.location.href = `pay.html?item=${name}&price=${price}`;
+}
+
 function buy(name, price) {
   selected = {name, price};
   document.getElementById("shop").classList.add("hidden");
@@ -161,15 +165,17 @@ function confirmPay() {
   document.getElementById("info").innerText =
     `Привилегия: ${selected.name}
 Ник: ${nick}
-Сумма: ${selected.price} грн`;
-function goPay(name, price) {
-  window.location.href = `pay.html?item=${name}&price=${price}`;
+Сумма: ${selected.price} грн
+
+⚠️ ВНИМАНИЕ:
+Если ник указан неверно — донат может не прийти.
+Администрация не несёт ответственности.`;
 }
-
-
 </script>
 
+
 </body>
+
 
 
 
