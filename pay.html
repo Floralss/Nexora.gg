@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Оплата</title>
+
+<style>
+body {
+  background: #0f172a;
+  color: white;
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box {
+  background: #020617;
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,0,0,.7);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px 0;
+}
+
+.bank {
+  background: #020617;
+  border: 1px solid #3b82f6;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2 id="item"></h2>
+  <p id="price"></p>
+
+  <input placeholder="Ник в Minecraft">
+
+  <div class="bank">💳 Privat24</div>
+  <div class="bank">💳 Monobank</div>
+
+  <p style="font-size:13px;opacity:.7">
+    После оплаты напишите администратору
+  </p>
+</div>
+
+<script>
+const url = new URLSearchParams(window.location.search);
+document.getElementById("item").innerText = url.get("item");
+document.getElementById("price").innerText =
+  url.get("price") + " грн";
+</script>
+
+</body>
+</html>
