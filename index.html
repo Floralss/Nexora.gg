@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Donate | Minecraft Server</title>
+<title>Donate | ShadowGrid</title>
 
 <style>
 body {
@@ -34,11 +34,12 @@ h1 {
   border-radius: 15px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0,0,0,.5);
+  transition: .3s;
 }
 
-.card h2 {
-  margin: 10px 0;
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px rgba(59,130,246,.4);
 }
 
 .price {
@@ -50,131 +51,49 @@ h1 {
 button {
   background: #3b82f6;
   border: none;
-  padding: 12px 20px;
+  padding: 12px;
   border-radius: 10px;
   color: white;
   font-size: 16px;
   cursor: pointer;
 }
-
-button:hover {
-  background: #2563eb;
-}
-
-.hidden {
-  display: none;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  margin: 10px 0;
-}/* АНИМАЦИИ И ЭФФЕКТЫ */
-.card {
-  transition: transform .3s ease, box-shadow .3s ease;
-  animation: fadeUp .6s ease forwards;
-}
-
-.card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 0 30px rgba(59,130,246,.4);
-}
-
-button {
-  transition: transform .2s ease, background .2s;
-}
-
-button:active {
-  transform: scale(.95);
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+button:hover { background: #2563eb; }
 </style>
-
 </head>
 
 <body>
-
 <div class="container">
-
 <h1>💎 Донат магазин</h1>
 
-<!-- ВЫБОР ПРИВИЛЕГИИ -->
-<div class="cards" id="shop">
-  <div class="card"><h2>Shadow Lord</h2><div class="price">200 грн</div><button onclick="goPay('Shadow Lord',200)">Купить</button></div>
-  <div class="card"><h2>Magister</h2><div class="price">150 грн</div><button onclick="goPay('Magister',150)">Купить</button></div>
-  <div class="card"><h2>Oracle</h2><div class="price">85 грн</div><button onclick="goPay('Oracle',85)">Купить</button></div>
-  <div class="card"><h2>Executor</h2><div class="price">50 грн</div><button onclick="goPay('Executor',50)">Купить</button></div>
-  <div class="card"><h2>Whisper</h2><div class="price">25 грн</div><button onclick="goPay('Whisper',25)">Купить</button></div>
-  <div class="card"><h2>Smith</h2><div class="price">10 грн</div><button onclick="goPay('Smith',10)">Купить</button></div>
+<div class="cards">
+  <div class="card"><h2>Shadow Lord</h2><div class="price">200 грн</div>
+    <button onclick="goPay('Shadow Lord',200)">Купить</button></div>
+
+  <div class="card"><h2>Magister</h2><div class="price">150 грн</div>
+    <button onclick="goPay('Magister',150)">Купить</button></div>
+
+  <div class="card"><h2>Oracle</h2><div class="price">85 грн</div>
+    <button onclick="goPay('Oracle',85)">Купить</button></div>
+
+  <div class="card"><h2>Executor</h2><div class="price">50 грн</div>
+    <button onclick="goPay('Executor',50)">Купить</button></div>
+
+  <div class="card"><h2>Whisper</h2><div class="price">25 грн</div>
+    <button onclick="goPay('Whisper',25)">Купить</button></div>
+
+  <div class="card"><h2>Smith</h2><div class="price">10 грн</div>
+    <button onclick="goPay('Smith',10)">Купить</button></div>
 </div>
-
-<!-- ОПЛАТА -->
-<div class="card hidden" id="pay">
-  <h2 id="title"></h2>
-  <p id="price"></p>
-  <input id="nick" placeholder="Введите ник в Minecraft">
-  <button onclick="confirmPay()">Оплатить</button>
 </div>
-
-<!-- ПОДТВЕРЖДЕНИЕ -->
-<div class="card hidden" id="confirm">
-  <h2>Подтверждение оплаты</h2>
-  <p id="info"></p>
-  <p>Оплатите через:</p>
-  <p>💳 Privat24 / Monobank</p>
-  <p><b>После оплаты напишите администратору</b></p>
-</div>
-
-</div>
-
-
 
 <script>
-let selected = {};
-
 function goPay(name, price) {
-  window.location.href = `pay.html?item=${name}&price=${price}`;
-}
-
-function buy(name, price) {
-  selected = {name, price};
-  document.getElementById("shop").classList.add("hidden");
-  document.getElementById("pay").classList.remove("hidden");
-  document.getElementById("title").innerText = name;
-  document.getElementById("price").innerText = price + " грн";
-}
-
-function confirmPay() {
-  let nick = document.getElementById("nick").value;
-  if (!nick) return alert("Введите ник!");
-
-  document.getElementById("pay").classList.add("hidden");
-  document.getElementById("confirm").classList.remove("hidden");
-
-  document.getElementById("info").innerText =
-    `Привилегия: ${selected.name}
-Ник: ${nick}
-Сумма: ${selected.price} грн
-
-⚠️ ВНИМАНИЕ:
-Если ник указан неверно — донат может не прийти.
-Администрация не несёт ответственности.`;
+  window.location.href =
+    `pay.html?item=${encodeURIComponent(name)}&price=${price}`;
 }
 </script>
-
-
 </body>
+</html>
 
 
 
