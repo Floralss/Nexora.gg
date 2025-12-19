@@ -111,12 +111,12 @@ button:active {
 
 <!-- ВЫБОР ПРИВИЛЕГИИ -->
 <div class="cards" id="shop">
-  <div class="card"><h2>Shadow Lord</h2><div class="price">200 грн</div><button onclick="buy('Shadow Lord',200)">Купить</button></div>
-  <div class="card"><h2>Magister</h2><div class="price">150 грн</div><button onclick="buy('Magister',150)">Купить</button></div>
-  <div class="card"><h2>Oracle</h2><div class="price">85 грн</div><button onclick="buy('Oracle',85)">Купить</button></div>
-  <div class="card"><h2>Executor</h2><div class="price">50 грн</div><button onclick="buy('Executor',50)">Купить</button></div>
-  <div class="card"><h2>Whisper</h2><div class="price">25 грн</div><button onclick="buy('Whisper',25)">Купить</button></div>
-  <div class="card"><h2>Smith</h2><div class="price">10 грн</div><button onclick="buy('Smith',10)">Купить</button></div>
+  <div class="card"><h2>Shadow Lord</h2><div class="price">200 грн</div><button onclick="goPay('Shadow Lord',200)">Купить</button></div>
+  <div class="card"><h2>Magister</h2><div class="price">150 грн</div><button onclick="goPay('Magister',150)">Купить</button></div>
+  <div class="card"><h2>Oracle</h2><div class="price">85 грн</div><button onclick="goPay('Oracle',85)">Купить</button></div>
+  <div class="card"><h2>Executor</h2><div class="price">50 грн</div><button onclick="goPay('Executor',50)">Купить</button></div>
+  <div class="card"><h2>Whisper</h2><div class="price">25 грн</div><button onclick="goPay('Whisper',25)">Купить</button></div>
+  <div class="card"><h2>Smith</h2><div class="price">10 грн</div><button onclick="goPay('Smith',10)">Купить</button></div>
 </div>
 
 <!-- ОПЛАТА -->
@@ -161,9 +161,15 @@ function confirmPay() {
 Ник: ${nick}
 Сумма: ${selected.price} грн`;
 }
+  function goPay(name, price) {
+  window.location.href =
+    `pay.html?item=${name}&price=${price}`;
+}
+
 </script>
 
 </body>
 </html>
+
 
 
