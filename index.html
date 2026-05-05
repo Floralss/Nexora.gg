@@ -3,540 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MusicVibe — Музыка без границ</title>
+<title>SoundeClaude — Музыка без границ</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080810;
-  --bg2: #0f0f1a;
-  --bg3: #161625;
-  --bg4: #1e1e32;
-  --bg5: #26263e;
-  --accent: #6c47ff;
-  --accent2: #9d7dff;
-  --accent3: #ff47c7;
-  --accent4: #47d4ff;
-  --text: #f2f0ff;
-  --text2: #8b85b8;
-  --text3: #4a4570;
-  --border: rgba(108,71,255,0.18);
-  --border2: rgba(108,71,255,0.08);
-  --glow: rgba(108,71,255,0.35);
-  --glow3: rgba(255,71,199,0.25);
-  --green: #2ddd7f;
-  --red: #ff4757;
-  --yellow: #ffc947;
-  --r: 14px;
-  --t: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --bg: #080810;--bg2: #0f0f1a;--bg3: #161625;--bg4: #1e1e32;--bg5: #26263e;
+  --accent: #6c47ff;--accent2: #9d7dff;--accent3: #ff47c7;--accent4: #47d4ff;
+  --text: #f2f0ff;--text2: #8b85b8;--text3: #4a4570;
+  --border: rgba(108,71,255,0.18);--border2: rgba(108,71,255,0.08);
+  --glow: rgba(108,71,255,0.35);--glow3: rgba(255,71,199,0.25);
+  --green: #2ddd7f;--red: #ff4757;--yellow: #ffc947;
+  --r: 14px;--t: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --premium: #ffc947;--premium2: #ffaa00;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;}
-
-/* =================== PAGES =================== */
 .page{display:none;min-height:100vh;}
 .page.active{display:flex;}
+input[type=file]{display:none;}
+.hidden{display:none!important;}
 
-/* =================== AUTH =================== */
+/* ===== AUTH ===== */
 #authPage{
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 60%, rgba(108,71,255,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 85% 20%, rgba(255,71,199,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 50% 100%, rgba(71,212,255,0.07) 0%, transparent 60%),
+  background:radial-gradient(ellipse 60% 50% at 15% 60%,rgba(108,71,255,.18) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 20%,rgba(255,71,199,.12) 0%,transparent 60%),
     var(--bg);
   align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden;
 }
-.auth-orb{
-  position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;
-}
-.auth-orb-1{width:400px;height:400px;background:rgba(108,71,255,0.12);top:-100px;left:-100px;animation:orbDrift 8s ease-in-out infinite;}
-.auth-orb-2{width:300px;height:300px;background:rgba(255,71,199,0.08);bottom:-50px;right:-50px;animation:orbDrift 10s ease-in-out infinite reverse;}
+.auth-orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.auth-orb-1{width:400px;height:400px;background:rgba(108,71,255,.12);top:-100px;left:-100px;animation:orbDrift 8s ease-in-out infinite;}
+.auth-orb-2{width:300px;height:300px;background:rgba(255,71,199,.08);bottom:-50px;right:-50px;animation:orbDrift 10s ease-in-out infinite reverse;}
 @keyframes orbDrift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,-20px) scale(1.1);}}
-
-.auth-card{
-  width:440px;max-width:95vw;
-  background:rgba(15,15,26,0.8);
-  backdrop-filter:blur(20px);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:2.5rem;
-  position:relative;z-index:1;
-  box-shadow:0 40px 80px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05);
-}
+.auth-card{width:440px;max-width:95vw;background:rgba(15,15,26,.85);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:24px;padding:2.5rem;position:relative;z-index:1;box-shadow:0 40px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);}
 .auth-logo{text-align:center;margin-bottom:2rem;}
-.auth-logo-mark{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:56px;height:56px;border-radius:16px;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  font-size:1.6rem;margin-bottom:12px;
-  box-shadow:0 8px 30px var(--glow);
-}
-.auth-logo h1{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px;}
-.auth-logo p{color:var(--text2);font-size:0.85rem;margin-top:4px;}
-
+.auth-logo-mark{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent3));font-size:1.6rem;margin-bottom:12px;box-shadow:0 8px 30px var(--glow);}
+.auth-logo h1{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.5px;}
+.auth-logo p{color:var(--text2);font-size:.85rem;margin-top:4px;}
 .auth-tabs{display:flex;background:var(--bg3);border-radius:12px;padding:4px;margin-bottom:2rem;border:1px solid var(--border2);}
-.auth-tab{flex:1;padding:10px;text-align:center;border-radius:9px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text2);transition:var(--t);}
+.auth-tab{flex:1;padding:10px;text-align:center;border-radius:9px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--text2);transition:var(--t);}
 .auth-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent3));color:white;box-shadow:0 4px 20px var(--glow);}
-
 .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
-.form-group label{font-size:0.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.2px;font-family:'Syne',sans-serif;font-weight:700;}
-.form-group input{
-  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
-  padding:12px 16px;color:var(--text);font-size:0.95rem;font-family:'DM Sans',sans-serif;
-  transition:var(--t);outline:none;
-}
-.form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,71,255,0.2);}
+.form-group label{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.2px;font-family:'Syne',sans-serif;font-weight:700;}
+.form-group input,.form-group select{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:.95rem;font-family:'DM Sans',sans-serif;transition:var(--t);outline:none;}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,71,255,.2);}
 .form-group input::placeholder{color:var(--text3);}
-
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  border:none;border-radius:12px;padding:14px;color:white;font-size:0.95rem;
-  font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);
-  box-shadow:0 4px 24px var(--glow);width:100%;margin-top:4px;
-  position:relative;overflow:hidden;
-}
-.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);opacity:0;transition:var(--t);}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent3));border:none;border-radius:12px;padding:14px;color:white;font-size:.95rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);box-shadow:0 4px 24px var(--glow);width:100%;margin-top:4px;position:relative;overflow:hidden;}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--glow);}
-.btn-primary:hover::after{opacity:1;}
 .btn-primary:active{transform:translateY(0);}
-
-.auth-divider{display:flex;align-items:center;gap:12px;color:var(--text3);font-size:0.82rem;margin:1rem 0;}
+.auth-divider{display:flex;align-items:center;gap:12px;color:var(--text3);font-size:.82rem;margin:1rem 0;}
 .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-
-.btn-social{
-  background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px;
-  color:var(--text);font-size:0.9rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;
-  transition:var(--t);display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-bottom:8px;
-}
-.btn-social:hover{border-color:var(--accent);background:var(--bg4);transform:translateY(-1px);}
-
-.auth-terms{font-size:0.76rem;color:var(--text3);text-align:center;line-height:1.7;margin-top:1rem;}
+.btn-social{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-size:.9rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-bottom:8px;}
+.btn-social:hover{border-color:var(--accent);background:var(--bg4);}
+.auth-terms{font-size:.76rem;color:var(--text3);text-align:center;line-height:1.7;margin-top:1rem;}
 .auth-terms a{color:var(--accent2);text-decoration:none;}
-
 .auth-form.hidden{display:none;}
 
-/* =================== APP LAYOUT =================== */
+/* ===== APP ===== */
 #appPage{flex-direction:row;height:100vh;overflow:hidden;}
 
 /* SIDEBAR */
-.sidebar{
-  width:256px;background:var(--bg2);border-right:1px solid var(--border2);
-  display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;
-}
+.sidebar{width:256px;background:var(--bg2);border-right:1px solid var(--border2);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
 .sidebar-top{padding:1.5rem 1rem 1rem;}
-.sidebar-logo{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;
-  background:linear-gradient(135deg,var(--accent2),var(--accent3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  padding:0 8px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;
-}
-.sidebar-logo-icon{
-  width:30px;height:30px;border-radius:8px;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
-}
-
+.sidebar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;padding:0 8px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;}
+.sidebar-logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
 .nav-section{margin-bottom:1.2rem;}
-.nav-label{font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;font-family:'Syne',sans-serif;font-weight:700;padding:0 12px;margin-bottom:6px;}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
-  cursor:pointer;color:var(--text2);font-size:0.88rem;font-weight:500;transition:var(--t);margin-bottom:2px;
-}
+.nav-label{font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;font-family:'Syne',sans-serif;font-weight:700;padding:0 12px;margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;color:var(--text2);font-size:.88rem;font-weight:500;transition:var(--t);margin-bottom:2px;}
 .nav-item:hover{background:var(--bg3);color:var(--text);}
-.nav-item.active{background:rgba(108,71,255,0.15);color:var(--accent2);}
-.nav-item svg{width:18px;height:18px;opacity:0.8;flex-shrink:0;}
-
-.sidebar-playlists{flex:1;overflow-y:auto;padding:0 1rem;padding-bottom:0.5rem;}
+.nav-item.active{background:rgba(108,71,255,.15);color:var(--accent2);}
+.nav-item svg{width:18px;height:18px;opacity:.8;flex-shrink:0;}
+.sidebar-playlists{flex:1;overflow-y:auto;padding:0 1rem .5rem;}
 .sidebar-playlists::-webkit-scrollbar{width:3px;}
 .sidebar-playlists::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px;}
-
-.playlist-sidebar-item{
-  display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;
-  cursor:pointer;transition:var(--t);margin-bottom:1px;
-}
+.playlist-sidebar-item{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:var(--t);margin-bottom:1px;}
 .playlist-sidebar-item:hover{background:var(--bg3);}
-.playlist-thumb{
-  width:34px;height:34px;border-radius:8px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-  background:var(--bg4);border:1px solid var(--border2);
-}
-.playlist-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-.playlist-sidebar-info{overflow:hidden;}
-.playlist-sidebar-name{font-size:0.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
-.playlist-sidebar-count{font-size:0.72rem;color:var(--text3);}
-
+.playlist-thumb{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:var(--bg4);border:1px solid var(--border2);overflow:hidden;}
+.playlist-thumb img{width:100%;height:100%;object-fit:cover;}
+.playlist-sidebar-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.playlist-sidebar-count{font-size:.72rem;color:var(--text3);}
 .sidebar-bottom{padding:1rem;}
-.sidebar-user{
-  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
-  background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:var(--t);
-}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;transition:var(--t);}
 .sidebar-user:hover{border-color:var(--accent);}
-.user-avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;
-}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;overflow:hidden;}
 .user-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.user-info{flex:1;overflow:hidden;}
-.user-name{font-size:0.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.user-plan{font-size:0.7rem;color:var(--accent2);font-weight:600;}
+.user-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-plan{font-size:.7rem;color:var(--accent2);font-weight:600;}
 .user-plan.admin{color:var(--yellow);}
+.user-plan.premium{color:var(--premium);background:rgba(255,199,71,.1);padding:1px 6px;border-radius:20px;}
 
 /* MAIN */
 .main-content{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1rem 1.5rem;border-bottom:1px solid var(--border2);gap:1rem;flex-shrink:0;
-  background:rgba(8,8,16,0.8);backdrop-filter:blur(10px);
-  position:sticky;top:0;z-index:20;
-}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border2);gap:1rem;flex-shrink:0;background:rgba(8,8,16,.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:20;}
 .topbar-left{display:flex;align-items:center;gap:8px;}
-.nav-arrow{
-  width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:1rem;transition:var(--t);
-}
+.nav-arrow{width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:1rem;transition:var(--t);}
 .nav-arrow:hover{color:var(--text);border-color:var(--accent);}
-
 .search-wrap{flex:1;max-width:380px;position:relative;}
-.search-bar{
-  display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:25px;padding:8px 16px;transition:var(--t);
-}
-.search-bar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,71,255,0.15);}
-.search-bar input{background:none;border:none;outline:none;color:var(--text);font-size:0.88rem;flex:1;font-family:'DM Sans',sans-serif;}
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:25px;padding:8px 16px;transition:var(--t);}
+.search-bar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,71,255,.15);}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-size:.88rem;flex:1;font-family:'DM Sans',sans-serif;}
 .search-bar input::placeholder{color:var(--text3);}
-.search-dropdown{
-  position:absolute;top:calc(100% + 8px);left:0;right:0;
-  background:var(--bg3);border:1px solid var(--border);border-radius:12px;
-  max-height:300px;overflow-y:auto;z-index:100;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);display:none;
-}
+.search-dropdown{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;max-height:300px;overflow-y:auto;z-index:100;box-shadow:0 20px 40px rgba(0,0,0,.4);display:none;}
 .search-dropdown.open{display:block;}
-.search-result-item{
-  display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:var(--t);
-}
+.search-result-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:var(--t);}
 .search-result-item:hover{background:var(--bg4);}
-.search-result-item:first-child{border-radius:12px 12px 0 0;}
-.search-result-item:last-child{border-radius:0 0 12px 12px;}
-.sri-cover{width:36px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sri-cover{width:36px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;overflow:hidden;}
+.sri-cover img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
 .sri-info{flex:1;overflow:hidden;}
-.sri-title{font-size:0.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sri-sub{font-size:0.75rem;color:var(--text2);}
-.sri-type{font-size:0.7rem;padding:2px 8px;border-radius:20px;font-weight:700;flex-shrink:0;}
-.sri-type.track{background:rgba(108,71,255,0.2);color:var(--accent2);}
-.sri-type.playlist{background:rgba(255,71,199,0.2);color:var(--accent3);}
-.sri-type.artist{background:rgba(71,212,255,0.2);color:var(--accent4);}
-
+.sri-title{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sri-sub{font-size:.75rem;color:var(--text2);}
+.sri-type{font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:700;flex-shrink:0;}
+.sri-type.track{background:rgba(108,71,255,.2);color:var(--accent2);}
+.sri-type.playlist{background:rgba(255,71,199,.2);color:var(--accent3);}
 .topbar-right{display:flex;align-items:center;gap:8px;}
-.btn-upgrade{
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  border:none;border-radius:20px;padding:8px 16px;color:white;font-size:0.78rem;
-  font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);white-space:nowrap;
-}
-.btn-upgrade:hover{transform:translateY(-1px);box-shadow:0 4px 20px var(--glow);}
-.icon-btn{
-  width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:var(--t);font-size:0.95rem;
-}
+.btn-upgrade{background:linear-gradient(135deg,var(--premium2),var(--premium));border:none;border-radius:20px;padding:8px 16px;color:#000;font-size:.78rem;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;transition:var(--t);white-space:nowrap;}
+.btn-upgrade:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,199,71,.4);}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:var(--t);font-size:.95rem;}
 .icon-btn:hover{color:var(--text);border-color:var(--accent);}
 
 /* PANELS */
-.panels-wrap{flex:1;overflow-y:auto;position:relative;}
+.panels-wrap{flex:1;overflow-y:auto;position:relative;scroll-behavior:smooth;}
 .panels-wrap::-webkit-scrollbar{width:5px;}
 .panels-wrap::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:5px;}
-
 .panel{display:none;padding:2rem;}
 .panel.active{display:block;}
 
-/* HOME */
-.hero{
-  background:linear-gradient(135deg,rgba(108,71,255,0.25),rgba(255,71,199,0.15));
-  border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:2rem;
-  position:relative;overflow:hidden;cursor:pointer;
-}
-.hero-bg-pattern{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 70% 50%,rgba(255,71,199,0.15) 0%,transparent 60%),
-             radial-gradient(circle at 20% 20%,rgba(108,71,255,0.2) 0%,transparent 50%);
-  pointer-events:none;
-}
-.hero-emoji{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.5;pointer-events:none;}
-.hero-tag{font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:700;}
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(108,71,255,.25),rgba(255,71,199,.15));border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden;cursor:pointer;}
+.hero-bg-pattern{position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(255,71,199,.15) 0%,transparent 60%),radial-gradient(circle at 20% 20%,rgba(108,71,255,.2) 0%,transparent 50%);pointer-events:none;}
+.hero-emoji{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.5;pointer-events:none;}
+.hero-tag{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.6);margin-bottom:8px;font-weight:700;}
 .hero-title{font-size:2rem;font-weight:800;margin-bottom:6px;color:white;}
-.hero-sub{font-size:0.85rem;color:rgba(255,255,255,0.6);}
-.hero:hover .hero-title{text-shadow:0 0 40px rgba(255,255,255,0.2);}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.6);}
 
+/* SECTIONS */
 .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-.section-title{font-size:1rem;font-weight:800;font-family:'Syne',sans-serif;letter-spacing:-0.3px;}
-.see-all{color:var(--accent2);font-size:0.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;transition:var(--t);}
+.section-title{font-size:1rem;font-weight:800;font-family:'Syne',sans-serif;letter-spacing:-.3px;}
+.see-all{color:var(--accent2);font-size:.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:var(--t);}
 .see-all:hover{color:var(--accent3);}
 
+/* CARDS */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:2rem;}
-.card{
-  background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);
-  padding:12px;cursor:pointer;transition:var(--t);position:relative;overflow:hidden;
-}
-.card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 40px rgba(108,71,255,0.2);}
-.card-cover{
-  width:100%;aspect-ratio:1;border-radius:10px;margin-bottom:10px;
-  display:flex;align-items:center;justify-content:center;font-size:2.2rem;
-  position:relative;overflow:hidden;
-}
+.card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:12px;cursor:pointer;transition:var(--t);position:relative;overflow:hidden;}
+.card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 40px rgba(108,71,255,.2);}
+.card-cover{width:100%;aspect-ratio:1;border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;position:relative;overflow:hidden;}
 .card-cover img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
-.play-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,0.5);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:var(--t);border-radius:10px;
-}
+.play-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:var(--t);border-radius:10px;}
 .card:hover .play-overlay{opacity:1;}
-.play-btn-c{
-  width:42px;height:42px;border-radius:50%;background:var(--accent);
-  display:flex;align-items:center;justify-content:center;font-size:1rem;
-  box-shadow:0 4px 20px var(--glow);
-}
-.card-title{font-weight:700;font-size:0.85rem;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.card-sub{font-size:0.75rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.card-badge{position:absolute;top:8px;right:8px;font-size:0.65rem;padding:2px 8px;border-radius:20px;font-weight:700;text-transform:uppercase;}
-.badge-new{background:rgba(108,71,255,0.25);color:var(--accent2);}
-.badge-hot{background:rgba(255,71,199,0.25);color:var(--accent3);}
-.badge-ban{background:rgba(255,71,87,0.25);color:var(--red);}
+.play-btn-c{width:42px;height:42px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 4px 20px var(--glow);}
+.card-title{font-weight:700;font-size:.85rem;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-sub{font-size:.75rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-badge{position:absolute;top:8px;right:8px;font-size:.65rem;padding:2px 8px;border-radius:20px;font-weight:700;text-transform:uppercase;}
+.badge-new{background:rgba(108,71,255,.25);color:var(--accent2);}
+.badge-hot{background:rgba(255,71,199,.25);color:var(--accent3);}
 
-/* TRACK LIST */
+/* TRACKS */
 .track-list{display:flex;flex-direction:column;gap:3px;margin-bottom:1.5rem;}
-.track-item{
-  display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;
-  cursor:pointer;transition:var(--t);position:relative;
-}
+.track-item{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:var(--t);position:relative;}
 .track-item:hover{background:var(--bg3);}
-.track-item.playing{background:rgba(108,71,255,0.1);}
-.track-item.banned{opacity:0.4;pointer-events:none;}
-.track-num{width:22px;text-align:center;font-size:0.82rem;color:var(--text3);flex-shrink:0;}
+.track-item.playing{background:rgba(108,71,255,.1);}
+.track-item.banned{opacity:.35;pointer-events:none;}
+.track-num{width:22px;text-align:center;font-size:.82rem;color:var(--text3);flex-shrink:0;}
 .track-item.playing .track-num{color:var(--accent2);}
-.track-cover{
-  width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;flex-shrink:0;position:relative;overflow:hidden;
-}
+.track-cover{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;position:relative;overflow:hidden;}
 .track-cover img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-.track-cover-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,0.55);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:var(--t);font-size:0.85rem;
-}
+.track-cover-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:var(--t);font-size:.85rem;}
 .track-item:hover .track-cover-overlay{opacity:1;}
 .track-info{flex:1;overflow:hidden;}
-.track-name{font-size:0.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.track-name{font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .track-item.playing .track-name{color:var(--accent2);}
-.track-artist{font-size:0.75rem;color:var(--text2);}
-.track-album{font-size:0.78rem;color:var(--text3);width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.track-artist{font-size:.75rem;color:var(--text2);}
+.track-album{font-size:.78rem;color:var(--text3);width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .track-actions{display:flex;align-items:center;gap:8px;}
 .track-like{font-size:1rem;cursor:pointer;color:var(--text3);transition:var(--t);padding:4px;}
 .track-like:hover{color:var(--accent3);}
 .track-like.liked{color:var(--accent3);}
-.track-dur{font-size:0.78rem;color:var(--text3);min-width:34px;text-align:right;}
-.track-add-btn{
-  font-size:0.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--border);
-  background:none;color:var(--text2);cursor:pointer;transition:var(--t);font-family:'Syne',sans-serif;font-weight:700;
-  white-space:nowrap;
-}
+.track-dur{font-size:.78rem;color:var(--text3);min-width:34px;text-align:right;}
+.track-add-btn{font-size:.72rem;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:var(--t);font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap;}
 .track-add-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+.btn-flag{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.85rem;padding:4px;transition:var(--t);border-radius:50%;}
+.btn-flag:hover{color:var(--yellow);}
 
 /* PLAYER */
-.player{
-  background:rgba(15,15,26,0.95);backdrop-filter:blur(20px);
-  border-top:1px solid var(--border2);padding:12px 1.5rem;
-  display:flex;align-items:center;gap:1.5rem;flex-shrink:0;
-  position:relative;z-index:30;
-}
+.player{background:rgba(15,15,26,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border2);padding:12px 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-shrink:0;position:relative;z-index:30;}
 .player-track{display:flex;align-items:center;gap:12px;width:250px;flex-shrink:0;}
-.player-cover{
-  width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,0.3);overflow:hidden;
-}
+.player-cover{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,.3);overflow:hidden;}
 .player-cover img{width:100%;height:100%;object-fit:cover;}
 .player-info{flex:1;overflow:hidden;}
-.player-title{font-size:0.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.player-artist{font-size:0.75rem;color:var(--text2);}
+.player-title{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.player-artist{font-size:.75rem;color:var(--text2);}
 .player-heart{font-size:1.1rem;cursor:pointer;color:var(--text3);transition:var(--t);flex-shrink:0;}
 .player-heart:hover,.player-heart.liked{color:var(--accent3);}
-
 .player-controls{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .player-btns{display:flex;align-items:center;gap:10px;}
 .ctrl-btn{background:none;border:none;color:var(--text2);cursor:pointer;font-size:1rem;transition:var(--t);padding:6px;border-radius:50%;}
 .ctrl-btn:hover{color:var(--text);}
 .ctrl-btn.active{color:var(--accent2);}
-.play-main{
-  width:38px;height:38px;border-radius:50%;background:white;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:#080810;
-  transition:var(--t);box-shadow:0 4px 20px rgba(255,255,255,0.15);
-}
+.play-main{width:38px;height:38px;border-radius:50%;background:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#080810;transition:var(--t);box-shadow:0 4px 20px rgba(255,255,255,.15);}
 .play-main:hover{transform:scale(1.08);}
-
 .progress-wrap{display:flex;align-items:center;gap:8px;width:100%;max-width:480px;}
-.time-lbl{font-size:0.7rem;color:var(--text3);min-width:30px;}
+.time-lbl{font-size:.7rem;color:var(--text3);min-width:30px;}
 .time-lbl.r{text-align:right;}
 .prog-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;cursor:pointer;position:relative;}
-.prog-fill{
-  height:100%;border-radius:2px;
-  background:linear-gradient(90deg,var(--accent),var(--accent3));
-  transition:width 0.1s linear;position:relative;
-}
-.prog-fill::after{
-  content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);
-  width:10px;height:10px;border-radius:50%;background:white;opacity:0;transition:var(--t);
-}
+.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width .1s linear;position:relative;}
+.prog-fill::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:white;opacity:0;transition:var(--t);}
 .prog-track:hover .prog-fill::after{opacity:1;}
-
 .player-extra{display:flex;align-items:center;gap:10px;width:190px;justify-content:flex-end;flex-shrink:0;}
 .vol-wrap{display:flex;align-items:center;gap:6px;}
-.vol-icon{font-size:0.95rem;color:var(--text2);cursor:pointer;}
+.vol-icon{font-size:.95rem;color:var(--text2);cursor:pointer;}
 .vol-slider{-webkit-appearance:none;width:75px;height:4px;background:var(--bg4);border-radius:2px;outline:none;cursor:pointer;}
 .vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:white;cursor:pointer;}
-
 .bars-anim{display:flex;align-items:flex-end;gap:2px;height:14px;}
-.bar-a{width:3px;background:var(--accent2);border-radius:1px;animation:barUp 0.8s ease-in-out infinite;}
-.bar-a:nth-child(2){animation-delay:0.15s;}
-.bar-a:nth-child(3){animation-delay:0.3s;}
+.bar-a{width:3px;background:var(--accent2);border-radius:1px;animation:barUp .8s ease-in-out infinite;}
+.bar-a:nth-child(2){animation-delay:.15s;}
+.bar-a:nth-child(3){animation-delay:.3s;}
 @keyframes barUp{0%,100%{height:3px;}50%{height:13px;}}
 
-/* UPLOAD ZONE */
-.upload-zone{
-  border:2px dashed var(--border);border-radius:14px;padding:3rem 2rem;text-align:center;
-  cursor:pointer;transition:var(--t);margin-bottom:1.5rem;
-  background:rgba(108,71,255,0.03);
-}
-.upload-zone:hover{border-color:var(--accent);background:rgba(108,71,255,0.07);}
-.upload-zone.drag{border-color:var(--accent3);background:rgba(255,71,199,0.07);}
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--t);margin-bottom:1.5rem;background:rgba(108,71,255,.03);}
+.upload-zone:hover{border-color:var(--accent);background:rgba(108,71,255,.07);}
+.upload-zone.drag{border-color:var(--accent3);background:rgba(255,71,199,.07);}
 .upload-icon{font-size:3rem;margin-bottom:12px;display:block;}
-.upload-text{font-size:0.95rem;font-weight:600;margin-bottom:4px;}
-.upload-sub{font-size:0.8rem;color:var(--text2);}
+.upload-text{font-size:.95rem;font-weight:600;margin-bottom:4px;}
+.upload-sub{font-size:.8rem;color:var(--text2);}
 
 /* PROFILE */
-.profile-hero{
-  display:flex;align-items:flex-start;gap:2rem;padding:2rem;
-  background:linear-gradient(135deg,rgba(108,71,255,0.12),rgba(255,71,199,0.08));
-  border:1px solid var(--border);border-radius:20px;margin-bottom:2rem;
-}
-.profile-av{
-  width:90px;height:90px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;font-family:'Syne',sans-serif;
-  box-shadow:0 8px 30px var(--glow);overflow:hidden;position:relative;cursor:pointer;
-}
+.profile-hero{display:flex;align-items:flex-start;gap:2rem;padding:2rem;background:linear-gradient(135deg,rgba(108,71,255,.12),rgba(255,71,199,.08));border:1px solid var(--border);border-radius:20px;margin-bottom:2rem;}
+.profile-av{width:90px;height:90px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;font-family:'Syne',sans-serif;box-shadow:0 8px 30px var(--glow);overflow:hidden;position:relative;cursor:pointer;}
 .profile-av img{width:100%;height:100%;object-fit:cover;}
-.profile-av:hover::after{content:'📷';position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;border-radius:50%;}
+.profile-av:hover::after{content:'📷';position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:1.5rem;border-radius:50%;}
 .profile-stats{display:flex;gap:2rem;margin-top:1rem;}
 .profile-stat-num{font-size:1.3rem;font-weight:800;font-family:'Syne',sans-serif;}
-.profile-stat-lbl{font-size:0.72rem;color:var(--text2);}
-
+.profile-stat-lbl{font-size:.72rem;color:var(--text2);}
 .settings-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
-.settings-card-title{font-weight:800;font-family:'Syne',sans-serif;margin-bottom:1rem;font-size:0.95rem;}
+.settings-card-title{font-weight:800;font-family:'Syne',sans-serif;margin-bottom:1rem;font-size:.95rem;}
 .setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);}
 .setting-row:last-child{border-bottom:none;}
-.setting-label{font-size:0.88rem;font-weight:500;}
-.setting-sub{font-size:0.75rem;color:var(--text2);margin-top:2px;}
+.setting-label{font-size:.88rem;font-weight:500;}
+.setting-sub{font-size:.75rem;color:var(--text2);margin-top:2px;}
 .toggle{width:42px;height:22px;border-radius:11px;background:var(--bg4);cursor:pointer;position:relative;transition:var(--t);border:1px solid var(--border);}
 .toggle.on{background:var(--accent);border-color:var(--accent);}
 .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:2px;left:2px;transition:var(--t);}
 .toggle.on::after{left:22px;}
 
-/* ADMIN PANEL */
-.admin-header{
-  background:linear-gradient(135deg,rgba(255,199,71,0.15),rgba(255,71,87,0.1));
-  border:1px solid rgba(255,199,71,0.25);border-radius:16px;padding:1.5rem;margin-bottom:2rem;
-}
-.admin-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:800;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);background:rgba(255,199,71,0.1);padding:4px 12px;border-radius:20px;margin-bottom:8px;}
+/* PREMIUM CARD */
+.premium-card{background:linear-gradient(135deg,rgba(255,199,71,.15),rgba(255,170,0,.08));border:1px solid rgba(255,199,71,.3);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
+.premium-badge-lg{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--premium2),var(--premium));border-radius:20px;padding:4px 14px;font-size:.78rem;font-weight:800;color:#000;margin-bottom:12px;}
+.premium-features{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.premium-feat{background:rgba(255,199,71,.1);border:1px solid rgba(255,199,71,.2);border-radius:8px;padding:6px 12px;font-size:.78rem;color:var(--premium);}
+
+/* ADMIN */
+.admin-header{background:linear-gradient(135deg,rgba(255,199,71,.15),rgba(255,71,87,.1));border:1px solid rgba(255,199,71,.25);border-radius:16px;padding:1.5rem;margin-bottom:2rem;}
+.admin-badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:800;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);background:rgba(255,199,71,.1);padding:4px 12px;border-radius:20px;margin-bottom:8px;}
 .admin-stats{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;}
 .admin-stat{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:12px 20px;text-align:center;}
 .admin-stat-num{font-size:1.3rem;font-weight:800;font-family:'Syne',sans-serif;}
-.admin-stat-lbl{font-size:0.72rem;color:var(--text2);}
-
-.admin-track-item{
-  display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;
-  background:var(--bg2);border:1px solid var(--border2);margin-bottom:8px;
-}
+.admin-stat-lbl{font-size:.72rem;color:var(--text2);}
+.admin-track-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);margin-bottom:8px;}
 .admin-actions{display:flex;gap:6px;align-items:center;margin-left:auto;flex-shrink:0;}
-.btn-ban{
-  background:rgba(255,71,87,0.15);border:1px solid rgba(255,71,87,0.3);border-radius:8px;
-  padding:6px 14px;color:var(--red);font-size:0.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);
-}
-.btn-ban:hover{background:rgba(255,71,87,0.3);}
-.btn-unban{
-  background:rgba(45,221,127,0.15);border:1px solid rgba(45,221,127,0.3);border-radius:8px;
-  padding:6px 14px;color:var(--green);font-size:0.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);
-}
-.btn-unban:hover{background:rgba(45,221,127,0.25);}
-.admin-report{font-size:0.72rem;color:var(--text3);font-style:italic;}
+.btn-ban{background:rgba(255,71,87,.15);border:1px solid rgba(255,71,87,.3);border-radius:8px;padding:6px 14px;color:var(--red);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);}
+.btn-ban:hover{background:rgba(255,71,87,.3);}
+.btn-unban{background:rgba(45,221,127,.15);border:1px solid rgba(45,221,127,.3);border-radius:8px;padding:6px 14px;color:var(--green);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);}
+.btn-unban:hover{background:rgba(45,221,127,.25);}
+.btn-grant-prem{background:rgba(255,199,71,.15);border:1px solid rgba(255,199,71,.3);border-radius:8px;padding:6px 14px;color:var(--yellow);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);}
+.btn-grant-prem:hover{background:rgba(255,199,71,.3);}
+.admin-report{font-size:.72rem;color:var(--text3);font-style:italic;}
 
 /* PLAYLIST VIEW */
-.playlist-view-hero{
-  display:flex;align-items:flex-end;gap:2rem;padding:2rem 2rem 1.5rem;
-  background:linear-gradient(180deg,rgba(108,71,255,0.2) 0%,transparent 100%);
-  border-radius:0 0 20px 20px;margin-bottom:1.5rem;
-}
-.playlist-cover-lg{
-  width:140px;height:140px;border-radius:14px;font-size:4rem;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 20px 50px rgba(0,0,0,0.4);overflow:hidden;
-}
+.playlist-view-hero{display:flex;align-items:flex-end;gap:2rem;padding:2rem 2rem 1.5rem;background:linear-gradient(180deg,rgba(108,71,255,.2) 0%,transparent 100%);border-radius:0 0 20px 20px;margin-bottom:1.5rem;}
+.playlist-cover-lg{width:140px;height:140px;border-radius:14px;font-size:4rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;}
 .playlist-cover-lg img{width:100%;height:100%;object-fit:cover;}
 .playlist-view-info{flex:1;}
 .playlist-view-info h1{font-size:2rem;font-weight:800;margin-bottom:4px;}
-.playlist-view-info p{color:var(--text2);font-size:0.88rem;margin-bottom:1rem;}
-.playlist-view-meta{display:flex;align-items:center;gap:1rem;font-size:0.82rem;color:var(--text2);}
+.playlist-view-info p{color:var(--text2);font-size:.88rem;margin-bottom:1rem;}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal{
-  background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;
-  width:440px;max-width:95vw;animation:modalIn 0.3s cubic-bezier(0.4,0,0.2,1);
-  max-height:90vh;overflow-y:auto;
-}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;width:440px;max-width:95vw;animation:modalIn .3s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto;}
 .modal::-webkit-scrollbar{width:3px;}
 .modal::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
-@keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+@keyframes modalIn{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
 .modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
 .modal-title{font-size:1.1rem;font-weight:800;font-family:'Syne',sans-serif;}
 .modal-close{cursor:pointer;color:var(--text2);font-size:1.2rem;transition:var(--t);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--bg3);}
 .modal-close:hover{color:var(--text);background:var(--bg4);}
-
-/* AVATAR UPLOAD */
-.av-upload-zone{
-  border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;
-  cursor:pointer;transition:var(--t);margin-bottom:1rem;position:relative;
-}
+.av-upload-zone{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--t);margin-bottom:1rem;}
 .av-upload-zone:hover{border-color:var(--accent);}
 .av-preview{width:80px;height:80px;border-radius:50%;margin:0 auto 8px;overflow:hidden;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:2rem;}
 .av-preview img{width:100%;height:100%;object-fit:cover;}
-
-/* EMOJI PICKER */
 .emoji-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
-.emoji-opt{
-  padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;
-  cursor:pointer;font-size:1.3rem;transition:var(--t);
-}
-.emoji-opt:hover,.emoji-opt.sel{border-color:var(--accent);background:rgba(108,71,255,0.1);}
-
-/* GRADIENT PICKER */
+.emoji-opt{padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;cursor:pointer;font-size:1.3rem;transition:var(--t);}
+.emoji-opt:hover,.emoji-opt.sel{border-color:var(--accent);background:rgba(108,71,255,.1);}
 .gradient-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;}
-.grad-opt{
-  width:40px;height:40px;border-radius:8px;cursor:pointer;transition:var(--t);
-  border:2px solid transparent;
-}
+.grad-opt{width:40px;height:40px;border-radius:8px;cursor:pointer;transition:var(--t);border:2px solid transparent;}
 .grad-opt:hover,.grad-opt.sel{border-color:white;transform:scale(1.1);}
 
+/* GENRE */
+.genre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:2rem;}
+.genre-card{border-radius:12px;padding:1rem;cursor:pointer;transition:var(--t);aspect-ratio:1;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.genre-card:hover{transform:scale(1.04);}
+.genre-card-emoji{font-size:2rem;margin-bottom:6px;}
+.genre-card-name{font-weight:800;font-family:'Syne',sans-serif;font-size:.9rem;position:relative;z-index:1;}
+.genre-card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.05) 0%,transparent 60%);}
+
 /* TOAST */
-.toast{
-  position:fixed;bottom:90px;right:1.5rem;background:var(--bg3);border:1px solid var(--border);
-  border-radius:12px;padding:11px 18px;font-size:0.83rem;color:var(--text);
-  box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:400;
-  transform:translateX(200px);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);max-width:300px;
-}
+.toast{position:fixed;bottom:90px;right:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 18px;font-size:.83rem;color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:400;transform:translateX(200px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);max-width:300px;}
 .toast.show{transform:translateX(0);opacity:1;}
-.toast.success{border-color:rgba(45,221,127,0.3);}
-.toast.error{border-color:rgba(255,71,87,0.3);}
+.toast.success{border-color:rgba(45,221,127,.3);}
+.toast.error{border-color:rgba(255,71,87,.3);}
+
+/* ADMIN CODE SCREEN */
+#adminCodeScreen{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:500;display:none;align-items:center;justify-content:center;}
+#adminCodeScreen.open{display:flex;}
+.admin-code-card{background:var(--bg2);border:1px solid rgba(255,199,71,.3);border-radius:20px;padding:2.5rem;width:380px;max-width:95vw;text-align:center;}
+.admin-code-icon{font-size:3rem;margin-bottom:1rem;}
+.admin-code-card h2{font-family:'Syne',sans-serif;font-weight:800;margin-bottom:6px;color:var(--yellow);}
+.admin-code-card p{color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;}
+.admin-code-input{background:var(--bg3);border:1px solid rgba(255,199,71,.3);border-radius:10px;padding:12px;color:var(--text);font-size:1rem;font-family:'DM Sans',sans-serif;text-align:center;letter-spacing:4px;outline:none;width:100%;margin-bottom:1rem;}
+.admin-code-input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,199,71,.15);}
+.btn-admin-enter{background:linear-gradient(135deg,#b8860b,var(--yellow));border:none;border-radius:10px;padding:12px;color:black;font-size:.95rem;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;width:100%;transition:var(--t);}
+.btn-admin-enter:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,199,71,.3);}
+
+/* USER MGMT */
+.user-mgmt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:var(--bg2);border:1px solid var(--border2);margin-bottom:8px;}
+.user-mgmt-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;overflow:hidden;}
+.user-mgmt-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+/* ONLINE DOT */
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;margin-left:4px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--accent3);position:absolute;top:6px;right:6px;animation:pulse 2s ease-in-out infinite;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text3);}
+.empty-state-icon{font-size:3rem;margin-bottom:12px;display:block;}
+.empty-state p{font-size:.9rem;line-height:1.7;}
 
 /* COLORS */
 .c1{background:linear-gradient(135deg,#1a0f33,#3d1a7a);}
@@ -550,76 +353,33 @@ h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;}
 .c9{background:linear-gradient(135deg,#0d2020,#0a5050);}
 .c10{background:linear-gradient(135deg,#1a1a0d,#4a4a10);}
 
-/* HIDDEN */
-.hidden{display:none!important;}
+/* LOADING SPINNER */
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(108,71,255,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* INPUT FILE */
-input[type=file]{display:none;}
+/* RECENT LISTEN */
+.recent-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;margin-bottom:2rem;}
+.recent-scroll::-webkit-scrollbar{height:3px;}
+.recent-scroll::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+.recent-card{flex-shrink:0;width:140px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:10px;cursor:pointer;transition:var(--t);}
+.recent-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.recent-cover{width:120px;height:120px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:8px;overflow:hidden;position:relative;}
+.recent-cover img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.recent-title{font-size:.8rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.recent-artist{font-size:.72rem;color:var(--text2);}
 
-/* GENRE CARDS */
-.genre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:2rem;}
-.genre-card{border-radius:12px;padding:1rem;cursor:pointer;transition:var(--t);aspect-ratio:1;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
-.genre-card:hover{transform:scale(1.04);}
-.genre-card-emoji{font-size:2rem;margin-bottom:6px;}
-.genre-card-name{font-weight:800;font-family:'Syne',sans-serif;font-size:0.9rem;position:relative;z-index:1;}
-.genre-card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,transparent 60%);}
+/* STATS ROW */
+.stats-row{display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.stat-chip{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:.82rem;}
+.stat-chip-num{font-weight:800;font-family:'Syne',sans-serif;font-size:1.1rem;color:var(--accent2);}
 
-/* RESPONSIVE */
 @media(max-width:900px){.track-album{display:none;}.sidebar{width:220px;}}
 @media(max-width:700px){.sidebar{display:none;}.player-track{width:180px;}.player-extra{width:120px;}}
-
-/* Notification dot */
-.notif-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--accent3);
-  position:absolute;top:6px;right:6px;animation:notifPulse 2s ease-in-out infinite;
-}
-@keyframes notifPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.3);opacity:0.7;}}
-
-/* Empty state */
-.empty-state{text-align:center;padding:3rem 1rem;color:var(--text3);}
-.empty-state-icon{font-size:3rem;margin-bottom:12px;display:block;}
-.empty-state p{font-size:0.9rem;line-height:1.7;}
-
-/* Report/flag btn */
-.btn-flag{
-  background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.85rem;padding:4px;
-  transition:var(--t);border-radius:50%;
-}
-.btn-flag:hover{color:var(--yellow);}
-
-/* ADMIN CODE SCREEN */
-#adminCodeScreen{
-  position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;
-  display:none;align-items:center;justify-content:center;
-}
-#adminCodeScreen.open{display:flex;}
-.admin-code-card{
-  background:var(--bg2);border:1px solid rgba(255,199,71,0.3);border-radius:20px;padding:2.5rem;
-  width:380px;max-width:95vw;text-align:center;
-}
-.admin-code-icon{font-size:3rem;margin-bottom:1rem;}
-.admin-code-card h2{font-family:'Syne',sans-serif;font-weight:800;margin-bottom:6px;color:var(--yellow);}
-.admin-code-card p{color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem;}
-.admin-code-input{
-  background:var(--bg3);border:1px solid rgba(255,199,71,0.3);border-radius:10px;
-  padding:12px;color:var(--text);font-size:1rem;font-family:'DM Sans',sans-serif;
-  text-align:center;letter-spacing:4px;outline:none;width:100%;margin-bottom:1rem;
-}
-.admin-code-input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,199,71,0.15);}
-.btn-admin-enter{
-  background:linear-gradient(135deg,#b8860b,var(--yellow));
-  border:none;border-radius:10px;padding:12px;color:black;font-size:0.95rem;
-  font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;width:100%;transition:var(--t);
-}
-.btn-admin-enter:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,199,71,0.3);}
-
-/* SCROLLABLE PANELS */
-.panels-wrap{scroll-behavior:smooth;}
 </style>
 </head>
 <body>
 
-<!-- =============== AUTH =============== -->
+<!-- ========= AUTH ========= -->
 <div id="authPage" class="page active">
   <div class="auth-orb auth-orb-1"></div>
   <div class="auth-orb auth-orb-2"></div>
@@ -633,17 +393,10 @@ input[type=file]{display:none;}
       <div class="auth-tab active" onclick="switchAuthTab('login')">Войти</div>
       <div class="auth-tab" onclick="switchAuthTab('register')">Регистрация</div>
     </div>
-
     <!-- LOGIN -->
     <div id="loginForm" class="auth-form">
-      <div class="form-group">
-        <label>Email или имя</label>
-        <input type="email" id="loginEmail" placeholder="ваш@email.com" />
-      </div>
-      <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" id="loginPass" placeholder="••••••••" />
-      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="ваш@email.com" /></div>
+      <div class="form-group"><label>Пароль</label><input type="password" id="loginPass" placeholder="••••••••" /></div>
       <button class="btn-primary" onclick="doLogin()">Войти в аккаунт →</button>
       <div class="auth-divider">или продолжи через</div>
       <button class="btn-social" onclick="doGoogleLogin()">
@@ -651,77 +404,52 @@ input[type=file]{display:none;}
         Войти через Google
       </button>
     </div>
-
     <!-- REGISTER -->
     <div id="registerForm" class="auth-form hidden">
-      <div class="form-group">
-        <label>Имя пользователя</label>
-        <input type="text" id="regName" placeholder="CoolListener" />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="regEmail" placeholder="ваш@email.com" />
-      </div>
-      <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" id="regPass" placeholder="Минимум 8 символов" />
-      </div>
-      <div class="form-group">
-        <label>Подтверди пароль</label>
-        <input type="password" id="regPass2" placeholder="••••••••" />
-      </div>
+      <div class="form-group"><label>Имя пользователя</label><input type="text" id="regName" placeholder="CoolListener" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="ваш@email.com" /></div>
+      <div class="form-group"><label>Пароль</label><input type="password" id="regPass" placeholder="Минимум 8 символов" /></div>
+      <div class="form-group"><label>Подтверди пароль</label><input type="password" id="regPass2" placeholder="••••••••" /></div>
+      <div class="form-group"><label>Код администратора (необязательно)</label><input type="password" id="regAdminCode" placeholder="Введи если есть" /></div>
       <button class="btn-primary" onclick="doRegister()">Создать аккаунт →</button>
-      <p class="auth-terms">Регистрируясь, вы соглашаетесь с <a href="#">Условиями</a> и <a href="#">Политикой конфиденциальности</a></p>
+      <p class="auth-terms">Регистрируясь, вы соглашаетесь с <a href="#">Условиями</a> и <a href="#">Политикой</a></p>
     </div>
   </div>
 </div>
 
-<!-- =============== APP =============== -->
+<!-- ========= APP ========= -->
 <div id="appPage" class="page">
-
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-top">
-      <div class="sidebar-logo">
-        <div class="sidebar-logo-icon">🎵</div>
-        SoundeClaude
-      </div>
-
+      <div class="sidebar-logo"><div class="sidebar-logo-icon">🎵</div>SoundeClaude</div>
       <div class="nav-section">
         <div class="nav-label">Главное</div>
         <div class="nav-item active" id="nav-home" onclick="showPanel('home')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          Главная
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Главная
         </div>
         <div class="nav-item" id="nav-discover" onclick="showPanel('discover')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-          Открыть
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>Открыть
         </div>
         <div class="nav-item" id="nav-library" onclick="showPanel('library')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Библиотека
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Библиотека
         </div>
         <div class="nav-item" id="nav-upload" onclick="showPanel('upload')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Загрузить трек
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Загрузить трек
         </div>
         <div class="nav-item" id="nav-admin" onclick="openAdminCode()" style="display:none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span style="color:var(--yellow)">Админ-панель</span>
         </div>
       </div>
-
       <div class="nav-section">
         <div class="nav-label">Плейлисты</div>
         <div class="nav-item" onclick="openCreatePlaylist()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Создать плейлист
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Создать плейлист
         </div>
       </div>
     </div>
-
     <div class="sidebar-playlists" id="sidebarPlaylists"></div>
-
     <div class="sidebar-bottom">
       <div class="sidebar-user" onclick="showPanel('profile')">
         <div class="user-avatar" id="sidebarAvatar">U</div>
@@ -729,7 +457,7 @@ input[type=file]{display:none;}
           <div class="user-name" id="sidebarUserName">Пользователь</div>
           <div class="user-plan" id="sidebarPlan">✦ Free</div>
         </div>
-        <span style="color:var(--text3);font-size:0.9rem;">⚙</span>
+        <span style="color:var(--text3);font-size:.9rem;">⚙</span>
       </div>
     </div>
   </div>
@@ -749,66 +477,57 @@ input[type=file]{display:none;}
         <div class="search-dropdown" id="searchDrop"></div>
       </div>
       <div class="topbar-right">
-        <button class="btn-upgrade">✦ Premium</button>
-        <div class="icon-btn" style="position:relative;" title="Уведомления">
-          🔔
-          <span class="notif-dot"></span>
-        </div>
+        <button class="btn-upgrade" id="topbarUpgradeBtn" onclick="showPremiumModal()">💎 Premium</button>
+        <div class="icon-btn" style="position:relative;" title="Уведомления">🔔<span class="notif-dot"></span></div>
         <div class="icon-btn" onclick="showPanel('profile')" title="Профиль">👤</div>
       </div>
     </div>
 
     <div class="panels-wrap">
-
       <!-- HOME -->
       <div class="panel active" id="panelHome">
-        <div class="hero" onclick="playTrack(0)">
+        <div class="hero" id="heroSection" onclick="playTrack('d0')">
           <div class="hero-bg-pattern"></div>
-          <div class="hero-emoji">🎸</div>
+          <div class="hero-emoji" id="heroEmoji">🎸</div>
           <div class="hero-tag">🔥 Трек дня</div>
           <div class="hero-title" id="heroTitle">Midnight Drive</div>
-          <div class="hero-sub" id="heroSub">The Neon Waves · 4:23 · 2.1M прослушиваний</div>
+          <div class="hero-sub" id="heroSub">The Neon Waves · 4:23</div>
         </div>
         <div class="section-hdr"><div class="section-title">🕐 Недавно слушали</div><div class="see-all" onclick="showPanel('library')">Все →</div></div>
-        <div class="cards-grid" id="recentCards"></div>
-        <div class="section-hdr"><div class="section-title">🚀 Новые треки пользователей</div><div class="see-all" onclick="showPanel('discover')">Открыть →</div></div>
-        <div class="track-list" id="communityTracks"></div>
-        <div class="section-hdr"><div class="section-title">🎵 Топ прямо сейчас</div></div>
+        <div id="recentListens" class="recent-scroll"></div>
+        <div class="section-hdr"><div class="section-title">🔥 Популярные треки</div><div class="see-all" onclick="showPanel('discover')">Все →</div></div>
         <div class="track-list" id="trendingTracks"></div>
+        <div class="section-hdr"><div class="section-title">🎵 Новинки сообщества</div><div class="see-all" onclick="showPanel('discover')">Все →</div></div>
+        <div class="track-list" id="communityTracks"></div>
       </div>
 
       <!-- DISCOVER -->
       <div class="panel" id="panelDiscover">
         <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:4px;">Открыть</h2>
-        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem;">Новая музыка со всего сообщества</p>
+        <p style="color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;">Новая музыка со всего сообщества</p>
+        <div class="stats-row" id="discoverStats"></div>
         <div class="section-hdr"><div class="section-title">Жанры</div></div>
         <div class="genre-grid" id="genreGrid"></div>
-        <div class="section-hdr"><div class="section-title">Все плейлисты сообщества</div></div>
-        <div class="cards-grid" id="publicPlaylists"></div>
-        <div class="section-hdr"><div class="section-title">Все треки сообщества</div></div>
+        <div class="section-hdr"><div class="section-title">🏆 Популярные плейлисты</div></div>
+        <div class="cards-grid" id="popularPlaylists"></div>
+        <div class="section-hdr"><div class="section-title">🎵 Все треки сообщества</div><div id="genreFilterLabel" style="font-size:.78rem;color:var(--accent3);cursor:pointer;" onclick="clearGenreFilter()"></div></div>
         <div class="track-list" id="allCommunityTracks"></div>
       </div>
 
       <!-- LIBRARY -->
       <div class="panel" id="panelLibrary">
         <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:4px;">Твоя библиотека</h2>
-        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem;">Всё что ты сохранил</p>
-        <div class="section-hdr">
-          <div class="section-title">❤️ Любимые треки</div>
-          <span id="likedCount" style="color:var(--text3);font-size:0.82rem;">0</span>
-        </div>
+        <p style="color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;">Всё что ты сохранил</p>
+        <div class="section-hdr"><div class="section-title">❤️ Любимые треки</div><span id="likedCount" style="color:var(--text3);font-size:.82rem;">0</span></div>
         <div class="track-list" id="likedTracks"></div>
-        <div class="section-hdr" style="margin-top:1.5rem;">
-          <div class="section-title">📁 Мои плейлисты</div>
-          <div class="see-all" onclick="openCreatePlaylist()">+ Создать</div>
-        </div>
+        <div class="section-hdr" style="margin-top:1.5rem;"><div class="section-title">📁 Мои плейлисты</div><div class="see-all" onclick="openCreatePlaylist()">+ Создать</div></div>
         <div class="cards-grid" id="myPlaylistsGrid"></div>
       </div>
 
       <!-- UPLOAD -->
       <div class="panel" id="panelUpload">
         <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:4px;">Выложить трек</h2>
-        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem;">Поделись своей музыкой с сообществом</p>
+        <p style="color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;">Поделись своей музыкой с сообществом</p>
         <div class="upload-zone" id="uploadZone" onclick="document.getElementById('audioFileInput').click()"
              ondragover="event.preventDefault();this.classList.add('drag')"
              ondragleave="this.classList.remove('drag')"
@@ -816,53 +535,32 @@ input[type=file]{display:none;}
           <span class="upload-icon">🎵</span>
           <div class="upload-text">Перетащи файл или нажми для выбора</div>
           <div class="upload-sub">MP3, WAV, FLAC, OGG — до 50 MB</div>
-          <input type="file" id="audioFileInput" accept="audio/*" multiple onchange="handleAudioFiles(this)" />
+          <input type="file" id="audioFileInput" accept="audio/*" onchange="handleAudioFiles(this)" />
         </div>
-
         <div id="uploadForm" class="hidden">
           <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;">
             <div style="font-weight:700;font-family:'Syne',sans-serif;margin-bottom:1rem;">Детали трека</div>
             <div style="display:flex;gap:1rem;align-items:flex-start;">
               <div style="flex-shrink:0;">
-                <div id="uploadCoverPreview" style="width:90px;height:90px;border-radius:12px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:2.5rem;cursor:pointer;border:2px dashed var(--border);transition:var(--t);" onclick="document.getElementById('coverFileInput').click()">
-                  🎵
-                </div>
+                <div id="uploadCoverPreview" style="width:90px;height:90px;border-radius:12px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:2.5rem;cursor:pointer;border:2px dashed var(--border);transition:var(--t);overflow:hidden;" onclick="document.getElementById('coverFileInput').click()">🎵</div>
                 <input type="file" id="coverFileInput" accept="image/*" onchange="handleCoverUpload(this)" />
-                <div style="font-size:0.72rem;color:var(--text3);text-align:center;margin-top:4px;">Обложка</div>
+                <div style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:4px;">Обложка</div>
               </div>
               <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
-                <div class="form-group" style="margin-bottom:0;">
-                  <label>Название трека</label>
-                  <input type="text" id="trackTitle" placeholder="Мой крутой трек" />
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label>Исполнитель / Артист</label>
-                  <input type="text" id="trackArtist" placeholder="Твоё имя или псевдоним" />
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label>Жанр</label>
-                  <select id="trackGenre" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;">
-                    <option value="Pop">Поп</option>
-                    <option value="Rock">Рок</option>
-                    <option value="Electronic">Электронная</option>
-                    <option value="Jazz">Джаз</option>
-                    <option value="Classical">Классика</option>
-                    <option value="Hip-Hop">Хип-хоп</option>
-                    <option value="Lo-Fi">Lo-Fi</option>
-                    <option value="Indie">Инди</option>
-                    <option value="Other">Другое</option>
+                <div class="form-group" style="margin-bottom:0;"><label>Название</label><input type="text" id="trackTitle" placeholder="Мой крутой трек" /></div>
+                <div class="form-group" style="margin-bottom:0;"><label>Исполнитель</label><input type="text" id="trackArtist" placeholder="Твоё имя" /></div>
+                <div class="form-group" style="margin-bottom:0;"><label>Жанр</label>
+                  <select id="trackGenre" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:.88rem;outline:none;cursor:pointer;">
+                    <option>Pop</option><option>Rock</option><option>Electronic</option><option>Jazz</option>
+                    <option>Classical</option><option>Hip-Hop</option><option>Lo-Fi</option><option>Indie</option><option>Other</option>
                   </select>
                 </div>
               </div>
             </div>
-            <div class="form-group" style="margin-top:1rem;margin-bottom:0;">
-              <label>Описание (необязательно)</label>
-              <input type="text" id="trackDesc" placeholder="Расскажи о треке..." />
-            </div>
+            <div class="form-group" style="margin-top:1rem;margin-bottom:0;"><label>Описание</label><input type="text" id="trackDesc" placeholder="Расскажи о треке..." /></div>
           </div>
-          <button class="btn-primary" onclick="publishTrack()">🚀 Опубликовать трек</button>
+          <button class="btn-primary" onclick="publishTrack()" id="publishBtn">🚀 Опубликовать трек</button>
         </div>
-
         <div id="myPublishedTracks" style="margin-top:1.5rem;"></div>
       </div>
 
@@ -872,76 +570,84 @@ input[type=file]{display:none;}
           <div class="profile-av" id="profileAv" onclick="document.getElementById('avatarInput').click()">U</div>
           <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(this)" />
           <div style="flex:1;">
-            <div style="font-size:0.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Профиль</div>
+            <div style="font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Профиль</div>
             <h2 id="profileName" style="font-size:1.6rem;font-weight:800;margin-bottom:4px;">Пользователь</h2>
-            <div id="profileEmail" style="color:var(--text2);font-size:0.85rem;margin-bottom:12px;"></div>
+            <div id="profileEmail" style="color:var(--text2);font-size:.85rem;margin-bottom:12px;"></div>
+            <div id="profilePlanBadge"></div>
             <div class="profile-stats">
               <div><div class="profile-stat-num" id="statTracks">0</div><div class="profile-stat-lbl">загружено</div></div>
               <div><div class="profile-stat-num" id="statLiked">0</div><div class="profile-stat-lbl">любимых</div></div>
               <div><div class="profile-stat-num" id="statPlaylists">0</div><div class="profile-stat-lbl">плейлистов</div></div>
+              <div><div class="profile-stat-num" id="statPlays">0</div><div class="profile-stat-lbl">прослушиваний</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE UPLOAD BUTTON -->
+        <div style="margin-bottom:1rem;">
+          <button class="btn-primary" style="width:auto;padding:12px 28px;" onclick="showPanel('upload')">🎵 Выложить песню на платформу</button>
+        </div>
+
+        <!-- PREMIUM SECTION -->
+        <div id="premiumSection"></div>
+
+        <!-- ADMIN CODE ACTIVATION -->
+        <div class="settings-card" id="adminCodeActivation">
+          <div class="settings-card-title">🛡 Активировать права</div>
+          <div class="setting-row">
+            <div><div class="setting-label">Код администратора</div><div class="setting-sub">Введи код для получения прав</div></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="password" id="profileAdminCode" placeholder="Код" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.85rem;outline:none;width:110px;" onkeydown="if(event.key==='Enter')activateAdminFromProfile()" />
+              <button onclick="activateAdminFromProfile()" style="background:linear-gradient(135deg,#b8860b,var(--yellow));border:none;border-radius:8px;padding:7px 14px;color:#000;font-size:.78rem;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;">Войти</button>
             </div>
           </div>
         </div>
 
         <div class="settings-card">
           <div class="settings-card-title">🎵 Мои треки</div>
-          <div id="profileMyTracks"><div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.<br>Нажми «Загрузить трек» в меню!</p></div></div>
+          <div id="profileMyTracks"><div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.</p></div></div>
         </div>
 
         <div class="settings-card">
           <div class="settings-card-title">⚙ Настройки</div>
-          <div class="setting-row">
-            <div><div class="setting-label">Email-уведомления</div><div class="setting-sub">Новости и рекомендации</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Приватный профиль</div><div class="setting-sub">Скрыть активность</div></div>
-            <div class="toggle" onclick="this.classList.toggle('on')"></div>
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-label">Автовоспроизведение</div><div class="setting-sub">Следующий трек автоматически</div></div>
-            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-          </div>
+          <div class="setting-row"><div><div class="setting-label">Email-уведомления</div><div class="setting-sub">Новости и рекомендации</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="setting-row"><div><div class="setting-label">Приватный профиль</div><div class="setting-sub">Скрыть активность</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+          <div class="setting-row"><div><div class="setting-label">Автовоспроизведение</div><div class="setting-sub">Следующий трек автоматически</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
         </div>
 
-        <div class="settings-card">
-          <div class="settings-card-title">💎 Подписка</div>
-          <div class="setting-row">
-            <div><div class="setting-label">Free Plan</div><div class="setting-sub">Без ограничений загрузок · Базовое качество</div></div>
-            <button class="btn-primary" style="width:auto;padding:8px 20px;font-size:0.82rem;" onclick="showToast('🚀 Premium скоро!','success')">Улучшить</button>
-          </div>
-        </div>
-
-        <button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--red);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;width:100%;margin-top:0.5rem;transition:var(--t);" onmouseover="this.style.background='rgba(255,71,87,0.1)'" onmouseout="this.style.background='var(--bg3)'" onclick="logout()">← Выйти из аккаунта</button>
+        <button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--red);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;width:100%;margin-top:.5rem;transition:var(--t);" onmouseover="this.style.background='rgba(255,71,87,.1)'" onmouseout="this.style.background='var(--bg3)'" onclick="logout()">← Выйти из аккаунта</button>
       </div>
 
       <!-- ADMIN PANEL -->
       <div class="panel" id="panelAdmin">
         <div class="admin-header">
           <div class="admin-badge">🛡 Админ-панель</div>
-          <h2 style="font-size:1.3rem;font-weight:800;color:var(--yellow);">Управление контентом</h2>
-          <p style="color:var(--text2);font-size:0.85rem;margin-top:4px;">Здесь ты можешь банить треки и исполнителей, нарушающих правила</p>
+          <h2 style="font-size:1.3rem;font-weight:800;color:var(--yellow);">Управление платформой</h2>
+          <p style="color:var(--text2);font-size:.85rem;margin-top:4px;">Треки, пользователи, Premium-доступ</p>
           <div class="admin-stats" id="adminStats"></div>
         </div>
-
-        <div class="section-hdr">
-          <div class="section-title">Все загруженные треки</div>
-          <div style="display:flex;gap:8px;">
-            <select id="adminFilter" onchange="renderAdminPanel()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:0.82rem;outline:none;cursor:pointer;">
-              <option value="all">Все</option>
-              <option value="active">Активные</option>
-              <option value="banned">Забаненные</option>
-              <option value="reported">С жалобами</option>
+        <!-- ADMIN TABS -->
+        <div style="display:flex;gap:8px;margin-bottom:1.5rem;">
+          <button class="auth-tab active" id="adminTabTracks" onclick="switchAdminTab('tracks')" style="flex:0;padding:8px 20px;border-radius:10px;background:rgba(108,71,255,.15);color:var(--accent2);border:1px solid var(--border);font-size:.82rem;">🎵 Треки</button>
+          <button class="auth-tab" id="adminTabUsers" onclick="switchAdminTab('users')" style="flex:0;padding:8px 20px;border-radius:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border2);font-size:.82rem;">👥 Пользователи</button>
+        </div>
+        <!-- TRACKS TAB -->
+        <div id="adminTracksTab">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+            <select id="adminFilter" onchange="renderAdminTracks()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.82rem;outline:none;cursor:pointer;">
+              <option value="all">Все</option><option value="active">Активные</option><option value="banned">Забаненные</option><option value="reported">С жалобами</option>
             </select>
           </div>
+          <div id="adminTrackList"></div>
         </div>
-        <div id="adminTrackList"></div>
+        <!-- USERS TAB -->
+        <div id="adminUsersTab" class="hidden">
+          <div id="adminUserList"></div>
+        </div>
       </div>
 
       <!-- PLAYLIST VIEW -->
-      <div class="panel" id="panelPlaylist">
-        <div id="playlistViewContent"></div>
-      </div>
+      <div class="panel" id="panelPlaylist"><div id="playlistViewContent"></div></div>
 
     </div><!-- /panels-wrap -->
 
@@ -955,14 +661,13 @@ input[type=file]{display:none;}
         </div>
         <div class="player-heart" id="playerHeart" onclick="toggleCurrentLike()">♡</div>
       </div>
-
       <div class="player-controls">
         <div class="player-btns">
-          <button class="ctrl-btn" id="btnShuffle" title="Перемешать" onclick="toggleShuffle()">⇄</button>
+          <button class="ctrl-btn" id="btnShuffle" onclick="toggleShuffle()">⇄</button>
           <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
           <button class="play-main" id="btnPlayMain" onclick="togglePlay()">▶</button>
           <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
-          <button class="ctrl-btn" id="btnRepeat" title="Повтор" onclick="toggleRepeat()">↺</button>
+          <button class="ctrl-btn" id="btnRepeat" onclick="toggleRepeat()">↺</button>
         </div>
         <div class="progress-wrap">
           <span class="time-lbl" id="timeCur">0:00</span>
@@ -972,19 +677,16 @@ input[type=file]{display:none;}
           <span class="time-lbl r" id="timeTotal">0:00</span>
         </div>
       </div>
-
       <div class="player-extra">
-        <div id="playerBars" class="bars-anim hidden">
-          <div class="bar-a"></div><div class="bar-a"></div><div class="bar-a"></div>
-        </div>
+        <div id="playerBars" class="bars-anim hidden"><div class="bar-a"></div><div class="bar-a"></div><div class="bar-a"></div></div>
         <div class="vol-wrap">
           <span class="vol-icon" onclick="toggleMute()">🔊</span>
           <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="80" oninput="setVolume(this.value)" />
         </div>
       </div>
     </div>
-  </div><!-- /main-content -->
-</div><!-- /appPage -->
+  </div>
+</div>
 
 <!-- ADMIN CODE SCREEN -->
 <div id="adminCodeScreen">
@@ -992,43 +694,28 @@ input[type=file]{display:none;}
     <div class="admin-code-icon">🛡</div>
     <h2>Доступ к админ-панели</h2>
     <p>Введи секретный код администратора</p>
-    <input type="password" class="admin-code-input" id="adminCodeInput" placeholder="• • • • • •" maxlength="10" onkeydown="if(event.key==='Enter')checkAdminCode()" />
+    <input type="password" class="admin-code-input" id="adminCodeInput" placeholder="• • • • • •" maxlength="20" onkeydown="if(event.key==='Enter')checkAdminCode()" />
     <button class="btn-admin-enter" onclick="checkAdminCode()">Войти как админ</button>
-    <div style="margin-top:1rem;font-size:0.78rem;color:var(--text3);cursor:pointer;" onclick="closeAdminCode()">← Отмена</div>
+    <div style="margin-top:1rem;font-size:.78rem;color:var(--text3);cursor:pointer;" onclick="closeAdminCode()">← Отмена</div>
   </div>
 </div>
 
 <!-- MODAL: CREATE PLAYLIST -->
 <div class="modal-overlay" id="modalPlaylist">
   <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title">Новый плейлист</div>
-      <div class="modal-close" onclick="closeModal('modalPlaylist')">✕</div>
-    </div>
+    <div class="modal-hdr"><div class="modal-title">Новый плейлист</div><div class="modal-close" onclick="closeModal('modalPlaylist')">✕</div></div>
+    <div class="form-group"><label>Название</label><input type="text" id="plName" placeholder="Мой плейлист" /></div>
+    <div class="form-group"><label>Описание</label><input type="text" id="plDesc" placeholder="О чём этот плейлист?" /></div>
     <div class="form-group">
-      <label>Название</label>
-      <input type="text" id="plName" placeholder="Мой плейлист" />
-    </div>
-    <div class="form-group">
-      <label>Описание</label>
-      <input type="text" id="plDesc" placeholder="О чём этот плейлист?" />
-    </div>
-    <div class="form-group">
-      <label>Обложка плейлиста</label>
+      <label>Обложка</label>
       <div class="av-upload-zone" onclick="document.getElementById('plCoverInput').click()">
         <div class="av-preview" id="plCoverPreview">🎵</div>
-        <div style="font-size:0.82rem;color:var(--text2);">Нажми для загрузки обложки</div>
+        <div style="font-size:.82rem;color:var(--text2);">Нажми для загрузки обложки</div>
         <input type="file" id="plCoverInput" accept="image/*" onchange="handlePlaylistCover(this)" />
       </div>
     </div>
-    <div class="form-group">
-      <label>Или выбери эмодзи</label>
-      <div class="emoji-row" id="plEmojiRow"></div>
-    </div>
-    <div class="form-group">
-      <label>Цвет</label>
-      <div class="gradient-opts" id="plGradOpts"></div>
-    </div>
+    <div class="form-group"><label>Или выбери эмодзи</label><div class="emoji-row" id="plEmojiRow"></div></div>
+    <div class="form-group"><label>Цвет</label><div class="gradient-opts" id="plGradOpts"></div></div>
     <div class="form-group" style="flex-direction:row;align-items:center;justify-content:space-between;margin-bottom:0;">
       <div><div class="setting-label">Публичный плейлист</div><div class="setting-sub">Другие смогут найти</div></div>
       <div class="toggle on" id="plPublicToggle" onclick="this.classList.toggle('on')"></div>
@@ -1040,30 +727,90 @@ input[type=file]{display:none;}
 <!-- MODAL: ADD TO PLAYLIST -->
 <div class="modal-overlay" id="modalAddToPlaylist">
   <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title">Добавить в плейлист</div>
-      <div class="modal-close" onclick="closeModal('modalAddToPlaylist')">✕</div>
-    </div>
+    <div class="modal-hdr"><div class="modal-title">Добавить в плейлист</div><div class="modal-close" onclick="closeModal('modalAddToPlaylist')">✕</div></div>
     <div id="addToPlaylistList"></div>
     <button class="btn-primary" style="margin-top:1rem;" onclick="openCreatePlaylist()">+ Создать новый плейлист</button>
+  </div>
+</div>
+
+<!-- MODAL: PREMIUM -->
+<div class="modal-overlay" id="modalPremium">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" style="color:var(--premium);">💎 SoundeClaude Premium</div><div class="modal-close" onclick="closeModal('modalPremium')">✕</div></div>
+    <div style="text-align:center;padding:1rem 0;">
+      <div style="font-size:3rem;margin-bottom:12px;">💎</div>
+      <h3 style="font-size:1.2rem;margin-bottom:8px;font-family:'Syne',sans-serif;">Разблокируй всё</h3>
+      <p style="color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;">Premium открывает эксклюзивные возможности</p>
+      <div class="premium-features" style="justify-content:center;">
+        <div class="premium-feat">✓ Без рекламы</div>
+        <div class="premium-feat">✓ HD качество</div>
+        <div class="premium-feat">✓ Офлайн режим</div>
+        <div class="premium-feat">✓ Загрузка треков</div>
+        <div class="premium-feat">✓ Эксклюзивный контент</div>
+        <div class="premium-feat">✓ Приоритет в поиске</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:12px;padding:1rem;margin-top:1rem;text-align:center;">
+      <div style="font-size:.82rem;color:var(--text2);margin-bottom:6px;">Доступ к Premium</div>
+      <div style="font-size:.85rem;color:var(--text);">Обратись к администратору платформы для получения доступа</div>
+    </div>
+    <div id="premiumCodeSection" style="margin-top:1rem;">
+      <div class="form-group"><label>Код Premium (если есть)</label><input type="text" id="premiumCodeInput" placeholder="Введи код от администратора" /></div>
+      <button class="btn-primary" style="background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;" onclick="activatePremiumCode()">Активировать Premium</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GRANT PREMIUM (ADMIN) -->
+<div class="modal-overlay" id="modalGrantPremium">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">💎 Выдать Premium</div><div class="modal-close" onclick="closeModal('modalGrantPremium')">✕</div></div>
+    <p style="color:var(--text2);font-size:.88rem;margin-bottom:1rem;">Пользователь: <strong id="grantPremiumUser"></strong></p>
+    <div class="form-group"><label>Срок (дней, 0 = навсегда)</label><input type="number" id="grantDays" placeholder="30" value="30" min="0" /></div>
+    <button class="btn-primary" style="background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;" onclick="confirmGrantPremium()">💎 Выдать Premium</button>
   </div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script>
-// ===================== CONSTANTS =====================
+<!-- ===================== FIREBASE + SCRIPT ===================== -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getDatabase, ref, set, get, push, update, remove, onValue, off, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+
+// ==================== FIREBASE CONFIG ====================
+const firebaseConfig = {
+  apiKey: "AIzaSyDmf-lcDM5hXBwBqzymGlzdoHdTGfT2pRg",
+  authDomain: "magniybank.firebaseapp.com",
+  databaseURL: "https://magniybank-default-rtdb.firebaseio.com",
+  projectId: "magniybank",
+  storageBucket: "magniybank.firebasestorage.app",
+  messagingSenderId: "1006815080708",
+  appId: "1:1006815080708:web:e9c3afd0a15d8abbe46051",
+  measurementId: "G-1W0FP9YX6G"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const storage = getStorage(app);
+const googleProvider = new GoogleAuthProvider();
+
+// ==================== CONSTANTS ====================
 const ADMIN_CODE = 'SC_ADMIN_2024';
+const PREMIUM_PREFIX = 'PREM_SC_';
 const GENRES_DATA = [
-  {name:'Поп',emoji:'🎤',class:'c1'},
-  {name:'Рок',emoji:'🎸',class:'c5'},
-  {name:'Электронная',emoji:'⚡',class:'c3'},
-  {name:'Джаз',emoji:'🎷',class:'c4'},
-  {name:'Классика',emoji:'🎻',class:'c7'},
-  {name:'Хип-хоп',emoji:'🎧',class:'c8'},
-  {name:'Lo-Fi',emoji:'☕',class:'c6'},
-  {name:'Инди',emoji:'🌿',class:'c2'},
+  {name:'Pop',label:'Поп',emoji:'🎤',class:'c1'},
+  {name:'Rock',label:'Рок',emoji:'🎸',class:'c5'},
+  {name:'Electronic',label:'Электронная',emoji:'⚡',class:'c3'},
+  {name:'Jazz',label:'Джаз',emoji:'🎷',class:'c4'},
+  {name:'Classical',label:'Классика',emoji:'🎻',class:'c7'},
+  {name:'Hip-Hop',label:'Хип-хоп',emoji:'🎧',class:'c8'},
+  {name:'Lo-Fi',label:'Lo-Fi',emoji:'☕',class:'c6'},
+  {name:'Indie',label:'Инди',emoji:'🌿',class:'c2'},
 ];
 const PLAYLIST_EMOJIS = ['🎵','🔥','💜','🎸','🌙','🚀','❄','🎺','🌊','💫','🎯','⚡'];
 const PLAYLIST_GRADS = ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'];
@@ -1082,10 +829,12 @@ const DEMO_TRACKS = [
   {id:'d9',title:'Последний танец',artist:'Дуэт Лена',album:'Романтика',emoji:'💃',dur:'3:22',secs:202,color:'c2',genre:'Pop',plays:310000},
 ];
 
-// ===================== STATE =====================
+// ==================== STATE ====================
 let state = {
   user: null,
+  userData: null, // from firebase
   isAdmin: false,
+  isPremium: false,
   currentTrack: null,
   queue: [...DEMO_TRACKS],
   queueIdx: 0,
@@ -1095,7 +844,8 @@ let state = {
   repeat: false,
   liked: new Set(),
   playlists: [],
-  uploadedTracks: [], // community tracks
+  uploadedTracks: [],
+  allUsers: {},
   currentAudio: null,
   currentPlaylistId: null,
   selectedPLEmoji: '🎵',
@@ -1105,86 +855,248 @@ let state = {
   uploadCoverDataUrl: null,
   addToPlaylistTrackId: null,
   bannedTracks: new Set(),
-  reportedTracks: new Map(), // id -> reason
+  reportedTracks: new Map(),
+  recentListens: [],
+  genreFilter: null,
+  grantPremiumUid: null,
   currentPanel: 'home',
+  listenersOff: [],
 };
 let progressInterval = null;
 let toastTimer = null;
 
-// ===================== AUTH =====================
-function switchAuthTab(tab) {
+// ==================== AUTH ====================
+window.switchAuthTab = function(tab) {
   document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
   document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
   document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
-}
+};
 
-function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim() || 'demo@mail.com';
-  const name = email.includes('@') ? email.split('@')[0] : email;
-  const cap = name.charAt(0).toUpperCase() + name.slice(1);
-  state.user = { name: cap, email, avatarUrl: null };
-  enterApp();
-}
+window.doLogin = async function() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!email || !pass) return showToast('Заполни все поля!', 'error');
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    showToast('Ошибка входа: ' + (e.code === 'auth/invalid-credential' ? 'Неверный email или пароль' : e.message), 'error');
+  }
+};
 
-function doGoogleLogin() {
-  state.user = { name: 'Google User', email: 'user@gmail.com', avatarUrl: null };
-  enterApp();
-  showToast('✓ Вошёл через Google!', 'success');
-}
+window.doGoogleLogin = async function() {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const uid = result.user.uid;
+    const snap = await get(ref(db, `users/${uid}`));
+    if (!snap.exists()) {
+      await set(ref(db, `users/${uid}`), {
+        name: result.user.displayName || 'User',
+        email: result.user.email,
+        photoURL: result.user.photoURL || null,
+        isAdmin: false,
+        isPremium: false,
+        premiumExpiry: null,
+        createdAt: serverTimestamp(),
+      });
+    }
+  } catch(e) {
+    showToast('Ошибка Google: ' + e.message, 'error');
+  }
+};
 
-function doRegister() {
+window.doRegister = async function() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const pass = document.getElementById('regPass').value;
   const pass2 = document.getElementById('regPass2').value;
+  const adminCodeVal = document.getElementById('regAdminCode').value.trim();
   if (!name) return showToast('Введи имя!', 'error');
   if (!email) return showToast('Введи email!', 'error');
   if (pass.length < 8) return showToast('Пароль минимум 8 символов!', 'error');
   if (pass !== pass2) return showToast('Пароли не совпадают!', 'error');
-  state.user = { name, email, avatarUrl: null };
-  enterApp();
-  showToast(`🎉 Добро пожаловать, ${name}!`, 'success');
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    const isAdmin = adminCodeVal === ADMIN_CODE;
+    await set(ref(db, `users/${cred.user.uid}`), {
+      name, email,
+      photoURL: null,
+      isAdmin,
+      isPremium: false,
+      premiumExpiry: null,
+      createdAt: serverTimestamp(),
+    });
+    if (isAdmin) showToast('🛡 Аккаунт создан с правами администратора!', 'success');
+    else showToast(`🎉 Добро пожаловать, ${name}!`, 'success');
+  } catch(e) {
+    showToast('Ошибка регистрации: ' + (e.code === 'auth/email-already-in-use' ? 'Email уже используется' : e.message), 'error');
+  }
+};
+
+window.logout = async function() {
+  state.isPlaying = false;
+  clearInterval(progressInterval);
+  if (state.currentAudio) { state.currentAudio.pause(); state.currentAudio = null; }
+  state.listenersOff.forEach(fn => fn());
+  state.listenersOff = [];
+  await signOut(auth);
+  document.getElementById('appPage').classList.remove('active');
+  document.getElementById('authPage').classList.add('active');
+};
+
+// ==================== AUTH STATE ====================
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    state.user = user;
+    await loadUserData(user.uid);
+    await loadAllData();
+    enterApp();
+  }
+});
+
+async function loadUserData(uid) {
+  const snap = await get(ref(db, `users/${uid}`));
+  if (snap.exists()) {
+    state.userData = snap.val();
+    state.isAdmin = state.userData.isAdmin || false;
+    // Check premium expiry
+    const prem = state.userData.isPremium;
+    const exp = state.userData.premiumExpiry;
+    state.isPremium = prem && (!exp || exp > Date.now());
+    // Load liked
+    const likedSnap = await get(ref(db, `users/${uid}/liked`));
+    if (likedSnap.exists()) {
+      state.liked = new Set(Object.keys(likedSnap.val()));
+    }
+    // Load recent listens
+    const recentSnap = await get(ref(db, `users/${uid}/recentListens`));
+    if (recentSnap.exists()) {
+      const arr = Object.values(recentSnap.val()).sort((a,b) => (b.ts||0)-(a.ts||0));
+      state.recentListens = arr.map(r => r.trackId).slice(0,20);
+    }
+  }
 }
 
+async function loadAllData() {
+  // Load uploaded tracks
+  const tracksSnap = await get(ref(db, 'tracks'));
+  if (tracksSnap.exists()) {
+    state.uploadedTracks = Object.entries(tracksSnap.val()).map(([id,t]) => ({...t, id}));
+  }
+  // Load playlists
+  const plSnap = await get(ref(db, 'playlists'));
+  if (plSnap.exists()) {
+    state.playlists = Object.entries(plSnap.val()).map(([id,p]) => ({...p, id}));
+  }
+  // Load banned tracks
+  const banSnap = await get(ref(db, 'bannedTracks'));
+  if (banSnap.exists()) {
+    state.bannedTracks = new Set(Object.keys(banSnap.val()));
+  }
+  // Load reports
+  const repSnap = await get(ref(db, 'reports'));
+  if (repSnap.exists()) {
+    const reps = repSnap.val();
+    state.reportedTracks = new Map(Object.entries(reps).map(([id,v]) => [id, v.count||0]));
+  }
+  // Load all users (admin only - but we need count)
+  const usersSnap = await get(ref(db, 'users'));
+  if (usersSnap.exists()) {
+    state.allUsers = usersSnap.val();
+  }
+
+  // Realtime listeners for tracks & playlists
+  const tracksRef = ref(db, 'tracks');
+  const unsubTracks = onValue(tracksRef, snap => {
+    if (snap.exists()) state.uploadedTracks = Object.entries(snap.val()).map(([id,t]) => ({...t, id}));
+    else state.uploadedTracks = [];
+    refreshCurrentPanelData();
+  });
+  const plRef = ref(db, 'playlists');
+  const unsubPl = onValue(plRef, snap => {
+    if (snap.exists()) state.playlists = Object.entries(snap.val()).map(([id,p]) => ({...p, id}));
+    else state.playlists = [];
+    renderSidebarPlaylists();
+  });
+  state.listenersOff.push(() => off(tracksRef), () => off(plRef));
+}
+
+function refreshCurrentPanelData() {
+  if (state.currentPanel === 'home') { renderTrendingTracks(); renderCommunityTracks(); renderRecentListens(); }
+  if (state.currentPanel === 'discover') renderDiscover();
+  if (state.currentPanel === 'library') renderLibrary();
+  if (state.currentPanel === 'upload') renderPublishedTracks();
+}
+
+// ==================== ENTER APP ====================
 function enterApp() {
   document.getElementById('authPage').classList.remove('active');
   document.getElementById('appPage').classList.add('active');
   updateUserUI();
   renderAll();
-  updateGreeting();
-}
-
-function logout() {
-  state.isPlaying = false;
-  state.isAdmin = false;
-  clearInterval(progressInterval);
-  if (state.currentAudio) { state.currentAudio.pause(); state.currentAudio = null; }
-  document.getElementById('appPage').classList.remove('active');
-  document.getElementById('authPage').classList.add('active');
+  initPlaylistModal();
 }
 
 function updateUserUI() {
-  const n = state.user.name;
+  const u = state.userData || {};
+  const n = u.name || state.user?.displayName || 'User';
   const init = n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const photo = u.photoURL || state.user?.photoURL;
   ['sidebarAvatar','profileAv'].forEach(id => {
     const el = document.getElementById(id);
-    if (state.user.avatarUrl) {
-      el.innerHTML = `<img src="${state.user.avatarUrl}" />`;
-    } else {
-      el.textContent = init;
-      el.innerHTML = init;
-    }
+    if (!el) return;
+    el.innerHTML = photo ? `<img src="${photo}" />` : init;
   });
   document.getElementById('sidebarUserName').textContent = n;
   document.getElementById('profileName').textContent = n;
-  document.getElementById('profileEmail').textContent = state.user.email;
-  document.getElementById('sidebarPlan').textContent = state.isAdmin ? '🛡 Администратор' : '✦ Free';
-  document.getElementById('sidebarPlan').className = `user-plan${state.isAdmin?' admin':''}`;
+  document.getElementById('profileEmail').textContent = state.user?.email || '';
+
+  if (state.isPremium) {
+    document.getElementById('sidebarPlan').textContent = '💎 Premium';
+    document.getElementById('sidebarPlan').className = 'user-plan premium';
+    document.getElementById('topbarUpgradeBtn').textContent = '💎 Premium ✓';
+    document.getElementById('topbarUpgradeBtn').style.background = 'linear-gradient(135deg,var(--premium2),var(--premium))';
+  } else if (state.isAdmin) {
+    document.getElementById('sidebarPlan').textContent = '🛡 Администратор';
+    document.getElementById('sidebarPlan').className = 'user-plan admin';
+  } else {
+    document.getElementById('sidebarPlan').textContent = '✦ Free';
+    document.getElementById('sidebarPlan').className = 'user-plan';
+  }
   document.getElementById('nav-admin').style.display = state.isAdmin ? 'flex' : 'none';
+  renderPremiumSection();
+  renderProfileStats();
 }
 
-// ===================== NAVIGATION =====================
-function showPanel(panel) {
+function renderPremiumSection() {
+  const el = document.getElementById('premiumSection');
+  if (!el) return;
+  if (state.isPremium) {
+    const exp = state.userData?.premiumExpiry;
+    const expStr = exp ? `до ${new Date(exp).toLocaleDateString('ru')}` : 'навсегда';
+    el.innerHTML = `
+      <div class="premium-card">
+        <div class="premium-badge-lg">💎 Premium Active</div>
+        <div style="font-size:.88rem;color:var(--text2);">Действует: ${expStr}</div>
+        <div class="premium-features">
+          <div class="premium-feat">✓ Без рекламы</div><div class="premium-feat">✓ HD качество</div>
+          <div class="premium-feat">✓ Офлайн режим</div><div class="premium-feat">✓ Все треки</div>
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="settings-card">
+        <div class="settings-card-title">💎 Подписка</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Free Plan</div><div class="setting-sub">Базовое качество · Ограниченные функции</div></div>
+          <button class="btn-primary" style="width:auto;padding:8px 20px;font-size:.82rem;background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;" onclick="showPremiumModal()">💎 Premium</button>
+        </div>
+      </div>`;
+  }
+}
+
+// ==================== NAVIGATION ====================
+window.showPanel = function(panel) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   const el = document.getElementById('panel' + panel.charAt(0).toUpperCase() + panel.slice(1));
@@ -1193,233 +1105,289 @@ function showPanel(panel) {
   if (navEl) navEl.classList.add('active');
   state.currentPanel = panel;
   if (panel === 'library') renderLibrary();
-  if (panel === 'profile') renderProfile();
+  if (panel === 'profile') { renderProfile(); }
   if (panel === 'discover') renderDiscover();
   if (panel === 'admin') renderAdminPanel();
+  if (panel === 'upload') renderPublishedTracks();
   document.querySelector('.panels-wrap').scrollTop = 0;
-}
+};
 
-function updateGreeting() {
-  // no greeting element in home, handled inline
-}
-
-// ===================== RENDER =====================
+// ==================== RENDER ALL ====================
 function renderAll() {
-  renderRecentCards();
+  renderRecentListens();
   renderTrendingTracks();
   renderCommunityTracks();
   renderSidebarPlaylists();
-  renderDiscover();
-  initPlaylistModal();
 }
 
-function renderRecentCards() {
-  const el = document.getElementById('recentCards');
-  el.innerHTML = DEMO_TRACKS.slice(0,6).map(t => `
-    <div class="card" onclick="playTrack('${t.id}')">
-      <div class="card-cover ${t.color}">
-        ${t.emoji}
-        <div class="play-overlay"><div class="play-btn-c">▶</div></div>
-      </div>
-      <div class="card-title">${t.title}</div>
-      <div class="card-sub">${t.artist}</div>
-    </div>
-  `).join('');
+// ==================== RECENT LISTENS ====================
+function renderRecentListens() {
+  const el = document.getElementById('recentListens');
+  if (!el) return;
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const recent = state.recentListens
+    .map(id => allTracks.find(t => t.id === id))
+    .filter(Boolean)
+    .filter(t => !state.bannedTracks.has(t.id))
+    .slice(0, 10);
+
+  if (!recent.length) {
+    el.innerHTML = `<div style="color:var(--text3);font-size:.85rem;padding:1rem 0;white-space:nowrap;">Начни слушать треки — они появятся здесь 🎵</div>`;
+    return;
+  }
+  el.innerHTML = recent.map(t => {
+    const cov = t.coverUrl ? `<img src="${t.coverUrl}" />` : t.emoji;
+    return `
+      <div class="recent-card" onclick="playTrack('${t.id}')">
+        <div class="recent-cover ${t.color||'c1'}">${cov}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
+        <div class="recent-title">${t.title}</div>
+        <div class="recent-artist">${t.artist}</div>
+      </div>`;
+  }).join('');
 }
 
+async function addToRecentListens(trackId) {
+  if (!state.user) return;
+  // Update local
+  state.recentListens = [trackId, ...state.recentListens.filter(id => id !== trackId)].slice(0,20);
+  // Update Firebase
+  const uid = state.user.uid;
+  await set(ref(db, `users/${uid}/recentListens/${trackId}`), { trackId, ts: Date.now() });
+  // Keep only last 20
+  renderRecentListens();
+}
+
+// ==================== TRENDING / COMMUNITY TRACKS ====================
 function renderTrendingTracks() {
   const el = document.getElementById('trendingTracks');
-  el.innerHTML = DEMO_TRACKS.slice(0,5).map((t,i) => renderTrackItem(t, i+1, true)).join('');
+  if (!el) return;
+  // Mix demo + user tracks, sort by plays
+  const all = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id))];
+  const sorted = all.sort((a,b) => (b.plays||0) - (a.plays||0)).slice(0,8);
+  el.innerHTML = sorted.map((t,i) => renderTrackItem(t, i+1, true)).join('');
 }
 
 function renderCommunityTracks() {
   const el = document.getElementById('communityTracks');
-  const tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id)).slice(0,4);
+  if (!el) return;
+  const tracks = state.uploadedTracks
+    .filter(t => !state.bannedTracks.has(t.id))
+    .sort((a,b) => (b.uploadedAt||0) - (a.uploadedAt||0))
+    .slice(0,5);
   if (!tracks.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Пока нет треков от пользователей.<br>Будь первым — загрузи свой трек!</p></div>';
+    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Пока нет треков от пользователей.<br>Будь первым!</p></div>';
     return;
   }
   el.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1, true)).join('');
 }
 
-function renderTrackItem(t, num, showAlbum = true, inPlaylist = false) {
+// ==================== TRACK ITEM RENDERER ====================
+function renderTrackItem(t, num, showAlbum=true) {
   const isBanned = state.bannedTracks.has(t.id);
   const isPlaying = state.currentTrack?.id === t.id;
   const isLiked = state.liked.has(t.id);
-  const reportCount = state.reportedTracks.get(t.id) || 0;
   const coverHtml = t.coverUrl
     ? `<img src="${t.coverUrl}" />`
-    : t.emoji || '🎵';
+    : (t.emoji || '🎵');
+  const playsStr = t.plays > 1000000 ? (t.plays/1000000).toFixed(1)+'M' : t.plays > 1000 ? Math.floor(t.plays/1000)+'K' : (t.plays||0);
   return `
     <div class="track-item${isPlaying?' playing':''}${isBanned?' banned':''}" id="ti-${t.id}" onclick="${isBanned?'':(`playTrack('${t.id}')`)}">
       <div class="track-num">${isPlaying ? '<div class="bars-anim"><div class="bar-a"></div><div class="bar-a"></div><div class="bar-a"></div></div>' : num}</div>
-      <div class="track-cover ${t.color||'c1'}">
-        ${coverHtml}
-        <div class="track-cover-overlay">▶</div>
-      </div>
+      <div class="track-cover ${t.color||'c1'}">${coverHtml}<div class="track-cover-overlay">▶</div></div>
       <div class="track-info">
-        <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:0.7rem;margin-left:6px;">[ЗАБАНЕН]</span>':''}</div>
+        <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[ЗАБАНЕН]</span>':''}</div>
         <div class="track-artist">${t.artist}${t.uploaderName?' · <span style="color:var(--text3)">'+t.uploaderName+'</span>':''}</div>
       </div>
       ${showAlbum && t.album ? `<div class="track-album">${t.album}${t.genre?' · '+t.genre:''}</div>` : ''}
       <div class="track-actions">
+        ${!isBanned ? `<div style="font-size:.72rem;color:var(--text3);margin-right:4px;">${playsStr}</div>` : ''}
         ${!isBanned ? `<button class="btn-flag" onclick="event.stopPropagation();reportTrack('${t.id}')" title="Пожаловаться">⚑</button>` : ''}
         <button class="track-add-btn" onclick="event.stopPropagation();openAddToPlaylist('${t.id}')">+ Плейлист</button>
-        <div class="track-like${isLiked?' liked':''}" onclick="event.stopPropagation();toggleLike('${t.id}')">
-          ${isLiked ? '♥' : '♡'}
-        </div>
-        <div class="track-dur">${t.dur || '?:??'}</div>
+        <div class="track-like${isLiked?' liked':''}" onclick="event.stopPropagation();toggleLike('${t.id}')">${isLiked?'♥':'♡'}</div>
+        <div class="track-dur">${t.dur||'?:??'}</div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
+// ==================== DISCOVER ====================
 function renderDiscover() {
+  // Stats row
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id))];
+  const totalPlays = allTracks.reduce((s,t)=>(s+(t.plays||0)),0);
+  const statsEl = document.getElementById('discoverStats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="stat-chip"><div class="stat-chip-num">${allTracks.length}</div>треков</div>
+    <div class="stat-chip"><div class="stat-chip-num">${state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id)).length}</div>от сообщества</div>
+    <div class="stat-chip"><div class="stat-chip-num">${totalPlays>1000000?(totalPlays/1000000).toFixed(1)+'M':Math.floor(totalPlays/1000)+'K'}</div>прослушиваний</div>
+    <div class="stat-chip"><div class="stat-chip-num">${Object.keys(state.allUsers).length}</div>участников</div>`;
+
   // Genres
   const gEl = document.getElementById('genreGrid');
-  gEl.innerHTML = GENRES_DATA.map(g => `
+  if (gEl) gEl.innerHTML = GENRES_DATA.map(g => `
     <div class="genre-card ${g.class}" onclick="filterByGenre('${g.name}')">
       <div class="genre-card-emoji">${g.emoji}</div>
-      <div class="genre-card-name">${g.name}</div>
-    </div>
-  `).join('');
+      <div class="genre-card-name">${g.label}</div>
+    </div>`).join('');
 
-  // Public playlists
-  const ppEl = document.getElementById('publicPlaylists');
-  const pubPlaylists = state.playlists.filter(p => p.isPublic);
-  if (!pubPlaylists.length) {
-    ppEl.innerHTML = '<div style="color:var(--text3);font-size:0.85rem;padding:0.5rem 0;">Нет публичных плейлистов. Создай первый!</div>';
-  } else {
-    ppEl.innerHTML = pubPlaylists.map(p => renderPlaylistCard(p)).join('');
+  // Popular playlists (by track count + plays of their tracks)
+  const ppEl = document.getElementById('popularPlaylists');
+  if (ppEl) {
+    const pubPl = state.playlists
+      .filter(p => p.isPublic)
+      .map(p => {
+        const trackObjs = p.tracks ? p.tracks.map(id => allTracks.find(t=>t.id===id)).filter(Boolean) : [];
+        const score = trackObjs.reduce((s,t)=>(s+(t.plays||0)),0) + (p.tracks||[]).length * 1000;
+        return {...p, score, trackCount: trackObjs.length};
+      })
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 8);
+    if (!pubPl.length) ppEl.innerHTML = '<div style="color:var(--text3);font-size:.85rem;padding:.5rem 0;">Нет публичных плейлистов.</div>';
+    else ppEl.innerHTML = pubPl.map(p => renderPlaylistCard(p)).join('');
   }
 
   // All community tracks
-  const atEl = document.getElementById('allCommunityTracks');
-  const tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id));
-  if (!tracks.length) {
-    atEl.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Нет треков от сообщества.</p></div>';
-  } else {
-    atEl.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1)).join('');
-  }
+  renderAllCommunityTracks();
 }
 
-function filterByGenre(genre) {
-  const tracks = [...DEMO_TRACKS, ...state.uploadedTracks].filter(t => t.genre === genre && !state.bannedTracks.has(t.id));
+function renderAllCommunityTracks() {
   const atEl = document.getElementById('allCommunityTracks');
+  if (!atEl) return;
+  let tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id));
+  if (state.genreFilter) tracks = tracks.filter(t => t.genre === state.genreFilter);
+  tracks = tracks.sort((a,b) => (b.plays||0)-(a.plays||0));
   if (!tracks.length) {
-    atEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Нет треков в жанре ${genre}</p></div>`;
-  } else {
-    atEl.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1)).join('');
+    atEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon">🎤</span><p>${state.genreFilter?`Нет треков в жанре ${state.genreFilter}`:'Нет треков от сообщества.'}</p></div>`;
+    return;
   }
-  document.getElementById('allCommunityTracks').scrollIntoView({behavior:'smooth'});
+  atEl.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1)).join('');
 }
+
+window.filterByGenre = function(genre) {
+  state.genreFilter = genre;
+  const lbl = document.getElementById('genreFilterLabel');
+  if (lbl) lbl.textContent = `Фильтр: ${GENRES_DATA.find(g=>g.name===genre)?.label||genre} ✕`;
+  renderAllCommunityTracks();
+  document.getElementById('allCommunityTracks').scrollIntoView({behavior:'smooth'});
+};
+
+window.clearGenreFilter = function() {
+  state.genreFilter = null;
+  const lbl = document.getElementById('genreFilterLabel');
+  if (lbl) lbl.textContent = '';
+  renderAllCommunityTracks();
+};
 
 function renderPlaylistCard(p) {
-  const coverHtml = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />` : p.emoji;
+  const coverHtml = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />` : (p.emoji||'🎵');
+  const cnt = Array.isArray(p.tracks) ? p.tracks.length : 0;
   return `
     <div class="card" onclick="openPlaylistView('${p.id}')">
-      <div class="card-cover ${p.color}">${coverHtml}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
+      <div class="card-cover ${p.color||'c1'}">${coverHtml}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
       <div class="card-title">${p.name}</div>
-      <div class="card-sub">${p.tracks.length} треков${p.isPublic?' · Публичный':''}</div>
+      <div class="card-sub">${cnt} треков · ${p.ownerName||'?'}</div>
       ${p.isPublic ? '<div class="card-badge badge-new">Public</div>' : ''}
-    </div>
-  `;
+    </div>`;
 }
 
+// ==================== LIBRARY ====================
 function renderLibrary() {
-  // Liked
-  const likedTracks = [...DEMO_TRACKS, ...state.uploadedTracks].filter(t => state.liked.has(t.id));
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const likedTracks = allTracks.filter(t => state.liked.has(t.id));
   document.getElementById('likedCount').textContent = likedTracks.length + ' треков';
   const lEl = document.getElementById('likedTracks');
-  if (!likedTracks.length) {
-    lEl.innerHTML = '<div class="empty-state"><span class="empty-state-icon">♡</span><p>Нажми ♡ у любого трека,<br>чтобы добавить его сюда.</p></div>';
-  } else {
-    lEl.innerHTML = likedTracks.map((t,i) => renderTrackItem(t, i+1)).join('');
-  }
-  // My playlists
+  lEl.innerHTML = !likedTracks.length
+    ? '<div class="empty-state"><span class="empty-state-icon">♡</span><p>Нажми ♡ у любого трека.</p></div>'
+    : likedTracks.map((t,i) => renderTrackItem(t, i+1)).join('');
   const mpEl = document.getElementById('myPlaylistsGrid');
-  const myPls = state.playlists.filter(p => p.ownerId === state.user.email);
-  if (!myPls.length) {
-    mpEl.innerHTML = '<div style="color:var(--text3);font-size:0.85rem;padding:0.5rem 0;">Нет плейлистов. Создай первый!</div>';
-  } else {
-    mpEl.innerHTML = myPls.map(p => renderPlaylistCard(p)).join('');
-  }
+  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
+  mpEl.innerHTML = !myPls.length
+    ? '<div style="color:var(--text3);font-size:.85rem;padding:.5rem 0;">Нет плейлистов.</div>'
+    : myPls.map(p => renderPlaylistCard(p)).join('');
 }
 
+// ==================== PROFILE ====================
 function renderProfile() {
-  document.getElementById('statTracks').textContent = state.uploadedTracks.filter(t => t.uploaderEmail === state.user.email).length;
-  document.getElementById('statLiked').textContent = state.liked.size;
-  document.getElementById('statPlaylists').textContent = state.playlists.filter(p => p.ownerId === state.user.email).length;
-  const myTracks = state.uploadedTracks.filter(t => t.uploaderEmail === state.user.email);
+  renderProfileStats();
+  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
   const el = document.getElementById('profileMyTracks');
-  if (!myTracks.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.</p></div>';
-  } else {
-    el.innerHTML = '<div class="track-list">' + myTracks.map((t,i) => renderTrackItem(t, i+1)).join('') + '</div>';
+  el.innerHTML = !myTracks.length
+    ? '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.</p></div>'
+    : '<div class="track-list">' + myTracks.map((t,i) => renderTrackItem(t, i+1)).join('') + '</div>';
+  // Hide admin code activation if already admin
+  const acEl = document.getElementById('adminCodeActivation');
+  if (acEl) acEl.style.display = state.isAdmin ? 'none' : 'block';
+  renderPremiumSection();
+}
+
+function renderProfileStats() {
+  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
+  const myPlays = myTracks.reduce((s,t)=>(s+(t.plays||0)),0);
+  document.getElementById('statTracks').textContent = myTracks.length;
+  document.getElementById('statLiked').textContent = state.liked.size;
+  document.getElementById('statPlaylists').textContent = state.playlists.filter(p => p.ownerId === state.user?.uid).length;
+  document.getElementById('statPlays').textContent = myPlays > 1000 ? Math.floor(myPlays/1000)+'K' : myPlays;
+  // Plan badge
+  const badgeEl = document.getElementById('profilePlanBadge');
+  if (badgeEl) {
+    if (state.isPremium) badgeEl.innerHTML = '<span style="background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:800;">💎 Premium</span>';
+    else if (state.isAdmin) badgeEl.innerHTML = '<span style="background:rgba(255,199,71,.15);color:var(--yellow);padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:800;">🛡 Admin</span>';
+    else badgeEl.innerHTML = '<span style="background:var(--bg3);color:var(--text2);padding:3px 12px;border-radius:20px;font-size:.78rem;">Free</span>';
   }
 }
 
 function renderSidebarPlaylists() {
   const el = document.getElementById('sidebarPlaylists');
-  const myPls = state.playlists.filter(p => p.ownerId === state.user?.email);
+  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
   if (!myPls.length) { el.innerHTML = ''; return; }
   el.innerHTML = myPls.map(p => {
-    const thumb = p.coverUrl ? `<img src="${p.coverUrl}" />` : p.emoji;
+    const thumb = p.coverUrl ? `<img src="${p.coverUrl}" />` : (p.emoji||'🎵');
+    const cnt = Array.isArray(p.tracks) ? p.tracks.length : 0;
     return `
       <div class="playlist-sidebar-item" onclick="openPlaylistView('${p.id}')">
-        <div class="playlist-thumb ${p.color}">${thumb}</div>
+        <div class="playlist-thumb ${p.color||'c1'}">${thumb}</div>
         <div class="playlist-sidebar-info">
           <div class="playlist-sidebar-name">${p.name}</div>
-          <div class="playlist-sidebar-count">${p.tracks.length} треков</div>
+          <div class="playlist-sidebar-count">${cnt} треков</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-// ===================== PLAYLIST =====================
+// ==================== PLAYLIST ====================
 function initPlaylistModal() {
-  // Emoji row
   const er = document.getElementById('plEmojiRow');
-  er.innerHTML = PLAYLIST_EMOJIS.map(e => `
-    <div class="emoji-opt${e==='🎵'?' sel':''}" onclick="selectPLEmoji(this,'${e}')">${e}</div>
-  `).join('');
-  // Gradient opts
+  if (er) er.innerHTML = PLAYLIST_EMOJIS.map(e => `<div class="emoji-opt${e==='🎵'?' sel':''}" onclick="selectPLEmoji(this,'${e}')">${e}</div>`).join('');
   const gr = document.getElementById('plGradOpts');
-  gr.innerHTML = PLAYLIST_GRADS.map((g,i) => `
-    <div class="grad-opt${g==='c1'?' sel':''}" style="background:${GRAD_PREVIEWS[i]};" onclick="selectPLGrad(this,'${g}')"></div>
-  `).join('');
+  if (gr) gr.innerHTML = PLAYLIST_GRADS.map((g,i) => `<div class="grad-opt${g==='c1'?' sel':''}" style="background:${GRAD_PREVIEWS[i]};" onclick="selectPLGrad(this,'${g}')"></div>`).join('');
 }
 
-function selectPLEmoji(el, emoji) {
+window.selectPLEmoji = function(el, emoji) {
   document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('sel'));
   el.classList.add('sel');
   state.selectedPLEmoji = emoji;
   state.plCoverDataUrl = null;
   const preview = document.getElementById('plCoverPreview');
   preview.innerHTML = emoji;
-  preview.style.background = '';
-}
+};
 
-function selectPLGrad(el, grad) {
+window.selectPLGrad = function(el, grad) {
   document.querySelectorAll('.grad-opt').forEach(e => e.classList.remove('sel'));
   el.classList.add('sel');
   state.selectedPLGrad = grad;
-}
+};
 
-function handlePlaylistCover(input) {
+window.handlePlaylistCover = function(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     state.plCoverDataUrl = e.target.result;
-    const preview = document.getElementById('plCoverPreview');
-    preview.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+    document.getElementById('plCoverPreview').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
   };
   reader.readAsDataURL(file);
-}
+};
 
-function openCreatePlaylist() {
+window.openCreatePlaylist = function() {
   document.getElementById('modalPlaylist').classList.add('open');
   document.getElementById('plName').value = '';
   document.getElementById('plDesc').value = '';
@@ -1427,163 +1395,166 @@ function openCreatePlaylist() {
   state.plCoverDataUrl = null;
   state.selectedPLEmoji = '🎵';
   state.selectedPLGrad = 'c1';
-}
+};
 
-function createPlaylist() {
+window.createPlaylist = async function() {
   const name = document.getElementById('plName').value.trim();
   if (!name) return showToast('Введи название!', 'error');
   const isPublic = document.getElementById('plPublicToggle').classList.contains('on');
+  let coverUrl = null;
+  if (state.plCoverDataUrl) {
+    try {
+      const blob = await fetch(state.plCoverDataUrl).then(r=>r.blob());
+      const storageRef = sRef(storage, `playlists/${Date.now()}_cover`);
+      await uploadBytes(storageRef, blob);
+      coverUrl = await getDownloadURL(storageRef);
+    } catch(e) { coverUrl = null; }
+  }
+  const plRef = push(ref(db, 'playlists'));
   const pl = {
-    id: 'pl_' + Date.now(),
-    name,
-    desc: document.getElementById('plDesc').value.trim(),
+    name, desc: document.getElementById('plDesc').value.trim(),
     emoji: state.selectedPLEmoji,
     color: state.selectedPLGrad,
-    coverUrl: state.plCoverDataUrl,
+    coverUrl,
     isPublic,
-    ownerId: state.user.email,
-    ownerName: state.user.name,
+    ownerId: state.user.uid,
+    ownerName: state.userData?.name || state.user.displayName || 'User',
     tracks: [],
-    createdAt: Date.now(),
+    createdAt: serverTimestamp(),
+    plays: 0,
   };
-  state.playlists.push(pl);
+  await set(plRef, pl);
   closeModal('modalPlaylist');
-  renderSidebarPlaylists();
-  if (state.currentPanel === 'library') renderLibrary();
-  if (state.currentPanel === 'discover') renderDiscover();
   showToast(`✓ Плейлист "${name}" создан!`, 'success');
-}
+};
 
-function openPlaylistView(plId) {
+window.openPlaylistView = function(plId) {
   const pl = state.playlists.find(p => p.id === plId);
   if (!pl) return;
   state.currentPlaylistId = plId;
-  const coverHtml = pl.coverUrl
-    ? `<img src="${pl.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />`
-    : pl.emoji;
-  const tracks = pl.tracks.map(tid => [...DEMO_TRACKS, ...state.uploadedTracks].find(t => t.id === tid)).filter(Boolean);
-  const isOwner = pl.ownerId === state.user.email;
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const tracks = (pl.tracks||[]).map(tid => allTracks.find(t=>t.id===tid)).filter(Boolean);
+  const isOwner = pl.ownerId === state.user?.uid;
+  const coverHtml = pl.coverUrl ? `<img src="${pl.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />` : (pl.emoji||'🎵');
   document.getElementById('playlistViewContent').innerHTML = `
     <div class="playlist-view-hero">
-      <div class="playlist-cover-lg ${pl.color}">${coverHtml}</div>
+      <div class="playlist-cover-lg ${pl.color||'c1'}">${coverHtml}</div>
       <div class="playlist-view-info">
-        <div style="font-size:0.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Плейлист${pl.isPublic?' · Публичный':''}</div>
+        <div style="font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Плейлист${pl.isPublic?' · Публичный':''}</div>
         <h1>${pl.name}</h1>
-        <p>${pl.desc || ''}</p>
-        <div class="playlist-view-meta">
-          <span>👤 ${pl.ownerName}</span>
+        <p>${pl.desc||''}</p>
+        <div style="display:flex;align-items:center;gap:1rem;font-size:.82rem;color:var(--text2);">
+          <span>👤 ${pl.ownerName||'?'}</span>
           <span>🎵 ${tracks.length} треков</span>
+          <span>▶ ${pl.plays||0} прослушиваний</span>
         </div>
         <div style="display:flex;gap:8px;margin-top:1rem;">
           <button class="btn-primary" style="width:auto;padding:10px 24px;" onclick="playPlaylist('${pl.id}')">▶ Слушать</button>
-          ${isOwner ? `<button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 18px;color:var(--red);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;transition:var(--t);" onclick="deletePlaylist('${pl.id}')">🗑 Удалить</button>` : ''}
+          ${isOwner?`<button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 18px;color:var(--red);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;" onclick="deletePlaylist('${pl.id}')">🗑 Удалить</button>`:''}
         </div>
       </div>
     </div>
-    ${tracks.length ? `<div class="track-list">${tracks.map((t,i)=>`
-      ${renderTrackItem(t, i+1)}
-      ${isOwner ? `<div onclick="removeFromPlaylist('${pl.id}','${t.id}')" style="padding:4px 12px;font-size:0.75rem;color:var(--red);cursor:pointer;margin-left:auto;text-align:right;">— Удалить из плейлиста</div>` : ''}
-    `).join('')}</div>`
-    : '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Плейлист пуст. Нажми «+ Плейлист» у любого трека!</p></div>'}
-  `;
+    ${tracks.length
+      ? `<div class="track-list">${tracks.map((t,i) => renderTrackItem(t, i+1) + (isOwner ? `<div onclick="removeFromPlaylist('${pl.id}','${t.id}')" style="padding:4px 12px;font-size:.75rem;color:var(--red);cursor:pointer;text-align:right;margin-top:-6px;">— Удалить</div>` : '')).join('')}</div>`
+      : '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Плейлист пуст.</p></div>'}`;
   showPanel('playlist');
-}
+};
 
-function playPlaylist(plId) {
-  const pl = state.playlists.find(p => p.id === plId);
-  if (!pl || !pl.tracks.length) return showToast('Плейлист пуст!', 'error');
+window.playPlaylist = async function(plId) {
+  const pl = state.playlists.find(p=>p.id===plId);
+  if (!pl || !(pl.tracks||[]).length) return showToast('Плейлист пуст!','error');
   const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
-  const queue = pl.tracks.map(id => allTracks.find(t => t.id === id)).filter(Boolean);
+  const queue = pl.tracks.map(id => allTracks.find(t=>t.id===id)).filter(Boolean);
   if (!queue.length) return;
+  // Increment playlist plays
+  await update(ref(db, `playlists/${plId}`), { plays: (pl.plays||0)+1 });
   state.queue = queue;
   state.queueIdx = 0;
   playTrackObj(queue[0]);
-}
+};
 
-function openAddToPlaylist(trackId) {
+window.openAddToPlaylist = function(trackId) {
   state.addToPlaylistTrackId = trackId;
-  const myPls = state.playlists.filter(p => p.ownerId === state.user.email);
+  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
   const el = document.getElementById('addToPlaylistList');
   if (!myPls.length) {
-    el.innerHTML = '<div class="empty-state"><p>У тебя нет плейлистов. Создай один!</p></div>';
+    el.innerHTML = '<div class="empty-state"><p>Нет плейлистов. Создай один!</p></div>';
   } else {
     el.innerHTML = myPls.map(p => {
-      const isIn = p.tracks.includes(trackId);
-      const cover = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : p.emoji;
+      const tracks = p.tracks||[];
+      const isIn = tracks.includes(trackId);
+      const cover = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : (p.emoji||'🎵');
       return `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:var(--t);background:${isIn?'rgba(108,71,255,0.1)':'var(--bg3)'};margin-bottom:6px;" onclick="addTrackToPlaylist('${p.id}')">
-          <div class="playlist-thumb ${p.color}">${cover}</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:var(--t);background:${isIn?'rgba(108,71,255,.1)':'var(--bg3)'};margin-bottom:6px;" onclick="addTrackToPlaylist('${p.id}')">
+          <div class="playlist-thumb ${p.color||'c1'}">${cover}</div>
           <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
-            <div style="font-size:0.75rem;color:var(--text2);">${p.tracks.length} треков</div>
+            <div style="font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+            <div style="font-size:.75rem;color:var(--text2);">${tracks.length} треков</div>
           </div>
-          ${isIn ? '<span style="color:var(--accent2);font-size:0.82rem;">✓ В плейлисте</span>' : ''}
-        </div>
-      `;
+          ${isIn ? '<span style="color:var(--accent2);font-size:.82rem;">✓</span>' : ''}
+        </div>`;
     }).join('');
   }
   document.getElementById('modalAddToPlaylist').classList.add('open');
-}
+};
 
-function addTrackToPlaylist(plId) {
-  const pl = state.playlists.find(p => p.id === plId);
+window.addTrackToPlaylist = async function(plId) {
+  const pl = state.playlists.find(p=>p.id===plId);
   const tid = state.addToPlaylistTrackId;
   if (!pl || !tid) return;
-  if (pl.tracks.includes(tid)) {
-    pl.tracks = pl.tracks.filter(id => id !== tid);
-    showToast('Удалён из плейлиста', 'success');
+  let tracks = pl.tracks||[];
+  if (tracks.includes(tid)) {
+    tracks = tracks.filter(id=>id!==tid);
+    showToast('Удалён из плейлиста');
   } else {
-    pl.tracks.push(tid);
+    tracks = [...tracks, tid];
     showToast(`✓ Добавлено в "${pl.name}"!`, 'success');
   }
+  await update(ref(db, `playlists/${plId}`), { tracks });
   closeModal('modalAddToPlaylist');
-  renderSidebarPlaylists();
-  if (state.currentPanel === 'playlist' && state.currentPlaylistId === plId) openPlaylistView(plId);
-}
+};
 
-function removeFromPlaylist(plId, trackId) {
-  const pl = state.playlists.find(p => p.id === plId);
+window.removeFromPlaylist = async function(plId, trackId) {
+  const pl = state.playlists.find(p=>p.id===plId);
   if (!pl) return;
-  pl.tracks = pl.tracks.filter(id => id !== trackId);
+  const tracks = (pl.tracks||[]).filter(id=>id!==trackId);
+  await update(ref(db, `playlists/${plId}`), { tracks });
   showToast('Удалён из плейлиста');
-  openPlaylistView(plId);
-}
+  setTimeout(()=>openPlaylistView(plId), 300);
+};
 
-function deletePlaylist(plId) {
-  state.playlists = state.playlists.filter(p => p.id !== plId);
+window.deletePlaylist = async function(plId) {
+  await remove(ref(db, `playlists/${plId}`));
   showPanel('library');
-  renderLibrary();
-  renderSidebarPlaylists();
   showToast('Плейлист удалён');
-}
+};
 
-// ===================== UPLOAD =====================
-function handleDrop(e) {
+// ==================== UPLOAD ====================
+window.handleDrop = function(e) {
   e.preventDefault();
   document.getElementById('uploadZone').classList.remove('drag');
-  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('audio/'));
+  const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('audio/'));
   if (files.length) {
     const dt = new DataTransfer();
-    files.forEach(f => dt.items.add(f));
-    const input = document.getElementById('audioFileInput');
-    input.files = dt.files;
-    handleAudioFiles(input);
+    files.forEach(f=>dt.items.add(f));
+    document.getElementById('audioFileInput').files = dt.files;
+    handleAudioFiles(document.getElementById('audioFileInput'));
   }
-}
+};
 
-function handleAudioFiles(input) {
+window.handleAudioFiles = function(input) {
   const file = input.files[0];
   if (!file) return;
-  state.uploadingTrack = { file, name: file.name.replace(/\.[^.]+$/, '') };
+  state.uploadingTrack = { file, name: file.name.replace(/\.[^.]+$/,'') };
   state.uploadCoverDataUrl = null;
   document.getElementById('uploadForm').classList.remove('hidden');
   document.getElementById('trackTitle').value = state.uploadingTrack.name;
-  document.getElementById('trackArtist').value = state.user.name;
+  document.getElementById('trackArtist').value = state.userData?.name || state.user?.displayName || '';
   document.getElementById('uploadCoverPreview').innerHTML = '🎵';
-  showToast('✓ Файл загружен, заполни детали', 'success');
-}
+  showToast('✓ Файл выбран, заполни детали', 'success');
+};
 
-function handleCoverUpload(input) {
+window.handleCoverUpload = function(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -1592,99 +1563,127 @@ function handleCoverUpload(input) {
     document.getElementById('uploadCoverPreview').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />`;
   };
   reader.readAsDataURL(file);
-}
+};
 
-function publishTrack() {
+window.publishTrack = async function() {
   if (!state.uploadingTrack) return showToast('Сначала выбери файл!', 'error');
   const title = document.getElementById('trackTitle').value.trim();
   const artist = document.getElementById('trackArtist').value.trim();
   const genre = document.getElementById('trackGenre').value;
-  const desc = document.getElementById('trackDesc').value.trim();
   if (!title) return showToast('Введи название!', 'error');
   if (!artist) return showToast('Введи исполнителя!', 'error');
 
-  const colors = ['c1','c2','c3','c4','c5','c6','c7','c8'];
-  const track = {
-    id: 'u_' + Date.now(),
-    title, artist, genre, desc,
-    album: genre,
-    emoji: '🎵',
-    coverUrl: state.uploadCoverDataUrl,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    dur: '?:??',
-    secs: 180,
-    uploaderEmail: state.user.email,
-    uploaderName: state.user.name,
-    plays: 0,
-    uploadedAt: Date.now(),
-    url: URL.createObjectURL(state.uploadingTrack.file),
-  };
+  const btn = document.getElementById('publishBtn');
+  btn.textContent = '⏳ Загружаем...';
+  btn.disabled = true;
 
-  state.uploadedTracks.push(track);
-  state.uploadingTrack = null;
-  state.uploadCoverDataUrl = null;
-  document.getElementById('uploadForm').classList.add('hidden');
-  document.getElementById('audioFileInput').value = '';
+  try {
+    // Upload audio
+    const audioRef = sRef(storage, `tracks/${state.user.uid}/${Date.now()}_${state.uploadingTrack.file.name}`);
+    await uploadBytes(audioRef, state.uploadingTrack.file);
+    const audioUrl = await getDownloadURL(audioRef);
 
-  renderPublishedTracks();
-  renderCommunityTracks();
-  if (state.currentPanel === 'discover') renderDiscover();
+    // Upload cover if provided
+    let coverUrl = null;
+    if (state.uploadCoverDataUrl) {
+      try {
+        const blob = await fetch(state.uploadCoverDataUrl).then(r=>r.blob());
+        const cRef = sRef(storage, `covers/${state.user.uid}/${Date.now()}_cover`);
+        await uploadBytes(cRef, blob);
+        coverUrl = await getDownloadURL(cRef);
+      } catch(e) {}
+    }
 
-  showToast(`🚀 Трек "${title}" опубликован!`, 'success');
-}
+    const colors = ['c1','c2','c3','c4','c5','c6','c7','c8'];
+    const trackRef = push(ref(db, 'tracks'));
+    await set(trackRef, {
+      title, artist, genre,
+      album: genre,
+      desc: document.getElementById('trackDesc').value.trim(),
+      emoji: '🎵',
+      coverUrl,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      dur: '?:??',
+      secs: 180,
+      uploaderUid: state.user.uid,
+      uploaderName: state.userData?.name || state.user.displayName || 'User',
+      uploaderEmail: state.user.email,
+      plays: 0,
+      uploadedAt: serverTimestamp(),
+      url: audioUrl,
+    });
+
+    state.uploadingTrack = null;
+    state.uploadCoverDataUrl = null;
+    document.getElementById('uploadForm').classList.add('hidden');
+    document.getElementById('audioFileInput').value = '';
+    showToast(`🚀 Трек "${title}" опубликован!`, 'success');
+  } catch(e) {
+    showToast('Ошибка загрузки: ' + e.message, 'error');
+  }
+
+  btn.textContent = '🚀 Опубликовать трек';
+  btn.disabled = false;
+};
 
 function renderPublishedTracks() {
-  const myTracks = state.uploadedTracks.filter(t => t.uploaderEmail === state.user.email);
+  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
   const el = document.getElementById('myPublishedTracks');
+  if (!el) return;
   if (!myTracks.length) { el.innerHTML = ''; return; }
   el.innerHTML = `<div class="section-hdr"><div class="section-title">Мои треки</div></div>
-    <div class="track-list">${myTracks.map((t,i) => renderTrackItem(t, i+1)).join('')}</div>`;
+    <div class="track-list">${myTracks.map((t,i)=>renderTrackItem(t, i+1)).join('')}</div>`;
 }
 
-// ===================== PLAYER =====================
-function playTrack(id) {
+// ==================== PLAYER ====================
+window.playTrack = function(id) {
   const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
-  const track = allTracks.find(t => t.id === id);
+  const track = allTracks.find(t=>t.id===id);
   if (!track || state.bannedTracks.has(id)) return;
-  // update queue
-  const notBanned = allTracks.filter(t => !state.bannedTracks.has(t.id));
+  const notBanned = allTracks.filter(t=>!state.bannedTracks.has(t.id));
   state.queue = notBanned;
-  state.queueIdx = notBanned.findIndex(t => t.id === id);
+  state.queueIdx = notBanned.findIndex(t=>t.id===id);
   playTrackObj(track);
-}
+};
 
-function playTrackObj(track) {
+async function playTrackObj(track) {
   if (state.currentAudio) { state.currentAudio.pause(); state.currentAudio = null; }
   state.currentTrack = track;
   state.isPlaying = true;
   state.progress = 0;
 
-  // Update player UI
   const coverEl = document.getElementById('playerCover');
   if (track.coverUrl) {
     coverEl.innerHTML = `<img src="${track.coverUrl}" />`;
     coverEl.className = 'player-cover';
   } else {
-    coverEl.innerHTML = track.emoji || '🎵';
-    coverEl.className = `player-cover ${track.color || 'c1'}`;
+    coverEl.innerHTML = track.emoji||'🎵';
+    coverEl.className = `player-cover ${track.color||'c1'}`;
   }
   document.getElementById('playerTitle').textContent = track.title;
   document.getElementById('playerArtist').textContent = track.artist;
-  document.getElementById('timeTotal').textContent = track.dur || '?:??';
+  document.getElementById('timeTotal').textContent = track.dur||'?:??';
   updatePlayBtn();
   updateHeartBtn();
 
-  // Real audio for uploaded
+  // Add to recent listens
+  await addToRecentListens(track.id);
+
+  // Increment play count in Firebase for user tracks
+  if (!track.id.startsWith('d')) {
+    update(ref(db, `tracks/${track.id}`), { plays: increment(1) }).catch(()=>{});
+  }
+
   if (track.url) {
     const audio = new Audio(track.url);
-    audio.volume = document.getElementById('volSlider').value / 100;
-    audio.play().catch(() => {});
+    audio.volume = document.getElementById('volSlider').value/100;
+    audio.play().catch(()=>{});
     state.currentAudio = audio;
     audio.ontimeupdate = () => {
       if (!audio.duration) return;
-      const p = (audio.currentTime / audio.duration) * 100;
+      const p = (audio.currentTime/audio.duration)*100;
       state.progress = p;
-      document.getElementById('progFill').style.width = p + '%';
+      document.getElementById('progFill').style.width = p+'%';
       const s = Math.floor(audio.currentTime);
       document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
       const ts = Math.floor(audio.duration);
@@ -1693,146 +1692,111 @@ function playTrackObj(track) {
     audio.onended = () => nextTrack();
     clearInterval(progressInterval);
   } else {
-    // Simulated progress for demo tracks
     clearInterval(progressInterval);
     const startTime = Date.now();
-    const totalMs = (track.secs || 240) * 1000;
+    const totalMs = (track.secs||240)*1000;
     progressInterval = setInterval(() => {
+      if (!state.isPlaying) return;
       const elapsed = Date.now() - startTime;
-      const p = Math.min(100, (elapsed / totalMs) * 100);
+      const p = Math.min(100, (elapsed/totalMs)*100);
       state.progress = p;
-      document.getElementById('progFill').style.width = p + '%';
-      const s = Math.floor(elapsed / 1000);
+      document.getElementById('progFill').style.width = p+'%';
+      const s = Math.floor(elapsed/1000);
       document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-      if (p >= 100) { clearInterval(progressInterval); nextTrack(); }
+      if (p>=100) { clearInterval(progressInterval); nextTrack(); }
     }, 500);
   }
-
-  // Increment plays
-  if (track.plays !== undefined) track.plays++;
-  rerenderCurrentTrack();
   showToast(`▶ ${track.title} — ${track.artist}`);
 }
 
-function rerenderCurrentTrack() {
-  // Refresh track items to update playing state
-  if (state.currentPanel === 'home') { renderTrendingTracks(); renderCommunityTracks(); }
-  if (state.currentPanel === 'library') renderLibrary();
-}
-
-function togglePlay() {
+window.togglePlay = function() {
   if (!state.currentTrack) { playTrack('d0'); return; }
   state.isPlaying = !state.isPlaying;
   if (state.currentAudio) {
     state.isPlaying ? state.currentAudio.play() : state.currentAudio.pause();
   }
   updatePlayBtn();
-  if (!state.currentAudio) {
-    if (state.isPlaying) {
-      const startTime = Date.now() - (state.progress / 100) * (state.currentTrack.secs || 240) * 1000;
-      const totalMs = (state.currentTrack.secs || 240) * 1000;
-      progressInterval = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const p = Math.min(100, (elapsed / totalMs) * 100);
-        state.progress = p;
-        document.getElementById('progFill').style.width = p + '%';
-        const s = Math.floor(elapsed / 1000);
-        document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-        if (p >= 100) { clearInterval(progressInterval); nextTrack(); }
-      }, 500);
-    } else {
-      clearInterval(progressInterval);
-    }
-  }
-}
+};
 
 function updatePlayBtn() {
   document.getElementById('btnPlayMain').textContent = state.isPlaying ? '⏸' : '▶';
   document.getElementById('playerBars').classList.toggle('hidden', !state.isPlaying);
 }
 
-function seekTo(e) {
+window.seekTo = function(e) {
   if (!state.currentTrack) return;
   const rect = e.currentTarget.getBoundingClientRect();
-  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  state.progress = pct * 100;
-  document.getElementById('progFill').style.width = state.progress + '%';
-  if (state.currentAudio) {
-    state.currentAudio.currentTime = pct * state.currentAudio.duration;
-  }
-}
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left)/rect.width));
+  state.progress = pct*100;
+  document.getElementById('progFill').style.width = state.progress+'%';
+  if (state.currentAudio) state.currentAudio.currentTime = pct*state.currentAudio.duration;
+};
 
-function nextTrack() {
+window.nextTrack = function() {
   if (!state.queue.length) return;
-  let idx = state.shuffle
-    ? Math.floor(Math.random() * state.queue.length)
-    : (state.queueIdx + 1) % state.queue.length;
+  let idx = state.shuffle ? Math.floor(Math.random()*state.queue.length) : (state.queueIdx+1)%state.queue.length;
   if (state.repeat) idx = state.queueIdx;
   state.queueIdx = idx;
   playTrackObj(state.queue[idx]);
-}
+};
 
-function prevTrack() {
+window.prevTrack = function() {
   if (!state.queue.length) return;
-  const idx = (state.queueIdx - 1 + state.queue.length) % state.queue.length;
+  const idx = (state.queueIdx-1+state.queue.length)%state.queue.length;
   state.queueIdx = idx;
   playTrackObj(state.queue[idx]);
-}
+};
 
-function toggleShuffle() {
+window.toggleShuffle = function() {
   state.shuffle = !state.shuffle;
   document.getElementById('btnShuffle').classList.toggle('active', state.shuffle);
-  showToast(state.shuffle ? '🔀 Перемешать: Вкл' : '🔀 Перемешать: Выкл');
-}
+  showToast(state.shuffle ? '🔀 Перемешать: Вкл' : '🔀 Выкл');
+};
 
-function toggleRepeat() {
+window.toggleRepeat = function() {
   state.repeat = !state.repeat;
   document.getElementById('btnRepeat').classList.toggle('active', state.repeat);
-  showToast(state.repeat ? '↺ Повтор: Вкл' : '↺ Повтор: Выкл');
-}
+  showToast(state.repeat ? '↺ Повтор: Вкл' : '↺ Выкл');
+};
 
-function setVolume(v) {
-  if (state.currentAudio) state.currentAudio.volume = v / 100;
-  document.querySelector('.vol-icon').textContent = v > 50 ? '🔊' : v > 0 ? '🔉' : '🔇';
-}
+window.setVolume = function(v) {
+  if (state.currentAudio) state.currentAudio.volume = v/100;
+  document.querySelector('.vol-icon').textContent = v>50 ? '🔊' : v>0 ? '🔉' : '🔇';
+};
 
-function toggleMute() {
+window.toggleMute = function() {
   const slider = document.getElementById('volSlider');
-  if (slider.value > 0) {
-    slider._prev = slider.value;
-    slider.value = 0;
-  } else {
-    slider.value = slider._prev || 80;
-  }
+  if (slider.value>0) { slider._prev = slider.value; slider.value = 0; }
+  else slider.value = slider._prev||80;
   setVolume(slider.value);
-}
+};
 
-// ===================== LIKES =====================
-function toggleLike(id) {
+// ==================== LIKES ====================
+window.toggleLike = async function(id) {
+  if (!state.user) return;
+  const uid = state.user.uid;
   if (state.liked.has(id)) {
     state.liked.delete(id);
+    await remove(ref(db, `users/${uid}/liked/${id}`));
     showToast('Удалено из избранного');
   } else {
     state.liked.add(id);
+    await set(ref(db, `users/${uid}/liked/${id}`), true);
     showToast('♥ Добавлено в любимые!', 'success');
   }
   updateHeartBtn();
-  if (state.currentPanel === 'library') renderLibrary();
-  // refresh visible track item
-  const ti = document.getElementById('ti-' + id);
+  const ti = document.getElementById('ti-'+id);
   if (ti) {
     const likeEl = ti.querySelector('.track-like');
-    if (likeEl) {
-      likeEl.classList.toggle('liked', state.liked.has(id));
-      likeEl.textContent = state.liked.has(id) ? '♥' : '♡';
-    }
+    if (likeEl) { likeEl.classList.toggle('liked', state.liked.has(id)); likeEl.textContent = state.liked.has(id) ? '♥' : '♡'; }
   }
-}
+  if (state.currentPanel==='library') renderLibrary();
+};
 
-function toggleCurrentLike() {
+window.toggleCurrentLike = function() {
   if (!state.currentTrack) return;
   toggleLike(state.currentTrack.id);
-}
+};
 
 function updateHeartBtn() {
   const h = document.getElementById('playerHeart');
@@ -1843,119 +1807,88 @@ function updateHeartBtn() {
   }
 }
 
-// ===================== SEARCH =====================
-function handleSearch() {
+// ==================== SEARCH ====================
+window.handleSearch = function() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const drop = document.getElementById('searchDrop');
   if (!q) { drop.classList.remove('open'); return; }
   drop.classList.add('open');
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id))];
-  const tracks = allTracks.filter(t => t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q)).slice(0,5);
-  const playlists = state.playlists.filter(p => p.isPublic && p.name.toLowerCase().includes(q)).slice(0,3);
-  const artists = [...new Set(allTracks.map(t=>t.artist))].filter(a => a.toLowerCase().includes(q)).slice(0,3);
-
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id))];
+  const tracks = allTracks.filter(t=>t.title.toLowerCase().includes(q)||t.artist.toLowerCase().includes(q)).slice(0,5);
+  const playlists = state.playlists.filter(p=>p.isPublic&&p.name.toLowerCase().includes(q)).slice(0,3);
   let html = '';
   if (tracks.length) {
-    html += `<div style="padding:8px 14px 4px;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Треки</div>`;
+    html += `<div style="padding:8px 14px 4px;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Треки</div>`;
     html += tracks.map(t => {
-      const cov = t.coverUrl ? `<img src="${t.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:7px;" />` : t.emoji;
+      const cov = t.coverUrl ? `<img src="${t.coverUrl}" />` : t.emoji;
       return `<div class="search-result-item" onclick="playTrack('${t.id}');closeSearchDrop()">
         <div class="sri-cover ${t.color||'c1'}">${cov}</div>
-        <div class="sri-info"><div class="sri-title">${highlight(t.title,q)}</div><div class="sri-sub">${t.artist}</div></div>
-        <span class="sri-type track">Трек</span>
-      </div>`;
+        <div class="sri-info"><div class="sri-title">${hlq(t.title,q)}</div><div class="sri-sub">${t.artist}</div></div>
+        <span class="sri-type track">Трек</span></div>`;
     }).join('');
   }
   if (playlists.length) {
-    html += `<div style="padding:8px 14px 4px;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Плейлисты</div>`;
+    html += `<div style="padding:8px 14px 4px;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Плейлисты</div>`;
     html += playlists.map(p => {
-      const cov = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:7px;" />` : p.emoji;
+      const cov = p.coverUrl ? `<img src="${p.coverUrl}" />` : (p.emoji||'🎵');
       return `<div class="search-result-item" onclick="openPlaylistView('${p.id}');closeSearchDrop()">
-        <div class="sri-cover ${p.color}">${cov}</div>
-        <div class="sri-info"><div class="sri-title">${highlight(p.name,q)}</div><div class="sri-sub">${p.tracks.length} треков · ${p.ownerName}</div></div>
-        <span class="sri-type playlist">Плейлист</span>
-      </div>`;
+        <div class="sri-cover ${p.color||'c1'}">${cov}</div>
+        <div class="sri-info"><div class="sri-title">${hlq(p.name,q)}</div><div class="sri-sub">${(p.tracks||[]).length} треков</div></div>
+        <span class="sri-type playlist">Плейлист</span></div>`;
     }).join('');
   }
-  if (artists.length) {
-    html += `<div style="padding:8px 14px 4px;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Исполнители</div>`;
-    html += artists.map(a => `
-      <div class="search-result-item" onclick="filterByArtist('${a}');closeSearchDrop()">
-        <div class="sri-cover c6" style="border-radius:50%;">🎤</div>
-        <div class="sri-info"><div class="sri-title">${highlight(a,q)}</div><div class="sri-sub">Исполнитель</div></div>
-        <span class="sri-type artist">Артист</span>
-      </div>
-    `).join('');
-  }
-  if (!html) html = '<div style="padding:1rem;text-align:center;color:var(--text3);font-size:0.85rem;">Ничего не найдено 😔</div>';
+  if (!html) html = '<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.85rem;">Ничего не найдено 😔</div>';
   drop.innerHTML = html;
-}
+};
 
-function highlight(text, q) {
+function hlq(text, q) {
   const idx = text.toLowerCase().indexOf(q);
-  if (idx < 0) return text;
-  return text.slice(0,idx) + `<strong style="color:var(--accent2)">${text.slice(idx,idx+q.length)}</strong>` + text.slice(idx+q.length);
+  if (idx<0) return text;
+  return text.slice(0,idx)+`<strong style="color:var(--accent2)">${text.slice(idx,idx+q.length)}</strong>`+text.slice(idx+q.length);
 }
 
-function filterByArtist(artist) {
-  const tracks = [...DEMO_TRACKS, ...state.uploadedTracks].filter(t => t.artist === artist && !state.bannedTracks.has(t.id));
-  showPanel('discover');
-  setTimeout(() => {
-    const el = document.getElementById('allCommunityTracks');
-    el.innerHTML = tracks.length
-      ? tracks.map((t,i) => renderTrackItem(t, i+1)).join('')
-      : '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Нет треков этого исполнителя</p></div>';
-    document.querySelector('.panels-wrap').scrollTop = el.offsetTop;
-  }, 100);
-}
+window.openSearchDrop = function() { if (document.getElementById('searchInput').value.trim()) document.getElementById('searchDrop').classList.add('open'); };
+window.closeSearchDrop = function() { document.getElementById('searchDrop').classList.remove('open'); };
 
-function openSearchDrop() {
-  if (document.getElementById('searchInput').value.trim()) {
-    document.getElementById('searchDrop').classList.add('open');
-  }
-}
-
-function closeSearchDrop() {
-  document.getElementById('searchDrop').classList.remove('open');
-}
-
-// ===================== AVATAR =====================
-function handleAvatarUpload(input) {
+// ==================== AVATAR ====================
+window.handleAvatarUpload = async function(input) {
   const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    state.user.avatarUrl = e.target.result;
+  if (!file || !state.user) return;
+  try {
+    const storageRef = sRef(storage, `avatars/${state.user.uid}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    await update(ref(db, `users/${state.user.uid}`), { photoURL: url });
+    state.userData = {...(state.userData||{}), photoURL: url};
     updateUserUI();
     showToast('✓ Аватарка обновлена!', 'success');
-  };
-  reader.readAsDataURL(file);
-}
+  } catch(e) { showToast('Ошибка загрузки аватарки', 'error'); }
+};
 
-// ===================== REPORT / ADMIN =====================
-function reportTrack(id) {
-  const track = [...DEMO_TRACKS, ...state.uploadedTracks].find(t => t.id === id);
-  if (!track) return;
-  const count = (state.reportedTracks.get(id) || 0) + 1;
+// ==================== REPORT ====================
+window.reportTrack = async function(id) {
+  const count = (state.reportedTracks.get(id)||0)+1;
   state.reportedTracks.set(id, count);
-  showToast('⚑ Жалоба отправлена. Спасибо!', 'success');
-  if (state.currentPanel === 'admin') renderAdminPanel();
-}
+  await update(ref(db, `reports/${id}`), { count, trackId: id });
+  showToast('⚑ Жалоба отправлена!', 'success');
+};
 
-function openAdminCode() {
+// ==================== ADMIN ====================
+window.openAdminCode = function() {
+  if (state.isAdmin) { showPanel('admin'); return; }
   document.getElementById('adminCodeScreen').classList.add('open');
   document.getElementById('adminCodeInput').value = '';
   setTimeout(() => document.getElementById('adminCodeInput').focus(), 100);
-}
+};
 
-function closeAdminCode() {
-  document.getElementById('adminCodeScreen').classList.remove('open');
-}
+window.closeAdminCode = function() { document.getElementById('adminCodeScreen').classList.remove('open'); };
 
-function checkAdminCode() {
+window.checkAdminCode = async function() {
   const code = document.getElementById('adminCodeInput').value.trim();
   if (code === ADMIN_CODE) {
+    await update(ref(db, `users/${state.user.uid}`), { isAdmin: true });
     state.isAdmin = true;
+    state.userData = {...(state.userData||{}), isAdmin: true};
     updateUserUI();
     closeAdminCode();
     showPanel('admin');
@@ -1963,122 +1896,224 @@ function checkAdminCode() {
   } else {
     showToast('❌ Неверный код!', 'error');
     document.getElementById('adminCodeInput').value = '';
-    document.getElementById('adminCodeInput').focus();
   }
-}
+};
+
+window.activateAdminFromProfile = async function() {
+  const code = document.getElementById('profileAdminCode').value.trim();
+  if (code === ADMIN_CODE) {
+    await update(ref(db, `users/${state.user.uid}`), { isAdmin: true });
+    state.isAdmin = true;
+    state.userData = {...(state.userData||{}), isAdmin: true};
+    updateUserUI();
+    document.getElementById('profileAdminCode').value = '';
+    showToast('🛡 Права администратора активированы!', 'success');
+    renderProfile();
+  } else {
+    showToast('❌ Неверный код!', 'error');
+  }
+};
 
 function renderAdminPanel() {
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
-  const filter = document.getElementById('adminFilter')?.value || 'all';
+  renderAdminStats();
+  renderAdminTracks();
+}
 
-  // Stats
-  document.getElementById('adminStats').innerHTML = `
+function renderAdminStats() {
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const el = document.getElementById('adminStats');
+  if (!el) return;
+  el.innerHTML = `
     <div class="admin-stat"><div class="admin-stat-num">${allTracks.length}</div><div class="admin-stat-lbl">всего треков</div></div>
     <div class="admin-stat"><div class="admin-stat-num">${state.uploadedTracks.length}</div><div class="admin-stat-lbl">от пользователей</div></div>
     <div class="admin-stat"><div class="admin-stat-num" style="color:var(--red);">${state.bannedTracks.size}</div><div class="admin-stat-lbl">забанено</div></div>
     <div class="admin-stat"><div class="admin-stat-num" style="color:var(--yellow);">${state.reportedTracks.size}</div><div class="admin-stat-lbl">жалоб</div></div>
-  `;
+    <div class="admin-stat"><div class="admin-stat-num" style="color:var(--accent2);">${Object.keys(state.allUsers).length}</div><div class="admin-stat-lbl">пользователей</div></div>
+    <div class="admin-stat"><div class="admin-stat-num" style="color:var(--premium);">${Object.values(state.allUsers).filter(u=>u.isPremium).length}</div><div class="admin-stat-lbl">Premium</div></div>`;
+}
 
+window.switchAdminTab = function(tab) {
+  document.getElementById('adminTracksTab').classList.toggle('hidden', tab !== 'tracks');
+  document.getElementById('adminUsersTab').classList.toggle('hidden', tab !== 'users');
+  document.getElementById('adminTabTracks').style.background = tab==='tracks' ? 'rgba(108,71,255,.15)' : 'var(--bg3)';
+  document.getElementById('adminTabTracks').style.color = tab==='tracks' ? 'var(--accent2)' : 'var(--text2)';
+  document.getElementById('adminTabUsers').style.background = tab==='users' ? 'rgba(108,71,255,.15)' : 'var(--bg3)';
+  document.getElementById('adminTabUsers').style.color = tab==='users' ? 'var(--accent2)' : 'var(--text2)';
+  if (tab==='users') renderAdminUsers();
+};
+
+window.renderAdminTracks = function() {
+  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const filter = document.getElementById('adminFilter')?.value||'all';
   let filtered = allTracks;
-  if (filter === 'active') filtered = allTracks.filter(t => !state.bannedTracks.has(t.id));
-  if (filter === 'banned') filtered = allTracks.filter(t => state.bannedTracks.has(t.id));
-  if (filter === 'reported') filtered = allTracks.filter(t => state.reportedTracks.has(t.id));
-
+  if (filter==='active') filtered = allTracks.filter(t=>!state.bannedTracks.has(t.id));
+  if (filter==='banned') filtered = allTracks.filter(t=>state.bannedTracks.has(t.id));
+  if (filter==='reported') filtered = allTracks.filter(t=>state.reportedTracks.has(t.id));
   const el = document.getElementById('adminTrackList');
-  if (!filtered.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">✓</span><p>Нет треков в этой категории.</p></div>';
-    return;
-  }
-
+  if (!el) return;
+  if (!filtered.length) { el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">✓</span><p>Нет треков.</p></div>'; return; }
   el.innerHTML = filtered.map(t => {
     const isBanned = state.bannedTracks.has(t.id);
-    const reports = state.reportedTracks.get(t.id) || 0;
+    const reports = state.reportedTracks.get(t.id)||0;
     const isDemo = t.id.startsWith('d');
-    const coverHtml = t.coverUrl ? `<img src="${t.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : (t.emoji || '🎵');
+    const cov = t.coverUrl ? `<img src="${t.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : (t.emoji||'🎵');
     return `
-      <div class="admin-track-item${isBanned?' banned':''}">
-        <div class="track-cover ${t.color||'c1'}">${coverHtml}</div>
+      <div class="admin-track-item">
+        <div class="track-cover ${t.color||'c1'}">${cov}</div>
         <div class="track-info">
-          <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:0.7rem;margin-left:6px;">[БАНТ]</span>':''}</div>
-          <div class="track-artist">${t.artist}${t.uploaderName?' · Загрузил: '+t.uploaderName+' ('+t.uploaderEmail+')':' · Демо-трек'}</div>
-          ${reports > 0 ? `<div class="admin-report">⚑ ${reports} жалоб${reports>1?'о':''}</div>` : ''}
+          <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[БАНТ]</span>':''}</div>
+          <div class="track-artist">${t.artist}${t.uploaderName?' · '+t.uploaderName:' · Демо'}</div>
+          ${reports>0?`<div class="admin-report">⚑ ${reports} жалоб</div>`:''}
         </div>
         <div class="admin-actions">
-          ${reports > 0 ? `<span style="font-size:0.75rem;color:var(--yellow);background:rgba(255,199,71,0.1);padding:3px 10px;border-radius:20px;font-weight:700;">⚑ ${reports}</span>` : ''}
+          ${reports>0?`<span style="font-size:.75rem;color:var(--yellow);background:rgba(255,199,71,.1);padding:3px 10px;border-radius:20px;font-weight:700;">⚑ ${reports}</span>`:''}
           ${!isDemo ? (isBanned
             ? `<button class="btn-unban" onclick="unbanTrack('${t.id}')">✓ Разбанить</button>`
-            : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`
-          ) : `<span style="font-size:0.75rem;color:var(--text3);">Демо</span>`}
+            : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`) : `<span style="font-size:.75rem;color:var(--text3);">Демо</span>`}
         </div>
-      </div>
-    `;
+      </div>`;
+  }).join('');
+};
+
+function renderAdminUsers() {
+  const el = document.getElementById('adminUserList');
+  if (!el) return;
+  const users = Object.entries(state.allUsers);
+  if (!users.length) { el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">👥</span><p>Нет пользователей.</p></div>'; return; }
+  el.innerHTML = users.map(([uid, u]) => {
+    const init = (u.name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const avatar = u.photoURL ? `<img src="${u.photoURL}" />` : init;
+    const isPrem = u.isPremium && (!u.premiumExpiry || u.premiumExpiry > Date.now());
+    const expStr = u.premiumExpiry ? ` до ${new Date(u.premiumExpiry).toLocaleDateString('ru')}` : '';
+    return `
+      <div class="user-mgmt-item">
+        <div class="user-mgmt-av">${avatar}</div>
+        <div class="track-info">
+          <div class="track-name">${u.name||'Unknown'}${u.isAdmin?'<span style="color:var(--yellow);font-size:.7rem;margin-left:6px;">🛡 Admin</span>':''}</div>
+          <div class="track-artist">${u.email||''}</div>
+          ${isPrem?`<div style="font-size:.72rem;color:var(--premium);">💎 Premium${expStr}</div>`:''}
+        </div>
+        <div class="admin-actions">
+          ${isPrem
+            ? `<button class="btn-ban" onclick="revokePremium('${uid}','${u.name}')">✗ Отозвать Prem</button>`
+            : `<button class="btn-grant-prem" onclick="openGrantPremium('${uid}','${u.name||''}')">💎 Дать Prem</button>`}
+        </div>
+      </div>`;
   }).join('');
 }
 
-function banTrack(id) {
-  const track = state.uploadedTracks.find(t => t.id === id);
+window.banTrack = async function(id) {
+  const track = state.uploadedTracks.find(t=>t.id===id);
   if (!track) return;
+  await set(ref(db, `bannedTracks/${id}`), true);
   state.bannedTracks.add(id);
-  if (state.currentTrack?.id === id && state.isPlaying) {
-    state.isPlaying = false;
-    if (state.currentAudio) { state.currentAudio.pause(); }
-    updatePlayBtn();
-  }
-  renderAdminPanel();
-  renderCommunityTracks();
+  renderAdminTracks();
+  renderAdminStats();
   showToast(`🛡 Трек "${track.title}" заблокирован`, 'success');
-}
+};
 
-function unbanTrack(id) {
-  const track = state.uploadedTracks.find(t => t.id === id);
-  if (!track) return;
+window.unbanTrack = async function(id) {
+  await remove(ref(db, `bannedTracks/${id}`));
+  await remove(ref(db, `reports/${id}`));
   state.bannedTracks.delete(id);
   state.reportedTracks.delete(id);
-  renderAdminPanel();
-  renderCommunityTracks();
-  showToast(`✓ Трек "${track.title}" разблокирован`, 'success');
-}
+  renderAdminTracks();
+  renderAdminStats();
+  showToast(`✓ Трек разблокирован`, 'success');
+};
 
-// ===================== MODAL =====================
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
+window.openGrantPremium = function(uid, name) {
+  state.grantPremiumUid = uid;
+  document.getElementById('grantPremiumUser').textContent = name;
+  document.getElementById('grantDays').value = '30';
+  document.getElementById('modalGrantPremium').classList.add('open');
+};
 
-// ===================== TOAST =====================
-function showToast(msg, type = '') {
+window.confirmGrantPremium = async function() {
+  const uid = state.grantPremiumUid;
+  if (!uid) return;
+  const days = parseInt(document.getElementById('grantDays').value)||30;
+  const expiry = days > 0 ? Date.now() + days*24*60*60*1000 : null;
+  await update(ref(db, `users/${uid}`), { isPremium: true, premiumExpiry: expiry });
+  if (state.allUsers[uid]) {
+    state.allUsers[uid].isPremium = true;
+    state.allUsers[uid].premiumExpiry = expiry;
+  }
+  // If granting to self
+  if (uid === state.user?.uid) {
+    state.isPremium = true;
+    state.userData = {...(state.userData||{}), isPremium: true, premiumExpiry: expiry};
+    updateUserUI();
+  }
+  closeModal('modalGrantPremium');
+  renderAdminUsers();
+  renderAdminStats();
+  showToast(`💎 Premium выдан!`, 'success');
+};
+
+window.revokePremium = async function(uid, name) {
+  await update(ref(db, `users/${uid}`), { isPremium: false, premiumExpiry: null });
+  if (state.allUsers[uid]) { state.allUsers[uid].isPremium = false; state.allUsers[uid].premiumExpiry = null; }
+  if (uid === state.user?.uid) {
+    state.isPremium = false;
+    updateUserUI();
+  }
+  renderAdminUsers();
+  showToast(`Premium отозван у ${name}`);
+};
+
+// ==================== PREMIUM ====================
+window.showPremiumModal = function() { document.getElementById('modalPremium').classList.add('open'); };
+
+window.activatePremiumCode = async function() {
+  const code = document.getElementById('premiumCodeInput').value.trim();
+  // Admin can generate codes like PREM_SC_<uid_prefix> - simple check
+  if (code.startsWith(PREMIUM_PREFIX) && code.length > PREMIUM_PREFIX.length + 3) {
+    const days = 30;
+    const expiry = Date.now() + days*24*60*60*1000;
+    await update(ref(db, `users/${state.user.uid}`), { isPremium: true, premiumExpiry: expiry });
+    state.isPremium = true;
+    state.userData = {...(state.userData||{}), isPremium: true, premiumExpiry: expiry};
+    updateUserUI();
+    closeModal('modalPremium');
+    showToast('💎 Premium активирован на 30 дней!', 'success');
+    // Mark code as used
+    await set(ref(db, `usedCodes/${code.replace(/[.#$\[\]]/g,'_')}`), { uid: state.user.uid, usedAt: serverTimestamp() });
+  } else {
+    showToast('❌ Неверный код Premium', 'error');
+  }
+};
+
+// ==================== MODAL / TOAST ====================
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+window.openModal = function(id) { document.getElementById(id).classList.add('open'); };
+
+function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = `toast ${type} show`;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
+window.showToast = showToast;
 
-// ===================== KEYBOARD =====================
+// ==================== KEYBOARD ====================
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
-  if (e.code === 'ArrowRight' && e.altKey) nextTrack();
-  if (e.code === 'ArrowLeft' && e.altKey) prevTrack();
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  if (e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
+  if (e.code==='Space') { e.preventDefault(); togglePlay(); }
+  if (e.code==='ArrowRight'&&e.altKey) nextTrack();
+  if (e.code==='ArrowLeft'&&e.altKey) prevTrack();
+  if (e.key==='Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
     closeAdminCode();
   }
 });
-
-// ===================== CLICK OUTSIDE =====================
 document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', function(e) {
-    if (e.target === this) closeModal(this.id);
-  });
+  el.addEventListener('click', function(e) { if (e.target===this) closeModal(this.id); });
 });
-document.getElementById('adminCodeScreen').addEventListener('click', function(e) {
-  if (e.target === this) closeAdminCode();
-});
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) closeSearchDrop();
-});
+document.getElementById('adminCodeScreen').addEventListener('click', function(e) { if (e.target===this) closeAdminCode(); });
+document.addEventListener('click', e => { if (!e.target.closest('.search-wrap')) closeSearchDrop(); });
 
-// ===================== INIT =====================
 initPlaylistModal();
 </script>
 </body>
