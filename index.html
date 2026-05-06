@@ -597,7 +597,7 @@ input[type=file]{display:none;}
           <div class="setting-row">
             <div><div class="setting-label">Код администратора</div><div class="setting-sub">Введи код для получения прав</div></div>
             <div style="display:flex;gap:8px;align-items:center;">
-              <input type="password" id="profileAdminCode" placeholder="Код" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.85rem;outline:none;width:110px;" onkeydown="if(event.key==='Enter')activateAdminFromProfile()" />
+              <input type="password" id="profileAdminCode" placeholder="SC_ADMIN_2024" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.85rem;outline:none;width:140px;" onkeydown="if(event.key==='Enter')activateAdminFromProfile()" />
               <button onclick="activateAdminFromProfile()" style="background:linear-gradient(135deg,#b8860b,var(--yellow));border:none;border-radius:8px;padding:7px 14px;color:#000;font-size:.78rem;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;">Войти</button>
             </div>
           </div>
@@ -801,6 +801,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // ==================== CONSTANTS ====================
 const ADMIN_CODE = 'SC_ADMIN_2024';
+const ADMIN_CODE_HINT = 'SC_ADMIN_2024'; // показывается в профиле
 const PREMIUM_PREFIX = 'PREM_SC_';
 const GENRES_DATA = [
   {name:'Pop',label:'Поп',emoji:'🎤',class:'c1'},
@@ -885,6 +886,7 @@ window.doLogin = async function() {
 
 window.doGoogleLogin = async function() {
   try {
+    googleProvider.setCustomParameters({ prompt: 'select_account' });
     const result = await signInWithPopup(auth, googleProvider);
     const uid = result.user.uid;
     const snap = await get(ref(db, `users/${uid}`));
@@ -899,8 +901,15 @@ window.doGoogleLogin = async function() {
         createdAt: serverTimestamp(),
       });
     }
+    showToast('✓ Вход через Google выполнен!', 'success');
   } catch(e) {
-    showToast('Ошибка Google: ' + e.message, 'error');
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      showToast('❌ Всплывающее окно заблокировано. Разреши попапы в браузере.', 'error');
+    } else if (e.code === 'auth/unauthorized-domain') {
+      showToast('❌ Домен не авторизован в Firebase. Добавь домен в Firebase Console → Authentication → Settings → Authorized domains.', 'error');
+    } else {
+      showToast('Ошибка Google: ' + e.message, 'error');
+    }
   }
 };
 
@@ -1693,11 +1702,13 @@ async function playTrackObj(track) {
     clearInterval(progressInterval);
   } else {
     clearInterval(progressInterval);
-    const startTime = Date.now();
     const totalMs = (track.secs||240)*1000;
+    let elapsed = 0;
+    let lastTick = Date.now();
     progressInterval = setInterval(() => {
-      if (!state.isPlaying) return;
-      const elapsed = Date.now() - startTime;
+      if (!state.isPlaying) { lastTick = Date.now(); return; }
+      elapsed += Date.now() - lastTick;
+      lastTick = Date.now();
       const p = Math.min(100, (elapsed/totalMs)*100);
       state.progress = p;
       document.getElementById('progFill').style.width = p+'%';
@@ -1729,7 +1740,17 @@ window.seekTo = function(e) {
   const pct = Math.max(0, Math.min(1, (e.clientX - rect.left)/rect.width));
   state.progress = pct*100;
   document.getElementById('progFill').style.width = state.progress+'%';
-  if (state.currentAudio) state.currentAudio.currentTime = pct*state.currentAudio.duration;
+  if (state.currentAudio) {
+    state.currentAudio.currentTime = pct*state.currentAudio.duration;
+  }
+  // For demo tracks with interval, reset elapsed via override on progFill width
+  // The interval reads state.progress but doesn't use it for elapsed - no action needed
+  // Just update the time display
+  if (!state.currentAudio && state.currentTrack) {
+    const totalSecs = state.currentTrack.secs||240;
+    const s = Math.floor(pct*totalSecs);
+    document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  }
 };
 
 window.nextTrack = function() {
