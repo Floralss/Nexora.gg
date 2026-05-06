@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SoundeClaude — Музыка без границ</title>
+<title>MusicVibe — Музыка без границ</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -308,6 +308,20 @@ input[type=file]{display:none;}
 .genre-card-name{font-weight:800;font-family:'Syne',sans-serif;font-size:.9rem;position:relative;z-index:1;}
 .genre-card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.05) 0%,transparent 60%);}
 
+/* SUPPORT */
+.ticket-item{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:8px;position:relative;}
+.ticket-item.unread{border-color:rgba(108,71,255,.4);}
+.ticket-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.ticket-cat{font-size:.7rem;padding:2px 10px;border-radius:20px;font-weight:700;background:rgba(108,71,255,.15);color:var(--accent2);}
+.ticket-date{font-size:.72rem;color:var(--text3);margin-left:auto;}
+.ticket-msg{font-size:.85rem;color:var(--text2);margin-bottom:6px;}
+.ticket-reply{background:rgba(45,221,127,.07);border:1px solid rgba(45,221,127,.2);border-radius:8px;padding:8px 12px;font-size:.82rem;margin-top:8px;}
+.ticket-reply-label{font-size:.7rem;color:var(--green);font-weight:700;margin-bottom:4px;}
+.ticket-status-open{color:var(--yellow);font-size:.72rem;font-weight:700;}
+.ticket-status-closed{color:var(--green);font-size:.72rem;font-weight:700;}
+.ban-artist-btn{background:rgba(255,71,87,.12);border:1px solid rgba(255,71,87,.25);border-radius:8px;padding:5px 12px;color:var(--red);font-size:.75rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);}
+.ban-artist-btn:hover{background:rgba(255,71,87,.25);}
+
 /* TOAST */
 .toast{position:fixed;bottom:90px;right:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 18px;font-size:.83rem;color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:400;transform:translateX(200px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);max-width:300px;}
 .toast.show{transform:translateX(0);opacity:1;}
@@ -386,7 +400,7 @@ input[type=file]{display:none;}
   <div class="auth-card">
     <div class="auth-logo">
       <div class="auth-logo-mark">🎵</div>
-      <h1>SoundeClaude</h1>
+      <h1>MusicVibe</h1>
       <p>Музыка без границ — делись, слушай, открывай</p>
     </div>
     <div class="auth-tabs">
@@ -422,7 +436,7 @@ input[type=file]{display:none;}
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-top">
-      <div class="sidebar-logo"><div class="sidebar-logo-icon">🎵</div>SoundeClaude</div>
+      <div class="sidebar-logo"><div class="sidebar-logo-icon">🎵</div>MusicVibe</div>
       <div class="nav-section">
         <div class="nav-label">Главное</div>
         <div class="nav-item active" id="nav-home" onclick="showPanel('home')">
@@ -440,6 +454,10 @@ input[type=file]{display:none;}
         <div class="nav-item" id="nav-admin" onclick="openAdminCode()" style="display:none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span style="color:var(--yellow)">Админ-панель</span>
+        </div>
+        <div class="nav-item" id="nav-support" onclick="showPanel('support')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Поддержка<span id="supportBadge" style="display:none;margin-left:auto;background:var(--accent3);color:white;font-size:.65rem;padding:1px 6px;border-radius:20px;font-weight:700;">!</span>
         </div>
       </div>
       <div class="nav-section">
@@ -486,12 +504,12 @@ input[type=file]{display:none;}
     <div class="panels-wrap">
       <!-- HOME -->
       <div class="panel active" id="panelHome">
-        <div class="hero" id="heroSection" onclick="playTrack('d0')">
+        <div class="hero" id="heroSection" onclick="playFirstTrack()">
           <div class="hero-bg-pattern"></div>
-          <div class="hero-emoji" id="heroEmoji">🎸</div>
+          <div class="hero-emoji" id="heroEmoji">🎵</div>
           <div class="hero-tag">🔥 Трек дня</div>
-          <div class="hero-title" id="heroTitle">Midnight Drive</div>
-          <div class="hero-sub" id="heroSub">The Neon Waves · 4:23</div>
+          <div class="hero-title" id="heroTitle">MusicVibe</div>
+          <div class="hero-sub" id="heroSub">Слушай и открывай новую музыку</div>
         </div>
         <div class="section-hdr"><div class="section-title">🕐 Недавно слушали</div><div class="see-all" onclick="showPanel('library')">Все →</div></div>
         <div id="recentListens" class="recent-scroll"></div>
@@ -597,7 +615,7 @@ input[type=file]{display:none;}
           <div class="setting-row">
             <div><div class="setting-label">Код администратора</div><div class="setting-sub">Введи код для получения прав</div></div>
             <div style="display:flex;gap:8px;align-items:center;">
-              <input type="password" id="profileAdminCode" placeholder="SC_ADMIN_2024" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.85rem;outline:none;width:140px;" onkeydown="if(event.key==='Enter')activateAdminFromProfile()" />
+              <input type="password" id="profileAdminCode" placeholder="••••••••" autocomplete="off" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.85rem;outline:none;width:130px;" onkeydown="if(event.key==='Enter')activateAdminFromProfile()" />
               <button onclick="activateAdminFromProfile()" style="background:linear-gradient(135deg,#b8860b,var(--yellow));border:none;border-radius:8px;padding:7px 14px;color:#000;font-size:.78rem;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;">Войти</button>
             </div>
           </div>
@@ -618,6 +636,31 @@ input[type=file]{display:none;}
         <button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--red);cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;width:100%;margin-top:.5rem;transition:var(--t);" onmouseover="this.style.background='rgba(255,71,87,.1)'" onmouseout="this.style.background='var(--bg3)'" onclick="logout()">← Выйти из аккаунта</button>
       </div>
 
+      <!-- SUPPORT PANEL (user) -->
+      <div class="panel" id="panelSupport">
+        <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:4px;">💬 Поддержка</h2>
+        <p style="color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;">Напиши нам — администраторы ответят</p>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;">
+          <div class="form-group">
+            <label>Тема обращения</label>
+            <select id="supportCategory" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:.88rem;outline:none;cursor:pointer;">
+              <option value="bug">🐛 Ошибка / баг</option>
+              <option value="music">🎵 Проблема с треком</option>
+              <option value="account">👤 Аккаунт</option>
+              <option value="premium">💎 Premium</option>
+              <option value="other">💬 Другое</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Сообщение</label>
+            <textarea id="supportMessage" placeholder="Опиши проблему подробно..." style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:100px;width:100%;"></textarea>
+          </div>
+          <button class="btn-primary" onclick="sendSupportTicket()">📨 Отправить</button>
+        </div>
+        <div class="section-hdr"><div class="section-title">📋 Мои обращения</div></div>
+        <div id="myTicketsList"></div>
+      </div>
+
       <!-- ADMIN PANEL -->
       <div class="panel" id="panelAdmin">
         <div class="admin-header">
@@ -630,6 +673,7 @@ input[type=file]{display:none;}
         <div style="display:flex;gap:8px;margin-bottom:1.5rem;">
           <button class="auth-tab active" id="adminTabTracks" onclick="switchAdminTab('tracks')" style="flex:0;padding:8px 20px;border-radius:10px;background:rgba(108,71,255,.15);color:var(--accent2);border:1px solid var(--border);font-size:.82rem;">🎵 Треки</button>
           <button class="auth-tab" id="adminTabUsers" onclick="switchAdminTab('users')" style="flex:0;padding:8px 20px;border-radius:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border2);font-size:.82rem;">👥 Пользователи</button>
+          <button class="auth-tab" id="adminTabSupport" onclick="switchAdminTab('support')" style="flex:0;padding:8px 20px;border-radius:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border2);font-size:.82rem;">💬 Поддержка</button>
         </div>
         <!-- TRACKS TAB -->
         <div id="adminTracksTab">
@@ -643,6 +687,10 @@ input[type=file]{display:none;}
         <!-- USERS TAB -->
         <div id="adminUsersTab" class="hidden">
           <div id="adminUserList"></div>
+        </div>
+        <!-- SUPPORT TAB -->
+        <div id="adminSupportTab" class="hidden">
+          <div id="adminSupportList"></div>
         </div>
       </div>
 
@@ -736,7 +784,7 @@ input[type=file]{display:none;}
 <!-- MODAL: PREMIUM -->
 <div class="modal-overlay" id="modalPremium">
   <div class="modal">
-    <div class="modal-hdr"><div class="modal-title" style="color:var(--premium);">💎 SoundeClaude Premium</div><div class="modal-close" onclick="closeModal('modalPremium')">✕</div></div>
+    <div class="modal-hdr"><div class="modal-title" style="color:var(--premium);">💎 MusicVibe Premium</div><div class="modal-close" onclick="closeModal('modalPremium')">✕</div></div>
     <div style="text-align:center;padding:1rem 0;">
       <div style="font-size:3rem;margin-bottom:12px;">💎</div>
       <h3 style="font-size:1.2rem;margin-bottom:8px;font-family:'Syne',sans-serif;">Разблокируй всё</h3>
@@ -771,13 +819,23 @@ input[type=file]{display:none;}
   </div>
 </div>
 
+<!-- MODAL: SUPPORT REPLY (ADMIN) -->
+<div class="modal-overlay" id="modalSupportReply">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">💬 Ответить на обращение</div><div class="modal-close" onclick="closeModal('modalSupportReply')">✕</div></div>
+    <div id="supportTicketView" style="background:var(--bg3);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:.88rem;"></div>
+    <div class="form-group"><label>Ответ администратора</label><textarea id="adminReplyText" placeholder="Напиши ответ пользователю..." style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:80px;width:100%;"></textarea></div>
+    <button class="btn-primary" onclick="submitAdminReply()">✉ Отправить ответ</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- ===================== FIREBASE + SCRIPT ===================== -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getDatabase, ref, set, get, push, update, remove, onValue, off, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
 
@@ -801,7 +859,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // ==================== CONSTANTS ====================
 const ADMIN_CODE = 'SC_ADMIN_2024';
-const ADMIN_CODE_HINT = 'SC_ADMIN_2024'; // показывается в профиле
+const ADMIN_CODE_HINT = 'SC_ADMIN_2024';
 const PREMIUM_PREFIX = 'PREM_SC_';
 const GENRES_DATA = [
   {name:'Pop',label:'Поп',emoji:'🎤',class:'c1'},
@@ -817,27 +875,16 @@ const PLAYLIST_EMOJIS = ['🎵','🔥','💜','🎸','🌙','🚀','❄','🎺',
 const PLAYLIST_GRADS = ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'];
 const GRAD_PREVIEWS = ['#3d1a7a','#1a5c8a','#5c1280','#1a6040','#8a3800','#6a1a8a','#1a4080','#8a1a40','#0a5050','#4a4a10'];
 
-const DEMO_TRACKS = [
-  {id:'d0',title:'Midnight Drive',artist:'The Neon Waves',album:'Neon Nights',emoji:'🎸',dur:'4:23',secs:263,color:'c1',genre:'Rock',plays:2100000},
-  {id:'d1',title:'Солнечный берег',artist:'Море Внутри',album:'Лето',emoji:'🌊',dur:'3:47',secs:227,color:'c2',genre:'Indie',plays:890000},
-  {id:'d2',title:'Electric Pulse',artist:'Synth Dynasty',album:'Digital Age',emoji:'⚡',dur:'5:02',secs:302,color:'c3',genre:'Electronic',plays:1450000},
-  {id:'d3',title:'Тихий час',artist:'Лесной Джаз',album:'Ночные ноты',emoji:'🌿',dur:'4:15',secs:255,color:'c4',genre:'Jazz',plays:340000},
-  {id:'d4',title:'Fire & Rain',artist:'Echo Chamber',album:'Resonance',emoji:'🔥',dur:'3:58',secs:238,color:'c5',genre:'Rock',plays:720000},
-  {id:'d5',title:'Фиолетовый закат',artist:'Звуки Города',album:'Городской рай',emoji:'🌅',dur:'4:44',secs:284,color:'c6',genre:'Pop',plays:560000},
-  {id:'d6',title:'Lost in Space',artist:'Cosmic Array',album:'Orbit',emoji:'🚀',dur:'6:11',secs:371,color:'c7',genre:'Electronic',plays:980000},
-  {id:'d7',title:'Ночные огни',artist:'Авиатор',album:'Высота',emoji:'✈️',dur:'3:33',secs:213,color:'c8',genre:'Pop',plays:430000},
-  {id:'d8',title:'Chill Vibes',artist:'Lo-Fi Masters',album:'Study Session',emoji:'☕',dur:'4:05',secs:245,color:'c1',genre:'Lo-Fi',plays:1800000},
-  {id:'d9',title:'Последний танец',artist:'Дуэт Лена',album:'Романтика',emoji:'💃',dur:'3:22',secs:202,color:'c2',genre:'Pop',plays:310000},
-];
+const DEMO_TRACKS = [];
 
 // ==================== STATE ====================
 let state = {
   user: null,
-  userData: null, // from firebase
+  userData: null,
   isAdmin: false,
   isPremium: false,
   currentTrack: null,
-  queue: [...DEMO_TRACKS],
+  queue: [],
   queueIdx: 0,
   isPlaying: false,
   progress: 0,
@@ -856,6 +903,7 @@ let state = {
   uploadCoverDataUrl: null,
   addToPlaylistTrackId: null,
   bannedTracks: new Set(),
+  bannedArtists: new Set(),
   reportedTracks: new Map(),
   recentListens: [],
   genreFilter: null,
@@ -885,33 +933,47 @@ window.doLogin = async function() {
 };
 
 window.doGoogleLogin = async function() {
+  const btn = document.querySelector('.btn-social');
+  if (btn) { btn.textContent = '⏳ Входим...'; btn.disabled = true; }
   try {
     googleProvider.setCustomParameters({ prompt: 'select_account' });
     const result = await signInWithPopup(auth, googleProvider);
     const uid = result.user.uid;
-    const snap = await get(ref(db, `users/${uid}`));
-    if (!snap.exists()) {
-      await set(ref(db, `users/${uid}`), {
-        name: result.user.displayName || 'User',
-        email: result.user.email,
-        photoURL: result.user.photoURL || null,
-        isAdmin: false,
-        isPremium: false,
-        premiumExpiry: null,
-        createdAt: serverTimestamp(),
-      });
-    }
+    await ensureGoogleUser(result.user);
     showToast('✓ Вход через Google выполнен!', 'success');
   } catch(e) {
     if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      showToast('❌ Всплывающее окно заблокировано. Разреши попапы в браузере.', 'error');
+      try {
+        await signInWithRedirect(auth, googleProvider);
+      } catch(e2) {
+        showToast('❌ Не удалось открыть окно Google. Разреши попапы.', 'error');
+      }
     } else if (e.code === 'auth/unauthorized-domain') {
-      showToast('❌ Домен не авторизован в Firebase. Добавь домен в Firebase Console → Authentication → Settings → Authorized domains.', 'error');
+      showToast('❌ Добавь домен сайта в Firebase Console → Authentication → Authorized domains', 'error');
+    } else if (e.code === 'auth/cancelled-popup-request') {
+      // ignore
     } else {
       showToast('Ошибка Google: ' + e.message, 'error');
     }
+  } finally {
+    if (btn) { btn.textContent = 'G Войти через Google'; btn.disabled = false; }
   }
 };
+
+async function ensureGoogleUser(user) {
+  const snap = await get(ref(db, `users/${user.uid}`));
+  if (!snap.exists()) {
+    await set(ref(db, `users/${user.uid}`), {
+      name: user.displayName || 'User',
+      email: user.email,
+      photoURL: user.photoURL || null,
+      isAdmin: false,
+      isPremium: false,
+      premiumExpiry: null,
+      createdAt: serverTimestamp(),
+    });
+  }
+}
 
 window.doRegister = async function() {
   const name = document.getElementById('regName').value.trim();
@@ -954,6 +1016,12 @@ window.logout = async function() {
 };
 
 // ==================== AUTH STATE ====================
+getRedirectResult(auth).then(async result => {
+  if (result && result.user) {
+    await ensureGoogleUser(result.user);
+  }
+}).catch(e => console.warn('redirect result:', e));
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     state.user = user;
@@ -968,16 +1036,13 @@ async function loadUserData(uid) {
   if (snap.exists()) {
     state.userData = snap.val();
     state.isAdmin = state.userData.isAdmin || false;
-    // Check premium expiry
     const prem = state.userData.isPremium;
     const exp = state.userData.premiumExpiry;
     state.isPremium = prem && (!exp || exp > Date.now());
-    // Load liked
     const likedSnap = await get(ref(db, `users/${uid}/liked`));
     if (likedSnap.exists()) {
       state.liked = new Set(Object.keys(likedSnap.val()));
     }
-    // Load recent listens
     const recentSnap = await get(ref(db, `users/${uid}/recentListens`));
     if (recentSnap.exists()) {
       const arr = Object.values(recentSnap.val()).sort((a,b) => (b.ts||0)-(a.ts||0));
@@ -987,34 +1052,32 @@ async function loadUserData(uid) {
 }
 
 async function loadAllData() {
-  // Load uploaded tracks
   const tracksSnap = await get(ref(db, 'tracks'));
   if (tracksSnap.exists()) {
     state.uploadedTracks = Object.entries(tracksSnap.val()).map(([id,t]) => ({...t, id}));
   }
-  // Load playlists
   const plSnap = await get(ref(db, 'playlists'));
   if (plSnap.exists()) {
     state.playlists = Object.entries(plSnap.val()).map(([id,p]) => ({...p, id}));
   }
-  // Load banned tracks
   const banSnap = await get(ref(db, 'bannedTracks'));
   if (banSnap.exists()) {
     state.bannedTracks = new Set(Object.keys(banSnap.val()));
   }
-  // Load reports
   const repSnap = await get(ref(db, 'reports'));
   if (repSnap.exists()) {
     const reps = repSnap.val();
     state.reportedTracks = new Map(Object.entries(reps).map(([id,v]) => [id, v.count||0]));
   }
-  // Load all users (admin only - but we need count)
   const usersSnap = await get(ref(db, 'users'));
   if (usersSnap.exists()) {
     state.allUsers = usersSnap.val();
   }
+  const banArtSnap = await get(ref(db, 'bannedArtists'));
+  if (banArtSnap.exists()) {
+    state.bannedArtists = new Set(Object.keys(banArtSnap.val()));
+  }
 
-  // Realtime listeners for tracks & playlists
   const tracksRef = ref(db, 'tracks');
   const unsubTracks = onValue(tracksRef, snap => {
     if (snap.exists()) state.uploadedTracks = Object.entries(snap.val()).map(([id,t]) => ({...t, id}));
@@ -1118,6 +1181,7 @@ window.showPanel = function(panel) {
   if (panel === 'discover') renderDiscover();
   if (panel === 'admin') renderAdminPanel();
   if (panel === 'upload') renderPublishedTracks();
+  if (panel === 'support') renderMyTickets();
   document.querySelector('.panels-wrap').scrollTop = 0;
 };
 
@@ -1127,13 +1191,24 @@ function renderAll() {
   renderTrendingTracks();
   renderCommunityTracks();
   renderSidebarPlaylists();
+  updateHero();
+}
+
+function updateHero() {
+  const tracks = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id)).sort((a,b)=>(b.plays||0)-(a.plays||0));
+  if (!tracks.length) return;
+  const t = tracks[0];
+  document.getElementById('heroTitle').textContent = t.title;
+  document.getElementById('heroSub').textContent = t.artist + (t.dur ? ' · ' + t.dur : '');
+  document.getElementById('heroEmoji').innerHTML = t.coverUrl ? `<img src="${t.coverUrl}" style="width:100%;height:100%;object-fit:cover;opacity:.5;border-radius:8px;" />` : (t.emoji||'🎵');
+  document.getElementById('heroSection').onclick = () => playTrack(t.id);
 }
 
 // ==================== RECENT LISTENS ====================
 function renderRecentListens() {
   const el = document.getElementById('recentListens');
   if (!el) return;
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const recent = state.recentListens
     .map(id => allTracks.find(t => t.id === id))
     .filter(Boolean)
@@ -1157,12 +1232,9 @@ function renderRecentListens() {
 
 async function addToRecentListens(trackId) {
   if (!state.user) return;
-  // Update local
   state.recentListens = [trackId, ...state.recentListens.filter(id => id !== trackId)].slice(0,20);
-  // Update Firebase
   const uid = state.user.uid;
   await set(ref(db, `users/${uid}/recentListens/${trackId}`), { trackId, ts: Date.now() });
-  // Keep only last 20
   renderRecentListens();
 }
 
@@ -1170,9 +1242,14 @@ async function addToRecentListens(trackId) {
 function renderTrendingTracks() {
   const el = document.getElementById('trendingTracks');
   if (!el) return;
-  // Mix demo + user tracks, sort by plays
-  const all = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id))];
-  const sorted = all.sort((a,b) => (b.plays||0) - (a.plays||0)).slice(0,8);
+  const sorted = state.uploadedTracks
+    .filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)))
+    .sort((a,b) => (b.plays||0) - (a.plays||0))
+    .slice(0, 8);
+  if (!sorted.length) {
+    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Пока нет треков. Будь первым!</p></div>';
+    return;
+  }
   el.innerHTML = sorted.map((t,i) => renderTrackItem(t, i+1, true)).join('');
 }
 
@@ -1180,7 +1257,7 @@ function renderCommunityTracks() {
   const el = document.getElementById('communityTracks');
   if (!el) return;
   const tracks = state.uploadedTracks
-    .filter(t => !state.bannedTracks.has(t.id))
+    .filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)))
     .sort((a,b) => (b.uploadedAt||0) - (a.uploadedAt||0))
     .slice(0,5);
   if (!tracks.length) {
@@ -1220,8 +1297,7 @@ function renderTrackItem(t, num, showAlbum=true) {
 
 // ==================== DISCOVER ====================
 function renderDiscover() {
-  // Stats row
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id))];
+  const allTracks = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id));
   const totalPlays = allTracks.reduce((s,t)=>(s+(t.plays||0)),0);
   const statsEl = document.getElementById('discoverStats');
   if (statsEl) statsEl.innerHTML = `
@@ -1230,7 +1306,6 @@ function renderDiscover() {
     <div class="stat-chip"><div class="stat-chip-num">${totalPlays>1000000?(totalPlays/1000000).toFixed(1)+'M':Math.floor(totalPlays/1000)+'K'}</div>прослушиваний</div>
     <div class="stat-chip"><div class="stat-chip-num">${Object.keys(state.allUsers).length}</div>участников</div>`;
 
-  // Genres
   const gEl = document.getElementById('genreGrid');
   if (gEl) gEl.innerHTML = GENRES_DATA.map(g => `
     <div class="genre-card ${g.class}" onclick="filterByGenre('${g.name}')">
@@ -1238,7 +1313,6 @@ function renderDiscover() {
       <div class="genre-card-name">${g.label}</div>
     </div>`).join('');
 
-  // Popular playlists (by track count + plays of their tracks)
   const ppEl = document.getElementById('popularPlaylists');
   if (ppEl) {
     const pubPl = state.playlists
@@ -1254,14 +1328,13 @@ function renderDiscover() {
     else ppEl.innerHTML = pubPl.map(p => renderPlaylistCard(p)).join('');
   }
 
-  // All community tracks
   renderAllCommunityTracks();
 }
 
 function renderAllCommunityTracks() {
   const atEl = document.getElementById('allCommunityTracks');
   if (!atEl) return;
-  let tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id));
+  let tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)));
   if (state.genreFilter) tracks = tracks.filter(t => t.genre === state.genreFilter);
   tracks = tracks.sort((a,b) => (b.plays||0)-(a.plays||0));
   if (!tracks.length) {
@@ -1300,7 +1373,7 @@ function renderPlaylistCard(p) {
 
 // ==================== LIBRARY ====================
 function renderLibrary() {
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const likedTracks = allTracks.filter(t => state.liked.has(t.id));
   document.getElementById('likedCount').textContent = likedTracks.length + ' треков';
   const lEl = document.getElementById('likedTracks');
@@ -1322,7 +1395,6 @@ function renderProfile() {
   el.innerHTML = !myTracks.length
     ? '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.</p></div>'
     : '<div class="track-list">' + myTracks.map((t,i) => renderTrackItem(t, i+1)).join('') + '</div>';
-  // Hide admin code activation if already admin
   const acEl = document.getElementById('adminCodeActivation');
   if (acEl) acEl.style.display = state.isAdmin ? 'none' : 'block';
   renderPremiumSection();
@@ -1335,7 +1407,6 @@ function renderProfileStats() {
   document.getElementById('statLiked').textContent = state.liked.size;
   document.getElementById('statPlaylists').textContent = state.playlists.filter(p => p.ownerId === state.user?.uid).length;
   document.getElementById('statPlays').textContent = myPlays > 1000 ? Math.floor(myPlays/1000)+'K' : myPlays;
-  // Plan badge
   const badgeEl = document.getElementById('profilePlanBadge');
   if (badgeEl) {
     if (state.isPremium) badgeEl.innerHTML = '<span style="background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:800;">💎 Premium</span>';
@@ -1441,7 +1512,7 @@ window.openPlaylistView = function(plId) {
   const pl = state.playlists.find(p => p.id === plId);
   if (!pl) return;
   state.currentPlaylistId = plId;
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const tracks = (pl.tracks||[]).map(tid => allTracks.find(t=>t.id===tid)).filter(Boolean);
   const isOwner = pl.ownerId === state.user?.uid;
   const coverHtml = pl.coverUrl ? `<img src="${pl.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />` : (pl.emoji||'🎵');
@@ -1472,10 +1543,9 @@ window.openPlaylistView = function(plId) {
 window.playPlaylist = async function(plId) {
   const pl = state.playlists.find(p=>p.id===plId);
   if (!pl || !(pl.tracks||[]).length) return showToast('Плейлист пуст!','error');
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const queue = pl.tracks.map(id => allTracks.find(t=>t.id===id)).filter(Boolean);
   if (!queue.length) return;
-  // Increment playlist plays
   await update(ref(db, `playlists/${plId}`), { plays: (pl.plays||0)+1 });
   state.queue = queue;
   state.queueIdx = 0;
@@ -1587,12 +1657,10 @@ window.publishTrack = async function() {
   btn.disabled = true;
 
   try {
-    // Upload audio
     const audioRef = sRef(storage, `tracks/${state.user.uid}/${Date.now()}_${state.uploadingTrack.file.name}`);
     await uploadBytes(audioRef, state.uploadingTrack.file);
     const audioUrl = await getDownloadURL(audioRef);
 
-    // Upload cover if provided
     let coverUrl = null;
     if (state.uploadCoverDataUrl) {
       try {
@@ -1646,13 +1714,19 @@ function renderPublishedTracks() {
 
 // ==================== PLAYER ====================
 window.playTrack = function(id) {
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const track = allTracks.find(t=>t.id===id);
   if (!track || state.bannedTracks.has(id)) return;
   const notBanned = allTracks.filter(t=>!state.bannedTracks.has(t.id));
   state.queue = notBanned;
   state.queueIdx = notBanned.findIndex(t=>t.id===id);
   playTrackObj(track);
+};
+
+window.playFirstTrack = function() {
+  const notBanned = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id));
+  if (notBanned.length) playTrack(notBanned[0].id);
+  else showToast('Нет треков для воспроизведения', 'error');
 };
 
 async function playTrackObj(track) {
@@ -1675,10 +1749,8 @@ async function playTrackObj(track) {
   updatePlayBtn();
   updateHeartBtn();
 
-  // Add to recent listens
   await addToRecentListens(track.id);
 
-  // Increment play count in Firebase for user tracks
   if (!track.id.startsWith('d')) {
     update(ref(db, `tracks/${track.id}`), { plays: increment(1) }).catch(()=>{});
   }
@@ -1743,9 +1815,6 @@ window.seekTo = function(e) {
   if (state.currentAudio) {
     state.currentAudio.currentTime = pct*state.currentAudio.duration;
   }
-  // For demo tracks with interval, reset elapsed via override on progFill width
-  // The interval reads state.progress but doesn't use it for elapsed - no action needed
-  // Just update the time display
   if (!state.currentAudio && state.currentTrack) {
     const totalSecs = state.currentTrack.secs||240;
     const s = Math.floor(pct*totalSecs);
@@ -1834,7 +1903,7 @@ window.handleSearch = function() {
   const drop = document.getElementById('searchDrop');
   if (!q) { drop.classList.remove('open'); return; }
   drop.classList.add('open');
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id))];
+  const allTracks = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id));
   const tracks = allTracks.filter(t=>t.title.toLowerCase().includes(q)||t.artist.toLowerCase().includes(q)).slice(0,5);
   const playlists = state.playlists.filter(p=>p.isPublic&&p.name.toLowerCase().includes(q)).slice(0,3);
   let html = '';
@@ -1941,7 +2010,7 @@ function renderAdminPanel() {
 }
 
 function renderAdminStats() {
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const el = document.getElementById('adminStats');
   if (!el) return;
   el.innerHTML = `
@@ -1954,17 +2023,141 @@ function renderAdminStats() {
 }
 
 window.switchAdminTab = function(tab) {
-  document.getElementById('adminTracksTab').classList.toggle('hidden', tab !== 'tracks');
-  document.getElementById('adminUsersTab').classList.toggle('hidden', tab !== 'users');
-  document.getElementById('adminTabTracks').style.background = tab==='tracks' ? 'rgba(108,71,255,.15)' : 'var(--bg3)';
-  document.getElementById('adminTabTracks').style.color = tab==='tracks' ? 'var(--accent2)' : 'var(--text2)';
-  document.getElementById('adminTabUsers').style.background = tab==='users' ? 'rgba(108,71,255,.15)' : 'var(--bg3)';
-  document.getElementById('adminTabUsers').style.color = tab==='users' ? 'var(--accent2)' : 'var(--text2)';
-  if (tab==='users') renderAdminUsers();
+  ['tracks','users','support'].forEach(t => {
+    const tabEl = document.getElementById('adminTab' + t.charAt(0).toUpperCase() + t.slice(1));
+    const contentEl = document.getElementById('admin' + t.charAt(0).toUpperCase() + t.slice(1) + 'Tab');
+    const active = tab === t;
+    if (tabEl) { tabEl.style.background = active ? 'rgba(108,71,255,.15)' : 'var(--bg3)'; tabEl.style.color = active ? 'var(--accent2)' : 'var(--text2)'; }
+    if (contentEl) contentEl.classList.toggle('hidden', !active);
+  });
+  if (tab === 'users') renderAdminUsers();
+  if (tab === 'support') renderAdminSupport();
+};
+
+// ==================== SUPPORT SYSTEM ====================
+let currentReplyTicketId = null;
+
+window.sendSupportTicket = async function() {
+  if (!state.user) return;
+  const category = document.getElementById('supportCategory').value;
+  const message = document.getElementById('supportMessage').value.trim();
+  if (!message) return showToast('Напиши сообщение!', 'error');
+  const ticketRef = push(ref(db, 'support'));
+  await set(ticketRef, {
+    uid: state.user.uid,
+    userName: state.userData?.name || state.user.displayName || 'User',
+    userEmail: state.user.email,
+    category,
+    message,
+    status: 'open',
+    createdAt: serverTimestamp(),
+    reply: null,
+    repliedAt: null,
+  });
+  document.getElementById('supportMessage').value = '';
+  showToast('✉ Обращение отправлено! Ожидай ответа.', 'success');
+  renderMyTickets();
+};
+
+async function renderMyTickets() {
+  if (!state.user) return;
+  const snap = await get(ref(db, 'support'));
+  const el = document.getElementById('myTicketsList');
+  if (!el) return;
+  if (!snap.exists()) { el.innerHTML = '<div style="color:var(--text3);font-size:.85rem;padding:1rem 0;">Нет обращений.</div>'; return; }
+  const tickets = Object.entries(snap.val())
+    .filter(([id, t]) => t.uid === state.user.uid)
+    .sort((a,b) => (b[1].createdAt||0) - (a[1].createdAt||0));
+  if (!tickets.length) { el.innerHTML = '<div style="color:var(--text3);font-size:.85rem;padding:1rem 0;">Нет обращений.</div>'; return; }
+  const catLabels = {bug:'🐛 Ошибка', music:'🎵 Трек', account:'👤 Аккаунт', premium:'💎 Premium', other:'💬 Другое'};
+  el.innerHTML = tickets.map(([id, t]) => `
+    <div class="ticket-item${t.reply ? '' : ' unread'}">
+      <div class="ticket-header">
+        <span class="ticket-cat">${catLabels[t.category]||t.category}</span>
+        <span class="${t.reply ? 'ticket-status-closed' : 'ticket-status-open'}">${t.reply ? '✓ Отвечено' : '⏳ Ожидает'}</span>
+        <span class="ticket-date">${t.createdAt ? new Date(t.createdAt).toLocaleDateString('ru') : ''}</span>
+      </div>
+      <div class="ticket-msg">${t.message}</div>
+      ${t.reply ? `<div class="ticket-reply"><div class="ticket-reply-label">💬 Ответ администратора:</div>${t.reply}</div>` : ''}
+    </div>`).join('');
+}
+
+async function renderAdminSupport() {
+  const snap = await get(ref(db, 'support'));
+  const el = document.getElementById('adminSupportList');
+  if (!el) return;
+  if (!snap.exists()) { el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">💬</span><p>Нет обращений.</p></div>'; return; }
+  const tickets = Object.entries(snap.val()).sort((a,b) => {
+    if (!a[1].reply && b[1].reply) return -1;
+    if (a[1].reply && !b[1].reply) return 1;
+    return (b[1].createdAt||0) - (a[1].createdAt||0);
+  });
+  const catLabels = {bug:'🐛 Ошибка', music:'🎵 Трек', account:'👤 Аккаунт', premium:'💎 Premium', other:'💬 Другое'};
+  el.innerHTML = tickets.map(([id, t]) => `
+    <div class="ticket-item${!t.reply ? ' unread' : ''}">
+      <div class="ticket-header">
+        <span class="ticket-cat">${catLabels[t.category]||t.category}</span>
+        <span style="font-size:.8rem;font-weight:600;">${t.userName||'User'} · ${t.userEmail||''}</span>
+        <span class="${t.reply ? 'ticket-status-closed' : 'ticket-status-open'}">${t.reply ? '✓ Отвечено' : '⏳ Открыто'}</span>
+        <span class="ticket-date">${t.createdAt ? new Date(t.createdAt).toLocaleDateString('ru') : ''}</span>
+      </div>
+      <div class="ticket-msg">${t.message}</div>
+      ${t.reply ? `<div class="ticket-reply"><div class="ticket-reply-label">Твой ответ:</div>${t.reply}</div>` : ''}
+      <div style="margin-top:8px;">
+        <button onclick="openSupportReply('${id}')" style="background:rgba(108,71,255,.15);border:1px solid var(--border);border-radius:8px;padding:5px 14px;color:var(--accent2);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;">${t.reply ? '✏ Изменить ответ' : '💬 Ответить'}</button>
+      </div>
+    </div>`).join('');
+}
+
+window.openSupportReply = function(ticketId) {
+  currentReplyTicketId = ticketId;
+  get(ref(db, `support/${ticketId}`)).then(snap => {
+    if (!snap.exists()) return;
+    const t = snap.val();
+    const catLabels = {bug:'🐛 Ошибка', music:'🎵 Трек', account:'👤 Аккаунт', premium:'💎 Premium', other:'💬 Другое'};
+    document.getElementById('supportTicketView').innerHTML = `
+      <div style="font-size:.75rem;color:var(--text3);margin-bottom:4px;">${t.userName} · ${catLabels[t.category]||t.category}</div>
+      <div style="font-size:.9rem;">${t.message}</div>`;
+    document.getElementById('adminReplyText').value = t.reply || '';
+    document.getElementById('modalSupportReply').classList.add('open');
+  });
+};
+
+window.submitAdminReply = async function() {
+  if (!currentReplyTicketId) return;
+  const reply = document.getElementById('adminReplyText').value.trim();
+  if (!reply) return showToast('Напиши ответ!', 'error');
+  await update(ref(db, `support/${currentReplyTicketId}`), { reply, status: 'closed', repliedAt: serverTimestamp(), repliedBy: state.userData?.name || 'Admin' });
+  closeModal('modalSupportReply');
+  showToast('✓ Ответ отправлен!', 'success');
+  renderAdminSupport();
+};
+
+// ===== BAN ARTIST =====
+window.banArtist = async function(artistName) {
+  if (!artistName) return;
+  await set(ref(db, `bannedArtists/${artistName.replace(/[.#$[\]/]/g,'_')}`), true);
+  state.bannedArtists = state.bannedArtists || new Set();
+  state.bannedArtists.add(artistName);
+  const artistTracks = state.uploadedTracks.filter(t => t.artist === artistName);
+  for (const t of artistTracks) {
+    await set(ref(db, `bannedTracks/${t.id}`), true);
+    state.bannedTracks.add(t.id);
+  }
+  renderAdminTracks();
+  renderAdminStats();
+  showToast(`🛡 Исполнитель "${artistName}" заблокирован (${artistTracks.length} треков)`, 'success');
+};
+
+window.unbanArtist = async function(artistName) {
+  await remove(ref(db, `bannedArtists/${artistName.replace(/[.#$[\]/]/g,'_')}`));
+  state.bannedArtists && state.bannedArtists.delete(artistName);
+  showToast(`✓ Исполнитель "${artistName}" разблокирован`, 'success');
+  renderAdminTracks();
 };
 
 window.renderAdminTracks = function() {
-  const allTracks = [...DEMO_TRACKS, ...state.uploadedTracks];
+  const allTracks = state.uploadedTracks;
   const filter = document.getElementById('adminFilter')?.value||'all';
   let filtered = allTracks;
   if (filter==='active') filtered = allTracks.filter(t=>!state.bannedTracks.has(t.id));
@@ -1990,7 +2183,8 @@ window.renderAdminTracks = function() {
           ${reports>0?`<span style="font-size:.75rem;color:var(--yellow);background:rgba(255,199,71,.1);padding:3px 10px;border-radius:20px;font-weight:700;">⚑ ${reports}</span>`:''}
           ${!isDemo ? (isBanned
             ? `<button class="btn-unban" onclick="unbanTrack('${t.id}')">✓ Разбанить</button>`
-            : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`) : `<span style="font-size:.75rem;color:var(--text3);">Демо</span>`}
+            : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`) : ''}
+          ${!isDemo && !isBanned && t.artist ? `<button class="ban-artist-btn" onclick="banArtist('${t.artist.replace(/'/g,"\'")}')">🚫 Бан арт.</button>` : ''}
         </div>
       </div>`;
   }).join('');
@@ -2030,6 +2224,8 @@ window.banTrack = async function(id) {
   state.bannedTracks.add(id);
   renderAdminTracks();
   renderAdminStats();
+  renderTrendingTracks();
+  renderCommunityTracks();
   showToast(`🛡 Трек "${track.title}" заблокирован`, 'success');
 };
 
@@ -2040,6 +2236,8 @@ window.unbanTrack = async function(id) {
   state.reportedTracks.delete(id);
   renderAdminTracks();
   renderAdminStats();
+  renderTrendingTracks();
+  renderCommunityTracks();
   showToast(`✓ Трек разблокирован`, 'success');
 };
 
@@ -2060,7 +2258,6 @@ window.confirmGrantPremium = async function() {
     state.allUsers[uid].isPremium = true;
     state.allUsers[uid].premiumExpiry = expiry;
   }
-  // If granting to self
   if (uid === state.user?.uid) {
     state.isPremium = true;
     state.userData = {...(state.userData||{}), isPremium: true, premiumExpiry: expiry};
@@ -2088,7 +2285,6 @@ window.showPremiumModal = function() { document.getElementById('modalPremium').c
 
 window.activatePremiumCode = async function() {
   const code = document.getElementById('premiumCodeInput').value.trim();
-  // Admin can generate codes like PREM_SC_<uid_prefix> - simple check
   if (code.startsWith(PREMIUM_PREFIX) && code.length > PREMIUM_PREFIX.length + 3) {
     const days = 30;
     const expiry = Date.now() + days*24*60*60*1000;
@@ -2098,7 +2294,6 @@ window.activatePremiumCode = async function() {
     updateUserUI();
     closeModal('modalPremium');
     showToast('💎 Premium активирован на 30 дней!', 'success');
-    // Mark code as used
     await set(ref(db, `usedCodes/${code.replace(/[.#$\[\]]/g,'_')}`), { uid: state.user.uid, usedAt: serverTimestamp() });
   } else {
     showToast('❌ Неверный код Premium', 'error');
