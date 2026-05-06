@@ -387,6 +387,13 @@ input[type=file]{display:none;}
 .stat-chip{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:.82rem;}
 .stat-chip-num{font-weight:800;font-family:'Syne',sans-serif;font-size:1.1rem;color:var(--accent2);}
 
+/* PROFILE EDIT */
+.profile-edit-field{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:.9rem;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:var(--t);}
+.profile-edit-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,71,255,.15);}
+.banner-upload-zone{border:2px dashed var(--border);border-radius:14px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--t);margin-bottom:1rem;background:rgba(108,71,255,.03);position:relative;overflow:hidden;}
+.banner-upload-zone:hover{border-color:var(--accent);background:rgba(108,71,255,.07);}
+.banner-preview{width:100%;height:80px;object-fit:cover;border-radius:10px;display:block;}
+
 @media(max-width:900px){.track-album{display:none;}.sidebar{width:220px;}}
 @media(max-width:700px){.sidebar{display:none;}.player-track{width:180px;}.player-extra{width:120px;}}
 </style>
@@ -413,7 +420,7 @@ input[type=file]{display:none;}
       <div class="form-group"><label>Пароль</label><input type="password" id="loginPass" placeholder="••••••••" /></div>
       <button class="btn-primary" onclick="doLogin()">Войти в аккаунт →</button>
       <div class="auth-divider">или продолжи через</div>
-      <button class="btn-social" onclick="doGoogleLogin()">
+      <button class="btn-social" id="googleBtn" onclick="doGoogleLogin()">
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Войти через Google
       </button>
@@ -584,13 +591,23 @@ input[type=file]{display:none;}
 
       <!-- PROFILE -->
       <div class="panel" id="panelProfile">
-        <div class="profile-hero">
-          <div class="profile-av" id="profileAv" onclick="document.getElementById('avatarInput').click()">U</div>
+        <!-- BANNER -->
+        <div id="profileBanner" style="width:100%;height:160px;border-radius:20px;margin-bottom:-50px;background:linear-gradient(135deg,rgba(108,71,255,.4),rgba(255,71,199,.3));position:relative;overflow:hidden;cursor:pointer;" onclick="document.getElementById('bannerInput').click()">
+          <img id="profileBannerImg" src="" style="width:100%;height:100%;object-fit:cover;display:none;" />
+          <div style="position:absolute;bottom:8px;right:12px;font-size:.72rem;color:rgba(255,255,255,.5);font-weight:600;">📷 Изменить баннер</div>
+          <input type="file" id="bannerInput" accept="image/*" onchange="handleBannerUpload(this)" />
+        </div>
+
+        <div class="profile-hero" style="margin-top:0;padding-top:3rem;position:relative;">
+          <div class="profile-av" id="profileAv" onclick="document.getElementById('avatarInput').click()" style="margin-top:-60px;border:4px solid var(--bg2);">U</div>
           <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(this)" />
           <div style="flex:1;">
-            <div style="font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Профиль</div>
-            <h2 id="profileName" style="font-size:1.6rem;font-weight:800;margin-bottom:4px;">Пользователь</h2>
-            <div id="profileEmail" style="color:var(--text2);font-size:.85rem;margin-bottom:12px;"></div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <div id="profileNameDisplay" style="font-size:1.6rem;font-weight:800;font-family:'Syne',sans-serif;"></div>
+              <button onclick="toggleProfileEdit()" id="editProfileBtn" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:4px 12px;color:var(--text2);font-size:.75rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:var(--t);">✏ Редактировать</button>
+            </div>
+            <div id="profileEmailDisplay" style="color:var(--text2);font-size:.85rem;margin-bottom:4px;"></div>
+            <div id="profileBioDisplay" style="color:var(--text3);font-size:.82rem;margin-bottom:8px;font-style:italic;"></div>
             <div id="profilePlanBadge"></div>
             <div class="profile-stats">
               <div><div class="profile-stat-num" id="statTracks">0</div><div class="profile-stat-lbl">загружено</div></div>
@@ -598,6 +615,18 @@ input[type=file]{display:none;}
               <div><div class="profile-stat-num" id="statPlaylists">0</div><div class="profile-stat-lbl">плейлистов</div></div>
               <div><div class="profile-stat-num" id="statPlays">0</div><div class="profile-stat-lbl">прослушиваний</div></div>
             </div>
+          </div>
+        </div>
+
+        <!-- PROFILE EDIT FORM -->
+        <div id="profileEditForm" class="settings-card hidden">
+          <div class="settings-card-title">✏ Редактирование профиля</div>
+          <div class="form-group"><label>Отображаемое имя</label><input type="text" id="editName" class="profile-edit-field" placeholder="Твоё имя" /></div>
+          <div class="form-group"><label>О себе</label><textarea id="editBio" class="profile-edit-field" placeholder="Напиши что-нибудь о себе..." style="min-height:80px;resize:vertical;"></textarea></div>
+          <div class="form-group"><label>Ссылка на соцсеть</label><input type="text" id="editSocial" class="profile-edit-field" placeholder="https://..." /></div>
+          <div style="display:flex;gap:8px;margin-top:.5rem;">
+            <button class="btn-primary" style="padding:10px 24px;width:auto;" onclick="saveProfileEdit()">💾 Сохранить</button>
+            <button style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 20px;color:var(--text2);cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:.85rem;" onclick="toggleProfileEdit()">Отмена</button>
           </div>
         </div>
 
@@ -839,7 +868,6 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getDatabase, ref, set, get, push, update, remove, onValue, off, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
 
-// ==================== FIREBASE CONFIG ====================
 const firebaseConfig = {
   apiKey: "AIzaSyDmf-lcDM5hXBwBqzymGlzdoHdTGfT2pRg",
   authDomain: "magniybank.firebaseapp.com",
@@ -855,11 +883,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 const storage = getStorage(app);
-const googleProvider = new GoogleAuthProvider();
 
-// ==================== CONSTANTS ====================
+// FIX #5: Google Auth — добавляем client_id явно
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  client_id: '1006815080708-gnj9gupqg1ab66kgn9k4sqqi98q7b88f.apps.googleusercontent.com',
+  prompt: 'select_account'
+});
+
 const ADMIN_CODE = 'SC_ADMIN_2024';
-const ADMIN_CODE_HINT = 'SC_ADMIN_2024';
 const PREMIUM_PREFIX = 'PREM_SC_';
 const GENRES_DATA = [
   {name:'Pop',label:'Поп',emoji:'🎤',class:'c1'},
@@ -875,44 +907,27 @@ const PLAYLIST_EMOJIS = ['🎵','🔥','💜','🎸','🌙','🚀','❄','🎺',
 const PLAYLIST_GRADS = ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'];
 const GRAD_PREVIEWS = ['#3d1a7a','#1a5c8a','#5c1280','#1a6040','#8a3800','#6a1a8a','#1a4080','#8a1a40','#0a5050','#4a4a10'];
 
-const DEMO_TRACKS = [];
-
-// ==================== STATE ====================
 let state = {
-  user: null,
-  userData: null,
-  isAdmin: false,
-  isPremium: false,
-  currentTrack: null,
-  queue: [],
-  queueIdx: 0,
-  isPlaying: false,
-  progress: 0,
-  shuffle: false,
-  repeat: false,
-  liked: new Set(),
-  playlists: [],
-  uploadedTracks: [],
-  allUsers: {},
-  currentAudio: null,
-  currentPlaylistId: null,
-  selectedPLEmoji: '🎵',
-  selectedPLGrad: 'c1',
-  plCoverDataUrl: null,
-  uploadingTrack: null,
-  uploadCoverDataUrl: null,
-  addToPlaylistTrackId: null,
-  bannedTracks: new Set(),
-  bannedArtists: new Set(),
-  reportedTracks: new Map(),
-  recentListens: [],
-  genreFilter: null,
-  grantPremiumUid: null,
-  currentPanel: 'home',
-  listenersOff: [],
+  user: null, userData: null, isAdmin: false, isPremium: false,
+  currentTrack: null, queue: [], queueIdx: 0, isPlaying: false,
+  progress: 0, shuffle: false, repeat: false, liked: new Set(),
+  playlists: [], uploadedTracks: [], allUsers: {},
+  currentAudio: null, currentPlaylistId: null,
+  selectedPLEmoji: '🎵', selectedPLGrad: 'c1', plCoverDataUrl: null,
+  uploadingTrack: null, uploadCoverDataUrl: null, addToPlaylistTrackId: null,
+  bannedTracks: new Set(), bannedArtists: new Set(),
+  reportedTracks: new Map(), recentListens: [], genreFilter: null,
+  grantPremiumUid: null, currentPanel: 'home', listenersOff: [],
 };
 let progressInterval = null;
 let toastTimer = null;
+
+// ==================== HELPERS ====================
+
+// FIX #2: Безопасный ключ для Firebase (заменяем запрещённые символы)
+function safeKey(str) {
+  return str.replace(/[.#$\[\]/\s]/g, '_');
+}
 
 // ==================== AUTH ====================
 window.switchAuthTab = function(tab) {
@@ -932,31 +947,28 @@ window.doLogin = async function() {
   }
 };
 
+// FIX #5: Google Auth исправлен
 window.doGoogleLogin = async function() {
-  const btn = document.querySelector('.btn-social');
-  if (btn) { btn.textContent = '⏳ Входим...'; btn.disabled = true; }
+  const btn = document.getElementById('googleBtn');
+  btn.textContent = '⏳ Входим...';
+  btn.disabled = true;
   try {
-    googleProvider.setCustomParameters({ prompt: 'select_account' });
     const result = await signInWithPopup(auth, googleProvider);
-    const uid = result.user.uid;
     await ensureGoogleUser(result.user);
     showToast('✓ Вход через Google выполнен!', 'success');
   } catch(e) {
-    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      try {
-        await signInWithRedirect(auth, googleProvider);
-      } catch(e2) {
-        showToast('❌ Не удалось открыть окно Google. Разреши попапы.', 'error');
-      }
+    if (e.code === 'auth/popup-blocked') {
+      showToast('Попап заблокирован! Разреши попапы в браузере.', 'error');
+    } else if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
+      // пользователь закрыл — игнорируем
     } else if (e.code === 'auth/unauthorized-domain') {
-      showToast('❌ Добавь домен сайта в Firebase Console → Authentication → Authorized domains', 'error');
-    } else if (e.code === 'auth/cancelled-popup-request') {
-      // ignore
+      showToast('❌ Домен не авторизован в Firebase Console → Authentication → Authorized domains', 'error');
     } else {
       showToast('Ошибка Google: ' + e.message, 'error');
     }
   } finally {
-    if (btn) { btn.textContent = 'G Войти через Google'; btn.disabled = false; }
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Войти через Google`;
+    btn.disabled = false;
   }
 };
 
@@ -967,10 +979,13 @@ async function ensureGoogleUser(user) {
       name: user.displayName || 'User',
       email: user.email,
       photoURL: user.photoURL || null,
+      bio: '',
+      social: '',
+      bannerUrl: null,
       isAdmin: false,
       isPremium: false,
       premiumExpiry: null,
-      createdAt: serverTimestamp(),
+      createdAt: Date.now(),
     });
   }
 }
@@ -989,13 +1004,17 @@ window.doRegister = async function() {
     const cred = await createUserWithEmailAndPassword(auth, email, pass);
     await updateProfile(cred.user, { displayName: name });
     const isAdmin = adminCodeVal === ADMIN_CODE;
+    // FIX: используем Date.now() вместо serverTimestamp() в объекте
     await set(ref(db, `users/${cred.user.uid}`), {
       name, email,
       photoURL: null,
+      bio: '',
+      social: '',
+      bannerUrl: null,
       isAdmin,
       isPremium: false,
       premiumExpiry: null,
-      createdAt: serverTimestamp(),
+      createdAt: Date.now(),
     });
     if (isAdmin) showToast('🛡 Аккаунт создан с правами администратора!', 'success');
     else showToast(`🎉 Добро пожаловать, ${name}!`, 'success');
@@ -1017,10 +1036,8 @@ window.logout = async function() {
 
 // ==================== AUTH STATE ====================
 getRedirectResult(auth).then(async result => {
-  if (result && result.user) {
-    await ensureGoogleUser(result.user);
-  }
-}).catch(e => console.warn('redirect result:', e));
+  if (result && result.user) await ensureGoogleUser(result.user);
+}).catch(()=>{});
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -1040,9 +1057,7 @@ async function loadUserData(uid) {
     const exp = state.userData.premiumExpiry;
     state.isPremium = prem && (!exp || exp > Date.now());
     const likedSnap = await get(ref(db, `users/${uid}/liked`));
-    if (likedSnap.exists()) {
-      state.liked = new Set(Object.keys(likedSnap.val()));
-    }
+    if (likedSnap.exists()) state.liked = new Set(Object.keys(likedSnap.val()));
     const recentSnap = await get(ref(db, `users/${uid}/recentListens`));
     if (recentSnap.exists()) {
       const arr = Object.values(recentSnap.val()).sort((a,b) => (b.ts||0)-(a.ts||0));
@@ -1053,41 +1068,32 @@ async function loadUserData(uid) {
 
 async function loadAllData() {
   const tracksSnap = await get(ref(db, 'tracks'));
-  if (tracksSnap.exists()) {
-    state.uploadedTracks = Object.entries(tracksSnap.val()).map(([id,t]) => ({...t, id}));
-  }
-  const plSnap = await get(ref(db, 'playlists'));
-  if (plSnap.exists()) {
-    state.playlists = Object.entries(plSnap.val()).map(([id,p]) => ({...p, id}));
-  }
-  const banSnap = await get(ref(db, 'bannedTracks'));
-  if (banSnap.exists()) {
-    state.bannedTracks = new Set(Object.keys(banSnap.val()));
-  }
-  const repSnap = await get(ref(db, 'reports'));
-  if (repSnap.exists()) {
-    const reps = repSnap.val();
-    state.reportedTracks = new Map(Object.entries(reps).map(([id,v]) => [id, v.count||0]));
-  }
-  const usersSnap = await get(ref(db, 'users'));
-  if (usersSnap.exists()) {
-    state.allUsers = usersSnap.val();
-  }
-  const banArtSnap = await get(ref(db, 'bannedArtists'));
-  if (banArtSnap.exists()) {
-    state.bannedArtists = new Set(Object.keys(banArtSnap.val()));
-  }
+  state.uploadedTracks = tracksSnap.exists() ? Object.entries(tracksSnap.val()).map(([id,t])=>({...t,id})) : [];
 
+  const plSnap = await get(ref(db, 'playlists'));
+  state.playlists = plSnap.exists() ? Object.entries(plSnap.val()).map(([id,p])=>({...p,id})) : [];
+
+  const banSnap = await get(ref(db, 'bannedTracks'));
+  if (banSnap.exists()) state.bannedTracks = new Set(Object.keys(banSnap.val()));
+
+  const repSnap = await get(ref(db, 'reports'));
+  if (repSnap.exists()) state.reportedTracks = new Map(Object.entries(repSnap.val()).map(([id,v])=>[id,v.count||0]));
+
+  const usersSnap = await get(ref(db, 'users'));
+  if (usersSnap.exists()) state.allUsers = usersSnap.val();
+
+  const banArtSnap = await get(ref(db, 'bannedArtists'));
+  if (banArtSnap.exists()) state.bannedArtists = new Set(Object.keys(banArtSnap.val()));
+
+  // Real-time listeners
   const tracksRef = ref(db, 'tracks');
   const unsubTracks = onValue(tracksRef, snap => {
-    if (snap.exists()) state.uploadedTracks = Object.entries(snap.val()).map(([id,t]) => ({...t, id}));
-    else state.uploadedTracks = [];
+    state.uploadedTracks = snap.exists() ? Object.entries(snap.val()).map(([id,t])=>({...t,id})) : [];
     refreshCurrentPanelData();
   });
   const plRef = ref(db, 'playlists');
   const unsubPl = onValue(plRef, snap => {
-    if (snap.exists()) state.playlists = Object.entries(snap.val()).map(([id,p]) => ({...p, id}));
-    else state.playlists = [];
+    state.playlists = snap.exists() ? Object.entries(snap.val()).map(([id,p])=>({...p,id})) : [];
     renderSidebarPlaylists();
   });
   state.listenersOff.push(() => off(tracksRef), () => off(plRef));
@@ -1114,14 +1120,28 @@ function updateUserUI() {
   const n = u.name || state.user?.displayName || 'User';
   const init = n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
   const photo = u.photoURL || state.user?.photoURL;
+
   ['sidebarAvatar','profileAv'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.innerHTML = photo ? `<img src="${photo}" />` : init;
   });
+
   document.getElementById('sidebarUserName').textContent = n;
-  document.getElementById('profileName').textContent = n;
-  document.getElementById('profileEmail').textContent = state.user?.email || '';
+
+  const nameDisp = document.getElementById('profileNameDisplay');
+  if (nameDisp) nameDisp.textContent = n;
+  const emailDisp = document.getElementById('profileEmailDisplay');
+  if (emailDisp) emailDisp.textContent = state.user?.email || '';
+  const bioDisp = document.getElementById('profileBioDisplay');
+  if (bioDisp) bioDisp.textContent = u.bio || '';
+
+  // Banner
+  const bannerImg = document.getElementById('profileBannerImg');
+  if (bannerImg && u.bannerUrl) {
+    bannerImg.src = u.bannerUrl;
+    bannerImg.style.display = 'block';
+  }
 
   if (state.isPremium) {
     document.getElementById('sidebarPlan').textContent = '💎 Premium';
@@ -1146,26 +1166,70 @@ function renderPremiumSection() {
   if (state.isPremium) {
     const exp = state.userData?.premiumExpiry;
     const expStr = exp ? `до ${new Date(exp).toLocaleDateString('ru')}` : 'навсегда';
-    el.innerHTML = `
-      <div class="premium-card">
-        <div class="premium-badge-lg">💎 Premium Active</div>
-        <div style="font-size:.88rem;color:var(--text2);">Действует: ${expStr}</div>
-        <div class="premium-features">
-          <div class="premium-feat">✓ Без рекламы</div><div class="premium-feat">✓ HD качество</div>
-          <div class="premium-feat">✓ Офлайн режим</div><div class="premium-feat">✓ Все треки</div>
-        </div>
-      </div>`;
+    el.innerHTML = `<div class="premium-card">
+      <div class="premium-badge-lg">💎 Premium Active</div>
+      <div style="font-size:.88rem;color:var(--text2);">Действует: ${expStr}</div>
+      <div class="premium-features">
+        <div class="premium-feat">✓ Без рекламы</div><div class="premium-feat">✓ HD качество</div>
+        <div class="premium-feat">✓ Офлайн режим</div><div class="premium-feat">✓ Все треки</div>
+      </div></div>`;
   } else {
-    el.innerHTML = `
-      <div class="settings-card">
-        <div class="settings-card-title">💎 Подписка</div>
-        <div class="setting-row">
-          <div><div class="setting-label">Free Plan</div><div class="setting-sub">Базовое качество · Ограниченные функции</div></div>
-          <button class="btn-primary" style="width:auto;padding:8px 20px;font-size:.82rem;background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;" onclick="showPremiumModal()">💎 Premium</button>
-        </div>
-      </div>`;
+    el.innerHTML = `<div class="settings-card">
+      <div class="settings-card-title">💎 Подписка</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Free Plan</div><div class="setting-sub">Базовое качество · Ограниченные функции</div></div>
+        <button class="btn-primary" style="width:auto;padding:8px 20px;font-size:.82rem;background:linear-gradient(135deg,var(--premium2),var(--premium));color:#000;" onclick="showPremiumModal()">💎 Premium</button>
+      </div></div>`;
   }
 }
+
+// ==================== FIX #3: PROFILE EDIT ====================
+window.toggleProfileEdit = function() {
+  const form = document.getElementById('profileEditForm');
+  const isHidden = form.classList.contains('hidden');
+  if (isHidden) {
+    document.getElementById('editName').value = state.userData?.name || '';
+    document.getElementById('editBio').value = state.userData?.bio || '';
+    document.getElementById('editSocial').value = state.userData?.social || '';
+  }
+  form.classList.toggle('hidden');
+  document.getElementById('editProfileBtn').textContent = isHidden ? '✕ Закрыть' : '✏ Редактировать';
+};
+
+window.saveProfileEdit = async function() {
+  const name = document.getElementById('editName').value.trim();
+  const bio = document.getElementById('editBio').value.trim();
+  const social = document.getElementById('editSocial').value.trim();
+  if (!name) return showToast('Имя не может быть пустым!', 'error');
+  try {
+    await update(ref(db, `users/${state.user.uid}`), { name, bio, social });
+    await updateProfile(state.user, { displayName: name });
+    state.userData = {...(state.userData||{}), name, bio, social};
+    updateUserUI();
+    document.getElementById('profileEditForm').classList.add('hidden');
+    document.getElementById('editProfileBtn').textContent = '✏ Редактировать';
+    showToast('✓ Профиль обновлён!', 'success');
+  } catch(e) {
+    showToast('Ошибка: ' + e.message, 'error');
+  }
+};
+
+window.handleBannerUpload = async function(input) {
+  const file = input.files[0];
+  if (!file || !state.user) return;
+  try {
+    showToast('⏳ Загружаем баннер...');
+    const storageRef = sRef(storage, `banners/${state.user.uid}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    await update(ref(db, `users/${state.user.uid}`), { bannerUrl: url });
+    state.userData = {...(state.userData||{}), bannerUrl: url};
+    const bannerImg = document.getElementById('profileBannerImg');
+    bannerImg.src = url;
+    bannerImg.style.display = 'block';
+    showToast('✓ Баннер обновлён!', 'success');
+  } catch(e) { showToast('Ошибка загрузки баннера', 'error'); }
+};
 
 // ==================== NAVIGATION ====================
 window.showPanel = function(panel) {
@@ -1177,7 +1241,7 @@ window.showPanel = function(panel) {
   if (navEl) navEl.classList.add('active');
   state.currentPanel = panel;
   if (panel === 'library') renderLibrary();
-  if (panel === 'profile') { renderProfile(); }
+  if (panel === 'profile') renderProfile();
   if (panel === 'discover') renderDiscover();
   if (panel === 'admin') renderAdminPanel();
   if (panel === 'upload') renderPublishedTracks();
@@ -1208,44 +1272,40 @@ function updateHero() {
 function renderRecentListens() {
   const el = document.getElementById('recentListens');
   if (!el) return;
-  const allTracks = state.uploadedTracks;
   const recent = state.recentListens
-    .map(id => allTracks.find(t => t.id === id))
+    .map(id => state.uploadedTracks.find(t=>t.id===id))
     .filter(Boolean)
     .filter(t => !state.bannedTracks.has(t.id))
-    .slice(0, 10);
-
+    .slice(0,10);
   if (!recent.length) {
     el.innerHTML = `<div style="color:var(--text3);font-size:.85rem;padding:1rem 0;white-space:nowrap;">Начни слушать треки — они появятся здесь 🎵</div>`;
     return;
   }
   el.innerHTML = recent.map(t => {
     const cov = t.coverUrl ? `<img src="${t.coverUrl}" />` : t.emoji;
-    return `
-      <div class="recent-card" onclick="playTrack('${t.id}')">
-        <div class="recent-cover ${t.color||'c1'}">${cov}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
-        <div class="recent-title">${t.title}</div>
-        <div class="recent-artist">${t.artist}</div>
-      </div>`;
+    return `<div class="recent-card" onclick="playTrack('${t.id}')">
+      <div class="recent-cover ${t.color||'c1'}">${cov}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
+      <div class="recent-title">${t.title}</div>
+      <div class="recent-artist">${t.artist}</div>
+    </div>`;
   }).join('');
 }
 
 async function addToRecentListens(trackId) {
   if (!state.user) return;
-  state.recentListens = [trackId, ...state.recentListens.filter(id => id !== trackId)].slice(0,20);
-  const uid = state.user.uid;
-  await set(ref(db, `users/${uid}/recentListens/${trackId}`), { trackId, ts: Date.now() });
+  state.recentListens = [trackId, ...state.recentListens.filter(id=>id!==trackId)].slice(0,20);
+  await set(ref(db, `users/${state.user.uid}/recentListens/${trackId}`), { trackId, ts: Date.now() });
   renderRecentListens();
 }
 
-// ==================== TRENDING / COMMUNITY TRACKS ====================
+// ==================== TRENDING ====================
 function renderTrendingTracks() {
   const el = document.getElementById('trendingTracks');
   if (!el) return;
   const sorted = state.uploadedTracks
-    .filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)))
-    .sort((a,b) => (b.plays||0) - (a.plays||0))
-    .slice(0, 8);
+    .filter(t => !state.bannedTracks.has(t.id) && !state.bannedArtists.has(t.artist))
+    .sort((a,b) => (b.plays||0)-(a.plays||0))
+    .slice(0,8);
   if (!sorted.length) {
     el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Пока нет треков. Будь первым!</p></div>';
     return;
@@ -1257,42 +1317,39 @@ function renderCommunityTracks() {
   const el = document.getElementById('communityTracks');
   if (!el) return;
   const tracks = state.uploadedTracks
-    .filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)))
-    .sort((a,b) => (b.uploadedAt||0) - (a.uploadedAt||0))
+    .filter(t => !state.bannedTracks.has(t.id) && !state.bannedArtists.has(t.artist))
+    .sort((a,b) => (b.uploadedAt||0)-(a.uploadedAt||0))
     .slice(0,5);
   if (!tracks.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Пока нет треков от пользователей.<br>Будь первым!</p></div>';
+    el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">🎤</span><p>Пока нет треков.<br>Будь первым!</p></div>';
     return;
   }
   el.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1, true)).join('');
 }
 
-// ==================== TRACK ITEM RENDERER ====================
+// ==================== TRACK ITEM ====================
 function renderTrackItem(t, num, showAlbum=true) {
   const isBanned = state.bannedTracks.has(t.id);
   const isPlaying = state.currentTrack?.id === t.id;
   const isLiked = state.liked.has(t.id);
-  const coverHtml = t.coverUrl
-    ? `<img src="${t.coverUrl}" />`
-    : (t.emoji || '🎵');
+  const coverHtml = t.coverUrl ? `<img src="${t.coverUrl}" />` : (t.emoji||'🎵');
   const playsStr = t.plays > 1000000 ? (t.plays/1000000).toFixed(1)+'M' : t.plays > 1000 ? Math.floor(t.plays/1000)+'K' : (t.plays||0);
-  return `
-    <div class="track-item${isPlaying?' playing':''}${isBanned?' banned':''}" id="ti-${t.id}" onclick="${isBanned?'':(`playTrack('${t.id}')`)}">
-      <div class="track-num">${isPlaying ? '<div class="bars-anim"><div class="bar-a"></div><div class="bar-a"></div><div class="bar-a"></div></div>' : num}</div>
-      <div class="track-cover ${t.color||'c1'}">${coverHtml}<div class="track-cover-overlay">▶</div></div>
-      <div class="track-info">
-        <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[ЗАБАНЕН]</span>':''}</div>
-        <div class="track-artist">${t.artist}${t.uploaderName?' · <span style="color:var(--text3)">'+t.uploaderName+'</span>':''}</div>
-      </div>
-      ${showAlbum && t.album ? `<div class="track-album">${t.album}${t.genre?' · '+t.genre:''}</div>` : ''}
-      <div class="track-actions">
-        ${!isBanned ? `<div style="font-size:.72rem;color:var(--text3);margin-right:4px;">${playsStr}</div>` : ''}
-        ${!isBanned ? `<button class="btn-flag" onclick="event.stopPropagation();reportTrack('${t.id}')" title="Пожаловаться">⚑</button>` : ''}
-        <button class="track-add-btn" onclick="event.stopPropagation();openAddToPlaylist('${t.id}')">+ Плейлист</button>
-        <div class="track-like${isLiked?' liked':''}" onclick="event.stopPropagation();toggleLike('${t.id}')">${isLiked?'♥':'♡'}</div>
-        <div class="track-dur">${t.dur||'?:??'}</div>
-      </div>
-    </div>`;
+  return `<div class="track-item${isPlaying?' playing':''}${isBanned?' banned':''}" id="ti-${t.id}" onclick="${isBanned?'':(`playTrack('${t.id}')`)}">
+    <div class="track-num">${isPlaying ? '<div class="bars-anim"><div class="bar-a"></div><div class="bar-a"></div><div class="bar-a"></div></div>' : num}</div>
+    <div class="track-cover ${t.color||'c1'}">${coverHtml}<div class="track-cover-overlay">▶</div></div>
+    <div class="track-info">
+      <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[ЗАБАНЕН]</span>':''}</div>
+      <div class="track-artist">${t.artist}${t.uploaderName?' · <span style="color:var(--text3)">'+t.uploaderName+'</span>':''}</div>
+    </div>
+    ${showAlbum && t.album ? `<div class="track-album">${t.album}${t.genre?' · '+t.genre:''}</div>` : ''}
+    <div class="track-actions">
+      ${!isBanned ? `<div style="font-size:.72rem;color:var(--text3);margin-right:4px;">${playsStr}</div>` : ''}
+      ${!isBanned ? `<button class="btn-flag" onclick="event.stopPropagation();reportTrack('${t.id}')" title="Пожаловаться">⚑</button>` : ''}
+      <button class="track-add-btn" onclick="event.stopPropagation();openAddToPlaylist('${t.id}')">+ Плейлист</button>
+      <div class="track-like${isLiked?' liked':''}" onclick="event.stopPropagation();toggleLike('${t.id}')">${isLiked?'♥':'♡'}</div>
+      <div class="track-dur">${t.dur||'?:??'}</div>
+    </div>
+  </div>`;
 }
 
 // ==================== DISCOVER ====================
@@ -1302,7 +1359,6 @@ function renderDiscover() {
   const statsEl = document.getElementById('discoverStats');
   if (statsEl) statsEl.innerHTML = `
     <div class="stat-chip"><div class="stat-chip-num">${allTracks.length}</div>треков</div>
-    <div class="stat-chip"><div class="stat-chip-num">${state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id)).length}</div>от сообщества</div>
     <div class="stat-chip"><div class="stat-chip-num">${totalPlays>1000000?(totalPlays/1000000).toFixed(1)+'M':Math.floor(totalPlays/1000)+'K'}</div>прослушиваний</div>
     <div class="stat-chip"><div class="stat-chip-num">${Object.keys(state.allUsers).length}</div>участников</div>`;
 
@@ -1315,33 +1371,30 @@ function renderDiscover() {
 
   const ppEl = document.getElementById('popularPlaylists');
   if (ppEl) {
-    const pubPl = state.playlists
-      .filter(p => p.isPublic)
+    const pubPl = state.playlists.filter(p=>p.isPublic)
       .map(p => {
-        const trackObjs = p.tracks ? p.tracks.map(id => allTracks.find(t=>t.id===id)).filter(Boolean) : [];
-        const score = trackObjs.reduce((s,t)=>(s+(t.plays||0)),0) + (p.tracks||[]).length * 1000;
-        return {...p, score, trackCount: trackObjs.length};
+        const cnt = Array.isArray(p.tracks) ? p.tracks.length : 0;
+        return {...p, score:(p.plays||0)+cnt*100};
       })
-      .sort((a,b) => b.score - a.score)
-      .slice(0, 8);
-    if (!pubPl.length) ppEl.innerHTML = '<div style="color:var(--text3);font-size:.85rem;padding:.5rem 0;">Нет публичных плейлистов.</div>';
-    else ppEl.innerHTML = pubPl.map(p => renderPlaylistCard(p)).join('');
+      .sort((a,b)=>b.score-a.score).slice(0,8);
+    ppEl.innerHTML = !pubPl.length
+      ? '<div style="color:var(--text3);font-size:.85rem;padding:.5rem 0;">Нет публичных плейлистов.</div>'
+      : pubPl.map(p=>renderPlaylistCard(p)).join('');
   }
-
   renderAllCommunityTracks();
 }
 
 function renderAllCommunityTracks() {
   const atEl = document.getElementById('allCommunityTracks');
   if (!atEl) return;
-  let tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id) && !(state.bannedArtists && state.bannedArtists.has(t.artist)));
+  let tracks = state.uploadedTracks.filter(t => !state.bannedTracks.has(t.id) && !state.bannedArtists.has(t.artist));
   if (state.genreFilter) tracks = tracks.filter(t => t.genre === state.genreFilter);
-  tracks = tracks.sort((a,b) => (b.plays||0)-(a.plays||0));
+  tracks = tracks.sort((a,b)=>(b.plays||0)-(a.plays||0));
   if (!tracks.length) {
     atEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon">🎤</span><p>${state.genreFilter?`Нет треков в жанре ${state.genreFilter}`:'Нет треков от сообщества.'}</p></div>`;
     return;
   }
-  atEl.innerHTML = tracks.map((t,i) => renderTrackItem(t, i+1)).join('');
+  atEl.innerHTML = tracks.map((t,i)=>renderTrackItem(t,i+1)).join('');
 }
 
 window.filterByGenre = function(genre) {
@@ -1362,50 +1415,49 @@ window.clearGenreFilter = function() {
 function renderPlaylistCard(p) {
   const coverHtml = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />` : (p.emoji||'🎵');
   const cnt = Array.isArray(p.tracks) ? p.tracks.length : 0;
-  return `
-    <div class="card" onclick="openPlaylistView('${p.id}')">
-      <div class="card-cover ${p.color||'c1'}">${coverHtml}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
-      <div class="card-title">${p.name}</div>
-      <div class="card-sub">${cnt} треков · ${p.ownerName||'?'}</div>
-      ${p.isPublic ? '<div class="card-badge badge-new">Public</div>' : ''}
-    </div>`;
+  return `<div class="card" onclick="openPlaylistView('${p.id}')">
+    <div class="card-cover ${p.color||'c1'}">${coverHtml}<div class="play-overlay"><div class="play-btn-c">▶</div></div></div>
+    <div class="card-title">${p.name}</div>
+    <div class="card-sub">${cnt} треков · ${p.ownerName||'?'}</div>
+    ${p.isPublic ? '<div class="card-badge badge-new">Public</div>' : ''}
+  </div>`;
 }
 
 // ==================== LIBRARY ====================
 function renderLibrary() {
-  const allTracks = state.uploadedTracks;
-  const likedTracks = allTracks.filter(t => state.liked.has(t.id));
+  const likedTracks = state.uploadedTracks.filter(t => state.liked.has(t.id));
   document.getElementById('likedCount').textContent = likedTracks.length + ' треков';
   const lEl = document.getElementById('likedTracks');
   lEl.innerHTML = !likedTracks.length
     ? '<div class="empty-state"><span class="empty-state-icon">♡</span><p>Нажми ♡ у любого трека.</p></div>'
-    : likedTracks.map((t,i) => renderTrackItem(t, i+1)).join('');
+    : likedTracks.map((t,i)=>renderTrackItem(t,i+1)).join('');
   const mpEl = document.getElementById('myPlaylistsGrid');
-  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
+  const myPls = state.playlists.filter(p=>p.ownerId===state.user?.uid);
   mpEl.innerHTML = !myPls.length
     ? '<div style="color:var(--text3);font-size:.85rem;padding:.5rem 0;">Нет плейлистов.</div>'
-    : myPls.map(p => renderPlaylistCard(p)).join('');
+    : myPls.map(p=>renderPlaylistCard(p)).join('');
 }
 
 // ==================== PROFILE ====================
 function renderProfile() {
+  updateUserUI();
   renderProfileStats();
-  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
+  const myTracks = state.uploadedTracks.filter(t=>t.uploaderUid===state.user?.uid);
   const el = document.getElementById('profileMyTracks');
   el.innerHTML = !myTracks.length
     ? '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Ты ещё не выложил треки.</p></div>'
-    : '<div class="track-list">' + myTracks.map((t,i) => renderTrackItem(t, i+1)).join('') + '</div>';
+    : '<div class="track-list">' + myTracks.map((t,i)=>renderTrackItem(t,i+1)).join('') + '</div>';
   const acEl = document.getElementById('adminCodeActivation');
   if (acEl) acEl.style.display = state.isAdmin ? 'none' : 'block';
   renderPremiumSection();
 }
 
 function renderProfileStats() {
-  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
+  const myTracks = state.uploadedTracks.filter(t=>t.uploaderUid===state.user?.uid);
   const myPlays = myTracks.reduce((s,t)=>(s+(t.plays||0)),0);
   document.getElementById('statTracks').textContent = myTracks.length;
   document.getElementById('statLiked').textContent = state.liked.size;
-  document.getElementById('statPlaylists').textContent = state.playlists.filter(p => p.ownerId === state.user?.uid).length;
+  document.getElementById('statPlaylists').textContent = state.playlists.filter(p=>p.ownerId===state.user?.uid).length;
   document.getElementById('statPlays').textContent = myPlays > 1000 ? Math.floor(myPlays/1000)+'K' : myPlays;
   const badgeEl = document.getElementById('profilePlanBadge');
   if (badgeEl) {
@@ -1417,23 +1469,22 @@ function renderProfileStats() {
 
 function renderSidebarPlaylists() {
   const el = document.getElementById('sidebarPlaylists');
-  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
+  const myPls = state.playlists.filter(p=>p.ownerId===state.user?.uid);
   if (!myPls.length) { el.innerHTML = ''; return; }
   el.innerHTML = myPls.map(p => {
     const thumb = p.coverUrl ? `<img src="${p.coverUrl}" />` : (p.emoji||'🎵');
     const cnt = Array.isArray(p.tracks) ? p.tracks.length : 0;
-    return `
-      <div class="playlist-sidebar-item" onclick="openPlaylistView('${p.id}')">
-        <div class="playlist-thumb ${p.color||'c1'}">${thumb}</div>
-        <div class="playlist-sidebar-info">
-          <div class="playlist-sidebar-name">${p.name}</div>
-          <div class="playlist-sidebar-count">${cnt} треков</div>
-        </div>
-      </div>`;
+    return `<div class="playlist-sidebar-item" onclick="openPlaylistView('${p.id}')">
+      <div class="playlist-thumb ${p.color||'c1'}">${thumb}</div>
+      <div class="playlist-sidebar-info">
+        <div class="playlist-sidebar-name">${p.name}</div>
+        <div class="playlist-sidebar-count">${cnt} треков</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ==================== PLAYLIST ====================
+// ==================== FIX #4: PLAYLIST CREATE ====================
 function initPlaylistModal() {
   const er = document.getElementById('plEmojiRow');
   if (er) er.innerHTML = PLAYLIST_EMOJIS.map(e => `<div class="emoji-opt${e==='🎵'?' sel':''}" onclick="selectPLEmoji(this,'${e}')">${e}</div>`).join('');
@@ -1442,16 +1493,15 @@ function initPlaylistModal() {
 }
 
 window.selectPLEmoji = function(el, emoji) {
-  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('sel'));
+  document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel');
   state.selectedPLEmoji = emoji;
   state.plCoverDataUrl = null;
-  const preview = document.getElementById('plCoverPreview');
-  preview.innerHTML = emoji;
+  document.getElementById('plCoverPreview').innerHTML = emoji;
 };
 
 window.selectPLGrad = function(el, grad) {
-  document.querySelectorAll('.grad-opt').forEach(e => e.classList.remove('sel'));
+  document.querySelectorAll('.grad-opt').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel');
   state.selectedPLGrad = grad;
 };
@@ -1477,43 +1527,58 @@ window.openCreatePlaylist = function() {
   state.selectedPLGrad = 'c1';
 };
 
+// FIX #4: Плейлист — убираем serverTimestamp() из объекта, используем Date.now()
 window.createPlaylist = async function() {
   const name = document.getElementById('plName').value.trim();
   if (!name) return showToast('Введи название!', 'error');
   const isPublic = document.getElementById('plPublicToggle').classList.contains('on');
-  let coverUrl = null;
-  if (state.plCoverDataUrl) {
-    try {
-      const blob = await fetch(state.plCoverDataUrl).then(r=>r.blob());
-      const storageRef = sRef(storage, `playlists/${Date.now()}_cover`);
-      await uploadBytes(storageRef, blob);
-      coverUrl = await getDownloadURL(storageRef);
-    } catch(e) { coverUrl = null; }
+
+  const btn = document.querySelector('#modalPlaylist .btn-primary');
+  if (btn) { btn.textContent = '⏳ Создаём...'; btn.disabled = true; }
+
+  try {
+    let coverUrl = null;
+    if (state.plCoverDataUrl) {
+      try {
+        const blob = await fetch(state.plCoverDataUrl).then(r=>r.blob());
+        const storageRef = sRef(storage, `playlists/${state.user.uid}/${Date.now()}_cover`);
+        await uploadBytes(storageRef, blob);
+        coverUrl = await getDownloadURL(storageRef);
+      } catch(e) { console.warn('Cover upload failed:', e); }
+    }
+
+    const plData = {
+      name,
+      desc: document.getElementById('plDesc').value.trim(),
+      emoji: state.selectedPLEmoji,
+      color: state.selectedPLGrad,
+      coverUrl: coverUrl || null,
+      isPublic,
+      ownerId: state.user.uid,
+      ownerName: state.userData?.name || state.user.displayName || 'User',
+      tracks: [],
+      createdAt: Date.now(), // FIX: Date.now() вместо serverTimestamp()
+      plays: 0,
+    };
+
+    const plRef = push(ref(db, 'playlists'));
+    await set(plRef, plData);
+    closeModal('modalPlaylist');
+    showToast(`✓ Плейлист "${name}" создан!`, 'success');
+  } catch(e) {
+    showToast('Ошибка: ' + e.message, 'error');
+    console.error('Create playlist error:', e);
+  } finally {
+    if (btn) { btn.textContent = 'Создать плейлист'; btn.disabled = false; }
   }
-  const plRef = push(ref(db, 'playlists'));
-  const pl = {
-    name, desc: document.getElementById('plDesc').value.trim(),
-    emoji: state.selectedPLEmoji,
-    color: state.selectedPLGrad,
-    coverUrl,
-    isPublic,
-    ownerId: state.user.uid,
-    ownerName: state.userData?.name || state.user.displayName || 'User',
-    tracks: [],
-    createdAt: serverTimestamp(),
-    plays: 0,
-  };
-  await set(plRef, pl);
-  closeModal('modalPlaylist');
-  showToast(`✓ Плейлист "${name}" создан!`, 'success');
 };
 
 window.openPlaylistView = function(plId) {
-  const pl = state.playlists.find(p => p.id === plId);
+  const pl = state.playlists.find(p=>p.id===plId);
   if (!pl) return;
   state.currentPlaylistId = plId;
   const allTracks = state.uploadedTracks;
-  const tracks = (pl.tracks||[]).map(tid => allTracks.find(t=>t.id===tid)).filter(Boolean);
+  const tracks = (pl.tracks||[]).map(tid=>allTracks.find(t=>t.id===tid)).filter(Boolean);
   const isOwner = pl.ownerId === state.user?.uid;
   const coverHtml = pl.coverUrl ? `<img src="${pl.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" />` : (pl.emoji||'🎵');
   document.getElementById('playlistViewContent').innerHTML = `
@@ -1535,7 +1600,7 @@ window.openPlaylistView = function(plId) {
       </div>
     </div>
     ${tracks.length
-      ? `<div class="track-list">${tracks.map((t,i) => renderTrackItem(t, i+1) + (isOwner ? `<div onclick="removeFromPlaylist('${pl.id}','${t.id}')" style="padding:4px 12px;font-size:.75rem;color:var(--red);cursor:pointer;text-align:right;margin-top:-6px;">— Удалить</div>` : '')).join('')}</div>`
+      ? `<div class="track-list">${tracks.map((t,i)=>renderTrackItem(t,i+1)+(isOwner?`<div onclick="removeFromPlaylist('${pl.id}','${t.id}')" style="padding:4px 12px;font-size:.75rem;color:var(--red);cursor:pointer;text-align:right;margin-top:-6px;">— Удалить</div>`:'') ).join('')}</div>`
       : '<div class="empty-state"><span class="empty-state-icon">🎵</span><p>Плейлист пуст.</p></div>'}`;
   showPanel('playlist');
 };
@@ -1543,8 +1608,7 @@ window.openPlaylistView = function(plId) {
 window.playPlaylist = async function(plId) {
   const pl = state.playlists.find(p=>p.id===plId);
   if (!pl || !(pl.tracks||[]).length) return showToast('Плейлист пуст!','error');
-  const allTracks = state.uploadedTracks;
-  const queue = pl.tracks.map(id => allTracks.find(t=>t.id===id)).filter(Boolean);
+  const queue = pl.tracks.map(id=>state.uploadedTracks.find(t=>t.id===id)).filter(Boolean);
   if (!queue.length) return;
   await update(ref(db, `playlists/${plId}`), { plays: (pl.plays||0)+1 });
   state.queue = queue;
@@ -1554,7 +1618,7 @@ window.playPlaylist = async function(plId) {
 
 window.openAddToPlaylist = function(trackId) {
   state.addToPlaylistTrackId = trackId;
-  const myPls = state.playlists.filter(p => p.ownerId === state.user?.uid);
+  const myPls = state.playlists.filter(p=>p.ownerId===state.user?.uid);
   const el = document.getElementById('addToPlaylistList');
   if (!myPls.length) {
     el.innerHTML = '<div class="empty-state"><p>Нет плейлистов. Создай один!</p></div>';
@@ -1563,15 +1627,14 @@ window.openAddToPlaylist = function(trackId) {
       const tracks = p.tracks||[];
       const isIn = tracks.includes(trackId);
       const cover = p.coverUrl ? `<img src="${p.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : (p.emoji||'🎵');
-      return `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:var(--t);background:${isIn?'rgba(108,71,255,.1)':'var(--bg3)'};margin-bottom:6px;" onclick="addTrackToPlaylist('${p.id}')">
-          <div class="playlist-thumb ${p.color||'c1'}">${cover}</div>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
-            <div style="font-size:.75rem;color:var(--text2);">${tracks.length} треков</div>
-          </div>
-          ${isIn ? '<span style="color:var(--accent2);font-size:.82rem;">✓</span>' : ''}
-        </div>`;
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:var(--t);background:${isIn?'rgba(108,71,255,.1)':'var(--bg3)'};margin-bottom:6px;" onclick="addTrackToPlaylist('${p.id}')">
+        <div class="playlist-thumb ${p.color||'c1'}">${cover}</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+          <div style="font-size:.75rem;color:var(--text2);">${tracks.length} треков</div>
+        </div>
+        ${isIn ? '<span style="color:var(--accent2);font-size:.82rem;">✓</span>' : ''}
+      </div>`;
     }).join('');
   }
   document.getElementById('modalAddToPlaylist').classList.add('open');
@@ -1608,7 +1671,7 @@ window.deletePlaylist = async function(plId) {
   showToast('Плейлист удалён');
 };
 
-// ==================== UPLOAD ====================
+// ==================== FIX #1: UPLOAD ====================
 window.handleDrop = function(e) {
   e.preventDefault();
   document.getElementById('uploadZone').classList.remove('drag');
@@ -1630,7 +1693,7 @@ window.handleAudioFiles = function(input) {
   document.getElementById('trackTitle').value = state.uploadingTrack.name;
   document.getElementById('trackArtist').value = state.userData?.name || state.user?.displayName || '';
   document.getElementById('uploadCoverPreview').innerHTML = '🎵';
-  showToast('✓ Файл выбран, заполни детали', 'success');
+  showToast('✓ Файл выбран: ' + file.name, 'success');
 };
 
 window.handleCoverUpload = function(input) {
@@ -1644,6 +1707,7 @@ window.handleCoverUpload = function(input) {
   reader.readAsDataURL(file);
 };
 
+// FIX #1: Загрузка трека — убираем serverTimestamp(), добавляем правильную обработку ошибок Storage
 window.publishTrack = async function() {
   if (!state.uploadingTrack) return showToast('Сначала выбери файл!', 'error');
   const title = document.getElementById('trackTitle').value.trim();
@@ -1651,52 +1715,76 @@ window.publishTrack = async function() {
   const genre = document.getElementById('trackGenre').value;
   if (!title) return showToast('Введи название!', 'error');
   if (!artist) return showToast('Введи исполнителя!', 'error');
+  if (!state.user) return showToast('Не авторизован!', 'error');
 
   const btn = document.getElementById('publishBtn');
-  btn.textContent = '⏳ Загружаем...';
+  btn.textContent = '⏳ Загружаем аудио...';
   btn.disabled = true;
 
   try {
-    const audioRef = sRef(storage, `tracks/${state.user.uid}/${Date.now()}_${state.uploadingTrack.file.name}`);
+    // Загружаем аудио файл
+    const audioFileName = `${Date.now()}_${state.uploadingTrack.file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const audioRef = sRef(storage, `tracks/${state.user.uid}/${audioFileName}`);
+    
+    showToast('⏳ Загружаем файл...', '');
     await uploadBytes(audioRef, state.uploadingTrack.file);
     const audioUrl = await getDownloadURL(audioRef);
 
+    // Загружаем обложку если есть
     let coverUrl = null;
     if (state.uploadCoverDataUrl) {
       try {
+        btn.textContent = '⏳ Загружаем обложку...';
         const blob = await fetch(state.uploadCoverDataUrl).then(r=>r.blob());
         const cRef = sRef(storage, `covers/${state.user.uid}/${Date.now()}_cover`);
         await uploadBytes(cRef, blob);
         coverUrl = await getDownloadURL(cRef);
-      } catch(e) {}
+      } catch(e) {
+        console.warn('Cover upload failed:', e);
+      }
     }
 
     const colors = ['c1','c2','c3','c4','c5','c6','c7','c8'];
-    const trackRef = push(ref(db, 'tracks'));
-    await set(trackRef, {
-      title, artist, genre,
+    const trackData = {
+      title,
+      artist,
+      genre,
       album: genre,
       desc: document.getElementById('trackDesc').value.trim(),
       emoji: '🎵',
-      coverUrl,
+      coverUrl: coverUrl || null,
       color: colors[Math.floor(Math.random()*colors.length)],
       dur: '?:??',
       secs: 180,
       uploaderUid: state.user.uid,
       uploaderName: state.userData?.name || state.user.displayName || 'User',
-      uploaderEmail: state.user.email,
+      uploaderEmail: state.user.email || '',
       plays: 0,
-      uploadedAt: serverTimestamp(),
+      uploadedAt: Date.now(), // FIX: Date.now() вместо serverTimestamp()
       url: audioUrl,
-    });
+    };
+
+    const trackRef = push(ref(db, 'tracks'));
+    await set(trackRef, trackData);
+
+    // Обновляем длительность после загрузки
+    const audio = new Audio(audioUrl);
+    audio.onloadedmetadata = async () => {
+      const secs = Math.floor(audio.duration);
+      const dur = `${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`;
+      await update(ref(db, `tracks/${trackRef.key}`), { dur, secs });
+    };
 
     state.uploadingTrack = null;
     state.uploadCoverDataUrl = null;
     document.getElementById('uploadForm').classList.add('hidden');
     document.getElementById('audioFileInput').value = '';
+    document.getElementById('trackDesc').value = '';
     showToast(`🚀 Трек "${title}" опубликован!`, 'success');
+    renderPublishedTracks();
   } catch(e) {
-    showToast('Ошибка загрузки: ' + e.message, 'error');
+    console.error('Upload error:', e);
+    showToast('❌ Ошибка загрузки: ' + e.message, 'error');
   }
 
   btn.textContent = '🚀 Опубликовать трек';
@@ -1704,20 +1792,19 @@ window.publishTrack = async function() {
 };
 
 function renderPublishedTracks() {
-  const myTracks = state.uploadedTracks.filter(t => t.uploaderUid === state.user?.uid);
+  const myTracks = state.uploadedTracks.filter(t=>t.uploaderUid===state.user?.uid);
   const el = document.getElementById('myPublishedTracks');
   if (!el) return;
   if (!myTracks.length) { el.innerHTML = ''; return; }
   el.innerHTML = `<div class="section-hdr"><div class="section-title">Мои треки</div></div>
-    <div class="track-list">${myTracks.map((t,i)=>renderTrackItem(t, i+1)).join('')}</div>`;
+    <div class="track-list">${myTracks.map((t,i)=>renderTrackItem(t,i+1)).join('')}</div>`;
 }
 
 // ==================== PLAYER ====================
 window.playTrack = function(id) {
-  const allTracks = state.uploadedTracks;
-  const track = allTracks.find(t=>t.id===id);
+  const track = state.uploadedTracks.find(t=>t.id===id);
   if (!track || state.bannedTracks.has(id)) return;
-  const notBanned = allTracks.filter(t=>!state.bannedTracks.has(t.id));
+  const notBanned = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id));
   state.queue = notBanned;
   state.queueIdx = notBanned.findIndex(t=>t.id===id);
   playTrackObj(track);
@@ -1731,6 +1818,7 @@ window.playFirstTrack = function() {
 
 async function playTrackObj(track) {
   if (state.currentAudio) { state.currentAudio.pause(); state.currentAudio = null; }
+  clearInterval(progressInterval);
   state.currentTrack = track;
   state.isPlaying = true;
   state.progress = 0;
@@ -1745,36 +1833,52 @@ async function playTrackObj(track) {
   }
   document.getElementById('playerTitle').textContent = track.title;
   document.getElementById('playerArtist').textContent = track.artist;
+  document.getElementById('timeCur').textContent = '0:00';
   document.getElementById('timeTotal').textContent = track.dur||'?:??';
   updatePlayBtn();
   updateHeartBtn();
+  document.getElementById('progFill').style.width = '0%';
 
   await addToRecentListens(track.id);
 
-  if (!track.id.startsWith('d')) {
-    update(ref(db, `tracks/${track.id}`), { plays: increment(1) }).catch(()=>{});
-  }
+  update(ref(db, `tracks/${track.id}`), { plays: increment(1) }).catch(()=>{});
 
   if (track.url) {
     const audio = new Audio(track.url);
-    audio.volume = document.getElementById('volSlider').value/100;
-    audio.play().catch(()=>{});
+    audio.crossOrigin = 'anonymous';
+    audio.volume = document.getElementById('volSlider').value / 100;
     state.currentAudio = audio;
-    audio.ontimeupdate = () => {
-      if (!audio.duration) return;
-      const p = (audio.currentTime/audio.duration)*100;
-      state.progress = p;
-      document.getElementById('progFill').style.width = p+'%';
-      const s = Math.floor(audio.currentTime);
-      document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+    audio.onloadedmetadata = () => {
       const ts = Math.floor(audio.duration);
       document.getElementById('timeTotal').textContent = `${Math.floor(ts/60)}:${String(ts%60).padStart(2,'0')}`;
     };
+
+    audio.ontimeupdate = () => {
+      if (!audio.duration || isNaN(audio.duration)) return;
+      const p = (audio.currentTime / audio.duration) * 100;
+      state.progress = p;
+      document.getElementById('progFill').style.width = p + '%';
+      const s = Math.floor(audio.currentTime);
+      document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+    };
+
     audio.onended = () => nextTrack();
-    clearInterval(progressInterval);
+    audio.onerror = (e) => {
+      console.error('Audio error:', e);
+      showToast('Ошибка воспроизведения', 'error');
+    };
+
+    try {
+      await audio.play();
+    } catch(e) {
+      console.warn('Autoplay blocked:', e);
+      state.isPlaying = false;
+      updatePlayBtn();
+    }
   } else {
-    clearInterval(progressInterval);
-    const totalMs = (track.secs||240)*1000;
+    // Симуляция прогресса если нет URL
+    const totalMs = (track.secs||240) * 1000;
     let elapsed = 0;
     let lastTick = Date.now();
     progressInterval = setInterval(() => {
@@ -1783,20 +1887,21 @@ async function playTrackObj(track) {
       lastTick = Date.now();
       const p = Math.min(100, (elapsed/totalMs)*100);
       state.progress = p;
-      document.getElementById('progFill').style.width = p+'%';
+      document.getElementById('progFill').style.width = p + '%';
       const s = Math.floor(elapsed/1000);
       document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-      if (p>=100) { clearInterval(progressInterval); nextTrack(); }
+      if (p >= 100) { clearInterval(progressInterval); nextTrack(); }
     }, 500);
   }
   showToast(`▶ ${track.title} — ${track.artist}`);
 }
 
 window.togglePlay = function() {
-  if (!state.currentTrack) { playTrack('d0'); return; }
+  if (!state.currentTrack) { playFirstTrack(); return; }
   state.isPlaying = !state.isPlaying;
   if (state.currentAudio) {
-    state.isPlaying ? state.currentAudio.play() : state.currentAudio.pause();
+    if (state.isPlaying) state.currentAudio.play().catch(()=>{});
+    else state.currentAudio.pause();
   }
   updatePlayBtn();
 };
@@ -1810,21 +1915,18 @@ window.seekTo = function(e) {
   if (!state.currentTrack) return;
   const rect = e.currentTarget.getBoundingClientRect();
   const pct = Math.max(0, Math.min(1, (e.clientX - rect.left)/rect.width));
-  state.progress = pct*100;
-  document.getElementById('progFill').style.width = state.progress+'%';
-  if (state.currentAudio) {
-    state.currentAudio.currentTime = pct*state.currentAudio.duration;
-  }
-  if (!state.currentAudio && state.currentTrack) {
-    const totalSecs = state.currentTrack.secs||240;
-    const s = Math.floor(pct*totalSecs);
-    document.getElementById('timeCur').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  state.progress = pct * 100;
+  document.getElementById('progFill').style.width = state.progress + '%';
+  if (state.currentAudio && !isNaN(state.currentAudio.duration)) {
+    state.currentAudio.currentTime = pct * state.currentAudio.duration;
   }
 };
 
 window.nextTrack = function() {
   if (!state.queue.length) return;
-  let idx = state.shuffle ? Math.floor(Math.random()*state.queue.length) : (state.queueIdx+1)%state.queue.length;
+  let idx = state.shuffle
+    ? Math.floor(Math.random()*state.queue.length)
+    : (state.queueIdx+1) % state.queue.length;
   if (state.repeat) idx = state.queueIdx;
   state.queueIdx = idx;
   playTrackObj(state.queue[idx]);
@@ -1832,7 +1934,7 @@ window.nextTrack = function() {
 
 window.prevTrack = function() {
   if (!state.queue.length) return;
-  const idx = (state.queueIdx-1+state.queue.length)%state.queue.length;
+  const idx = (state.queueIdx - 1 + state.queue.length) % state.queue.length;
   state.queueIdx = idx;
   playTrackObj(state.queue[idx]);
 };
@@ -1856,8 +1958,8 @@ window.setVolume = function(v) {
 
 window.toggleMute = function() {
   const slider = document.getElementById('volSlider');
-  if (slider.value>0) { slider._prev = slider.value; slider.value = 0; }
-  else slider.value = slider._prev||80;
+  if (slider.value > 0) { slider._prev = slider.value; slider.value = 0; }
+  else slider.value = slider._prev || 80;
   setVolume(slider.value);
 };
 
@@ -1880,12 +1982,11 @@ window.toggleLike = async function(id) {
     const likeEl = ti.querySelector('.track-like');
     if (likeEl) { likeEl.classList.toggle('liked', state.liked.has(id)); likeEl.textContent = state.liked.has(id) ? '♥' : '♡'; }
   }
-  if (state.currentPanel==='library') renderLibrary();
+  if (state.currentPanel === 'library') renderLibrary();
 };
 
 window.toggleCurrentLike = function() {
-  if (!state.currentTrack) return;
-  toggleLike(state.currentTrack.id);
+  if (state.currentTrack) toggleLike(state.currentTrack.id);
 };
 
 function updateHeartBtn() {
@@ -1933,7 +2034,7 @@ window.handleSearch = function() {
 
 function hlq(text, q) {
   const idx = text.toLowerCase().indexOf(q);
-  if (idx<0) return text;
+  if (idx < 0) return text;
   return text.slice(0,idx)+`<strong style="color:var(--accent2)">${text.slice(idx,idx+q.length)}</strong>`+text.slice(idx+q.length);
 }
 
@@ -1945,6 +2046,7 @@ window.handleAvatarUpload = async function(input) {
   const file = input.files[0];
   if (!file || !state.user) return;
   try {
+    showToast('⏳ Загружаем фото...');
     const storageRef = sRef(storage, `avatars/${state.user.uid}`);
     await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
@@ -1952,23 +2054,23 @@ window.handleAvatarUpload = async function(input) {
     state.userData = {...(state.userData||{}), photoURL: url};
     updateUserUI();
     showToast('✓ Аватарка обновлена!', 'success');
-  } catch(e) { showToast('Ошибка загрузки аватарки', 'error'); }
+  } catch(e) { showToast('Ошибка загрузки: ' + e.message, 'error'); }
 };
 
 // ==================== REPORT ====================
 window.reportTrack = async function(id) {
-  const count = (state.reportedTracks.get(id)||0)+1;
+  const count = (state.reportedTracks.get(id)||0) + 1;
   state.reportedTracks.set(id, count);
   await update(ref(db, `reports/${id}`), { count, trackId: id });
   showToast('⚑ Жалоба отправлена!', 'success');
 };
 
-// ==================== ADMIN ====================
+// ==================== FIX #2: ADMIN BAN ====================
 window.openAdminCode = function() {
   if (state.isAdmin) { showPanel('admin'); return; }
   document.getElementById('adminCodeScreen').classList.add('open');
   document.getElementById('adminCodeInput').value = '';
-  setTimeout(() => document.getElementById('adminCodeInput').focus(), 100);
+  setTimeout(()=>document.getElementById('adminCodeInput').focus(), 100);
 };
 
 window.closeAdminCode = function() { document.getElementById('adminCodeScreen').classList.remove('open'); };
@@ -2010,12 +2112,10 @@ function renderAdminPanel() {
 }
 
 function renderAdminStats() {
-  const allTracks = state.uploadedTracks;
   const el = document.getElementById('adminStats');
   if (!el) return;
   el.innerHTML = `
-    <div class="admin-stat"><div class="admin-stat-num">${allTracks.length}</div><div class="admin-stat-lbl">всего треков</div></div>
-    <div class="admin-stat"><div class="admin-stat-num">${state.uploadedTracks.length}</div><div class="admin-stat-lbl">от пользователей</div></div>
+    <div class="admin-stat"><div class="admin-stat-num">${state.uploadedTracks.length}</div><div class="admin-stat-lbl">всего треков</div></div>
     <div class="admin-stat"><div class="admin-stat-num" style="color:var(--red);">${state.bannedTracks.size}</div><div class="admin-stat-lbl">забанено</div></div>
     <div class="admin-stat"><div class="admin-stat-num" style="color:var(--yellow);">${state.reportedTracks.size}</div><div class="admin-stat-lbl">жалоб</div></div>
     <div class="admin-stat"><div class="admin-stat-num" style="color:var(--accent2);">${Object.keys(state.allUsers).length}</div><div class="admin-stat-lbl">пользователей</div></div>
@@ -2034,7 +2134,7 @@ window.switchAdminTab = function(tab) {
   if (tab === 'support') renderAdminSupport();
 };
 
-// ==================== SUPPORT SYSTEM ====================
+// ==================== SUPPORT ====================
 let currentReplyTicketId = null;
 
 window.sendSupportTicket = async function() {
@@ -2047,15 +2147,13 @@ window.sendSupportTicket = async function() {
     uid: state.user.uid,
     userName: state.userData?.name || state.user.displayName || 'User',
     userEmail: state.user.email,
-    category,
-    message,
+    category, message,
     status: 'open',
-    createdAt: serverTimestamp(),
-    reply: null,
-    repliedAt: null,
+    createdAt: Date.now(),
+    reply: null, repliedAt: null,
   });
   document.getElementById('supportMessage').value = '';
-  showToast('✉ Обращение отправлено! Ожидай ответа.', 'success');
+  showToast('✉ Обращение отправлено!', 'success');
   renderMyTickets();
 };
 
@@ -2078,7 +2176,7 @@ async function renderMyTickets() {
         <span class="ticket-date">${t.createdAt ? new Date(t.createdAt).toLocaleDateString('ru') : ''}</span>
       </div>
       <div class="ticket-msg">${t.message}</div>
-      ${t.reply ? `<div class="ticket-reply"><div class="ticket-reply-label">💬 Ответ администратора:</div>${t.reply}</div>` : ''}
+      ${t.reply ? `<div class="ticket-reply"><div class="ticket-reply-label">💬 Ответ:</div>${t.reply}</div>` : ''}
     </div>`).join('');
 }
 
@@ -2097,14 +2195,14 @@ async function renderAdminSupport() {
     <div class="ticket-item${!t.reply ? ' unread' : ''}">
       <div class="ticket-header">
         <span class="ticket-cat">${catLabels[t.category]||t.category}</span>
-        <span style="font-size:.8rem;font-weight:600;">${t.userName||'User'} · ${t.userEmail||''}</span>
+        <span style="font-size:.8rem;font-weight:600;">${t.userName||'User'}</span>
         <span class="${t.reply ? 'ticket-status-closed' : 'ticket-status-open'}">${t.reply ? '✓ Отвечено' : '⏳ Открыто'}</span>
         <span class="ticket-date">${t.createdAt ? new Date(t.createdAt).toLocaleDateString('ru') : ''}</span>
       </div>
       <div class="ticket-msg">${t.message}</div>
       ${t.reply ? `<div class="ticket-reply"><div class="ticket-reply-label">Твой ответ:</div>${t.reply}</div>` : ''}
       <div style="margin-top:8px;">
-        <button onclick="openSupportReply('${id}')" style="background:rgba(108,71,255,.15);border:1px solid var(--border);border-radius:8px;padding:5px 14px;color:var(--accent2);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;">${t.reply ? '✏ Изменить ответ' : '💬 Ответить'}</button>
+        <button onclick="openSupportReply('${id}')" style="background:rgba(108,71,255,.15);border:1px solid var(--border);border-radius:8px;padding:5px 14px;color:var(--accent2);font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;">${t.reply ? '✏ Изменить' : '💬 Ответить'}</button>
       </div>
     </div>`).join('');
 }
@@ -2127,67 +2225,92 @@ window.submitAdminReply = async function() {
   if (!currentReplyTicketId) return;
   const reply = document.getElementById('adminReplyText').value.trim();
   if (!reply) return showToast('Напиши ответ!', 'error');
-  await update(ref(db, `support/${currentReplyTicketId}`), { reply, status: 'closed', repliedAt: serverTimestamp(), repliedBy: state.userData?.name || 'Admin' });
+  await update(ref(db, `support/${currentReplyTicketId}`), {
+    reply, status: 'closed',
+    repliedAt: Date.now(),
+    repliedBy: state.userData?.name || 'Admin'
+  });
   closeModal('modalSupportReply');
   showToast('✓ Ответ отправлен!', 'success');
   renderAdminSupport();
 };
 
-// ===== BAN ARTIST =====
+// ==================== FIX #2: BAN ARTIST (исправлен safeKey) ====================
 window.banArtist = async function(artistName) {
   if (!artistName) return;
-  await set(ref(db, `bannedArtists/${artistName.replace(/[.#$[\]/]/g,'_')}`), true);
-  state.bannedArtists = state.bannedArtists || new Set();
+  const key = safeKey(artistName); // FIX: безопасный ключ
+  await set(ref(db, `bannedArtists/${key}`), { name: artistName, bannedAt: Date.now() });
   state.bannedArtists.add(artistName);
+  // Банируем все треки этого артиста
   const artistTracks = state.uploadedTracks.filter(t => t.artist === artistName);
-  for (const t of artistTracks) {
-    await set(ref(db, `bannedTracks/${t.id}`), true);
+  const promises = artistTracks.map(t => {
     state.bannedTracks.add(t.id);
-  }
+    return set(ref(db, `bannedTracks/${t.id}`), true);
+  });
+  await Promise.all(promises);
   renderAdminTracks();
   renderAdminStats();
   showToast(`🛡 Исполнитель "${artistName}" заблокирован (${artistTracks.length} треков)`, 'success');
 };
 
 window.unbanArtist = async function(artistName) {
-  await remove(ref(db, `bannedArtists/${artistName.replace(/[.#$[\]/]/g,'_')}`));
-  state.bannedArtists && state.bannedArtists.delete(artistName);
-  showToast(`✓ Исполнитель "${artistName}" разблокирован`, 'success');
+  const key = safeKey(artistName);
+  await remove(ref(db, `bannedArtists/${key}`));
+  state.bannedArtists.delete(artistName);
+  // Разбаниваем треки артиста
+  const artistTracks = state.uploadedTracks.filter(t => t.artist === artistName);
+  const promises = artistTracks.map(t => {
+    state.bannedTracks.delete(t.id);
+    return remove(ref(db, `bannedTracks/${t.id}`));
+  });
+  await Promise.all(promises);
   renderAdminTracks();
+  showToast(`✓ Исполнитель "${artistName}" разблокирован`, 'success');
 };
 
 window.renderAdminTracks = function() {
-  const allTracks = state.uploadedTracks;
-  const filter = document.getElementById('adminFilter')?.value||'all';
-  let filtered = allTracks;
-  if (filter==='active') filtered = allTracks.filter(t=>!state.bannedTracks.has(t.id));
-  if (filter==='banned') filtered = allTracks.filter(t=>state.bannedTracks.has(t.id));
-  if (filter==='reported') filtered = allTracks.filter(t=>state.reportedTracks.has(t.id));
+  const filter = document.getElementById('adminFilter')?.value || 'all';
+  let filtered = state.uploadedTracks;
+  if (filter === 'active') filtered = state.uploadedTracks.filter(t=>!state.bannedTracks.has(t.id));
+  if (filter === 'banned') filtered = state.uploadedTracks.filter(t=>state.bannedTracks.has(t.id));
+  if (filter === 'reported') filtered = state.uploadedTracks.filter(t=>state.reportedTracks.has(t.id));
+
   const el = document.getElementById('adminTrackList');
   if (!el) return;
   if (!filtered.length) { el.innerHTML = '<div class="empty-state"><span class="empty-state-icon">✓</span><p>Нет треков.</p></div>'; return; }
+
   el.innerHTML = filtered.map(t => {
     const isBanned = state.bannedTracks.has(t.id);
-    const reports = state.reportedTracks.get(t.id)||0;
-    const isDemo = t.id.startsWith('d');
+    const isArtistBanned = state.bannedArtists.has(t.artist);
+    const reports = state.reportedTracks.get(t.id) || 0;
     const cov = t.coverUrl ? `<img src="${t.coverUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />` : (t.emoji||'🎵');
-    return `
-      <div class="admin-track-item">
-        <div class="track-cover ${t.color||'c1'}">${cov}</div>
-        <div class="track-info">
-          <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[БАНТ]</span>':''}</div>
-          <div class="track-artist">${t.artist}${t.uploaderName?' · '+t.uploaderName:' · Демо'}</div>
-          ${reports>0?`<div class="admin-report">⚑ ${reports} жалоб</div>`:''}
-        </div>
-        <div class="admin-actions">
-          ${reports>0?`<span style="font-size:.75rem;color:var(--yellow);background:rgba(255,199,71,.1);padding:3px 10px;border-radius:20px;font-weight:700;">⚑ ${reports}</span>`:''}
-          ${!isDemo ? (isBanned
-            ? `<button class="btn-unban" onclick="unbanTrack('${t.id}')">✓ Разбанить</button>`
-            : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`) : ''}
-          ${!isDemo && !isBanned && t.artist ? `<button class="ban-artist-btn" onclick="banArtist('${t.artist.replace(/'/g,"\'")}')">🚫 Бан арт.</button>` : ''}
-        </div>
-      </div>`;
+    // Безопасно передаём имя артиста через data-атрибут
+    return `<div class="admin-track-item">
+      <div class="track-cover ${t.color||'c1'}">${cov}</div>
+      <div class="track-info">
+        <div class="track-name">${t.title}${isBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:6px;">[БАН]</span>':''}</div>
+        <div class="track-artist">${t.artist}${isArtistBanned?'<span style="color:var(--red);font-size:.7rem;margin-left:4px;">[арт.бан]</span>':''}</div>
+        ${reports>0?`<div class="admin-report">⚑ ${reports} жалоб</div>`:''}
+      </div>
+      <div class="admin-actions">
+        ${reports>0?`<span style="font-size:.75rem;color:var(--yellow);background:rgba(255,199,71,.1);padding:3px 10px;border-radius:20px;font-weight:700;">⚑ ${reports}</span>`:''}
+        ${isBanned
+          ? `<button class="btn-unban" onclick="unbanTrack('${t.id}')">✓ Разбанить</button>`
+          : `<button class="btn-ban" onclick="banTrack('${t.id}')">✗ Забанить</button>`}
+        ${!isBanned && t.artist
+          ? (isArtistBanned
+            ? `<button class="btn-unban" onclick="unbanArtist(document.querySelector('[data-artist-${t.id}]').dataset.artist)">✓ Разб.арт</button>`
+            : `<button class="ban-artist-btn" data-track-id="${t.id}" onclick="banArtistById('${t.id}')">🚫 Бан арт.</button>`)
+          : ''}
+      </div>
+    </div>`;
   }).join('');
+};
+
+// FIX #2: Безопасный бан артиста по ID трека (без eval)
+window.banArtistById = function(trackId) {
+  const track = state.uploadedTracks.find(t=>t.id===trackId);
+  if (track && track.artist) banArtist(track.artist);
 };
 
 function renderAdminUsers() {
@@ -2200,33 +2323,30 @@ function renderAdminUsers() {
     const avatar = u.photoURL ? `<img src="${u.photoURL}" />` : init;
     const isPrem = u.isPremium && (!u.premiumExpiry || u.premiumExpiry > Date.now());
     const expStr = u.premiumExpiry ? ` до ${new Date(u.premiumExpiry).toLocaleDateString('ru')}` : '';
-    return `
-      <div class="user-mgmt-item">
-        <div class="user-mgmt-av">${avatar}</div>
-        <div class="track-info">
-          <div class="track-name">${u.name||'Unknown'}${u.isAdmin?'<span style="color:var(--yellow);font-size:.7rem;margin-left:6px;">🛡 Admin</span>':''}</div>
-          <div class="track-artist">${u.email||''}</div>
-          ${isPrem?`<div style="font-size:.72rem;color:var(--premium);">💎 Premium${expStr}</div>`:''}
-        </div>
-        <div class="admin-actions">
-          ${isPrem
-            ? `<button class="btn-ban" onclick="revokePremium('${uid}','${u.name}')">✗ Отозвать Prem</button>`
-            : `<button class="btn-grant-prem" onclick="openGrantPremium('${uid}','${u.name||''}')">💎 Дать Prem</button>`}
-        </div>
-      </div>`;
+    return `<div class="user-mgmt-item">
+      <div class="user-mgmt-av">${avatar}</div>
+      <div class="track-info">
+        <div class="track-name">${u.name||'Unknown'}${u.isAdmin?'<span style="color:var(--yellow);font-size:.7rem;margin-left:6px;">🛡 Admin</span>':''}</div>
+        <div class="track-artist">${u.email||''}</div>
+        ${isPrem?`<div style="font-size:.72rem;color:var(--premium);">💎 Premium${expStr}</div>`:''}
+      </div>
+      <div class="admin-actions">
+        ${isPrem
+          ? `<button class="btn-ban" onclick="revokePremium('${uid}')">✗ Отозвать</button>`
+          : `<button class="btn-grant-prem" onclick="openGrantPremium('${uid}','${(u.name||'').replace(/'/g,'&apos;')}')">💎 Дать Prem</button>`}
+      </div>
+    </div>`;
   }).join('');
 }
 
 window.banTrack = async function(id) {
-  const track = state.uploadedTracks.find(t=>t.id===id);
-  if (!track) return;
   await set(ref(db, `bannedTracks/${id}`), true);
   state.bannedTracks.add(id);
   renderAdminTracks();
   renderAdminStats();
   renderTrendingTracks();
   renderCommunityTracks();
-  showToast(`🛡 Трек "${track.title}" заблокирован`, 'success');
+  showToast(`🛡 Трек заблокирован`, 'success');
 };
 
 window.unbanTrack = async function(id) {
@@ -2251,13 +2371,10 @@ window.openGrantPremium = function(uid, name) {
 window.confirmGrantPremium = async function() {
   const uid = state.grantPremiumUid;
   if (!uid) return;
-  const days = parseInt(document.getElementById('grantDays').value)||30;
+  const days = parseInt(document.getElementById('grantDays').value) || 30;
   const expiry = days > 0 ? Date.now() + days*24*60*60*1000 : null;
   await update(ref(db, `users/${uid}`), { isPremium: true, premiumExpiry: expiry });
-  if (state.allUsers[uid]) {
-    state.allUsers[uid].isPremium = true;
-    state.allUsers[uid].premiumExpiry = expiry;
-  }
+  if (state.allUsers[uid]) { state.allUsers[uid].isPremium = true; state.allUsers[uid].premiumExpiry = expiry; }
   if (uid === state.user?.uid) {
     state.isPremium = true;
     state.userData = {...(state.userData||{}), isPremium: true, premiumExpiry: expiry};
@@ -2269,15 +2386,12 @@ window.confirmGrantPremium = async function() {
   showToast(`💎 Premium выдан!`, 'success');
 };
 
-window.revokePremium = async function(uid, name) {
+window.revokePremium = async function(uid) {
   await update(ref(db, `users/${uid}`), { isPremium: false, premiumExpiry: null });
   if (state.allUsers[uid]) { state.allUsers[uid].isPremium = false; state.allUsers[uid].premiumExpiry = null; }
-  if (uid === state.user?.uid) {
-    state.isPremium = false;
-    updateUserUI();
-  }
+  if (uid === state.user?.uid) { state.isPremium = false; updateUserUI(); }
   renderAdminUsers();
-  showToast(`Premium отозван у ${name}`);
+  showToast(`Premium отозван`);
 };
 
 // ==================== PREMIUM ====================
@@ -2286,15 +2400,14 @@ window.showPremiumModal = function() { document.getElementById('modalPremium').c
 window.activatePremiumCode = async function() {
   const code = document.getElementById('premiumCodeInput').value.trim();
   if (code.startsWith(PREMIUM_PREFIX) && code.length > PREMIUM_PREFIX.length + 3) {
-    const days = 30;
-    const expiry = Date.now() + days*24*60*60*1000;
+    const expiry = Date.now() + 30*24*60*60*1000;
     await update(ref(db, `users/${state.user.uid}`), { isPremium: true, premiumExpiry: expiry });
     state.isPremium = true;
     state.userData = {...(state.userData||{}), isPremium: true, premiumExpiry: expiry};
     updateUserUI();
     closeModal('modalPremium');
     showToast('💎 Premium активирован на 30 дней!', 'success');
-    await set(ref(db, `usedCodes/${code.replace(/[.#$\[\]]/g,'_')}`), { uid: state.user.uid, usedAt: serverTimestamp() });
+    await set(ref(db, `usedCodes/${safeKey(code)}`), { uid: state.user.uid, usedAt: Date.now() });
   } else {
     showToast('❌ Неверный код Premium', 'error');
   }
@@ -2316,10 +2429,10 @@ window.showToast = showToast;
 // ==================== KEYBOARD ====================
 document.addEventListener('keydown', e => {
   if (e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
-  if (e.code==='Space') { e.preventDefault(); togglePlay(); }
-  if (e.code==='ArrowRight'&&e.altKey) nextTrack();
-  if (e.code==='ArrowLeft'&&e.altKey) prevTrack();
-  if (e.key==='Escape') {
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  if (e.code === 'ArrowRight' && e.altKey) nextTrack();
+  if (e.code === 'ArrowLeft' && e.altKey) prevTrack();
+  if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
     closeAdminCode();
   }
