@@ -87,7 +87,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .sb-htop{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .sb-title{font-size:14px;font-weight:900}
 .icobtn{width:28px;height:28px;border:none;background:transparent;color:var(--t3);
-  border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s}
+  border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15px}
 .icobt:hover,.icobn:hover{background:var(--bg3);color:var(--t1)}
 .sb-srch{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:var(--r);padding:7px 10px}
@@ -792,7 +792,6 @@ window.doReg=async()=>{
   if(p.length<6){err.textContent='Пароль мин. 6 символов';err.style.display='block';return;}
   if(n.length<2){err.textContent='Ник мин. 2 символа';err.style.display='block';return;}
   if(!/^[a-zA-Zа-яА-Я0-9_]+$/.test(n)){err.textContent='Только буквы, цифры и _';err.style.display='block';return;}
-  // check username taken
   const sq=query(collection(db,'users'),where('nameLow','==',n.toLowerCase()));
   const ss=await getDocs(sq);
   if(!ss.empty){err.textContent='Этот ник уже занят — выбери другой';err.style.display='block';return;}
@@ -822,7 +821,6 @@ onAuthStateChanged(auth,async user=>{
     ME=user;
     G('auth').style.display='none';
     G('app').classList.add('on');
-    // ensure user doc
     let ud=await getDoc(doc(db,'users',user.uid));
     if(!ud.exists()){
       const nm=user.displayName||user.email.split('@')[0];
@@ -854,10 +852,8 @@ window.go=(v,btn)=>{
   curView=v;
   const titles={dm:'Сообщения',friends:'',groups:'Группы',bots:'',files:''};
   G('sb-tit').textContent=titles[v]||'';
-  // show/hide sidebar
   const hasSb=['dm','groups'].includes(v);
   document.querySelector('.sb').style.display=hasSb?'flex':'none';
-  // hide all
   ['vempty','vchat','vfriends','vgroups','vbots','vfiles'].forEach(id=>{
     const el=G(id);if(el)el.style.display='none';
   });
@@ -1060,49 +1056,75 @@ window.searchU=val=>{
   searchTm=setTimeout(()=>doSearch(q),400);
 };
 
+// ── ИСПРАВЛЕННЫЙ ПОИСК ДРУЗЕЙ ──────────────────────────────
 async function doSearch(q){
-  const res=G('afres'),err=G('aferr');err.style.display='none';
-  // search by nameLow prefix OR exact full tag
-  const isTag=q.includes('#');
-  let results=[];
+  const res=G('afres'),err=G('aferr');
+  err.style.display='none';
+  const qLow=q.toLowerCase().trim();
+
   try{
-    if(isTag){
-      // exact full tag search
-      const [nm,tg]=q.split('#');
-      const sq1=query(collection(db,'users'),where('nameLow','==',nm.toLowerCase()),limit(20));
+    let results=[];
+
+    if(q.includes('#')){
+      // точный поиск по полному тегу: "Имя#1234"
+      const parts=q.split('#');
+      const nm=parts[0].toLowerCase();
+      const tg=parts[1]||'';
+      const sq1=query(collection(db,'users'),where('nameLow','==',nm),limit(20));
       const snap1=await getDocs(sq1);
-      snap1.forEach(d=>{if(d.data().tag==='#'+tg)results.push({id:d.id,...d.data()});});
+      snap1.forEach(d=>{
+        const data=d.data();
+        if(data.tag==='#'+tg) results.push({id:d.id,...data});
+      });
     } else {
-      // prefix search
-      const sq1=query(collection(db,'users'),
-        where('nameLow','>=',q.toLowerCase()),
-        where('nameLow','<=',q.toLowerCase()+'\uf8ff'),
-        limit(10));
+      // Загружаем всех пользователей и фильтруем на клиенте
+      // Это надёжно работает без составных индексов Firestore
+      const sq1=query(collection(db,'users'),limit(100));
       const snap1=await getDocs(sq1);
-      snap1.forEach(d=>results.push({id:d.id,...d.data()}));
+      snap1.forEach(d=>{
+        const data=d.data();
+        const nm=(data.nameLow||data.name||'').toLowerCase();
+        if(nm.includes(qLow)) results.push({id:d.id,...data});
+      });
     }
-  }catch(ex){res.innerHTML=`<div class="searching" style="color:var(--re)">Ошибка: ${ex.message}</div>`;return;}
 
-  results=results.filter(u=>u.id!==ME.uid);
-  if(!results.length){res.innerHTML='<div class="searching">Никого не найдено 😔</div>';return;}
+    // исключаем себя
+    results=results.filter(u=>u.id!==ME.uid);
 
-  const myFr=myD?.friends||[];
-  const myOut=myD?.pendingOut||[];
-  res.innerHTML='';
-  for(const u of results){
-    const isFr=myFr.includes(u.id);
-    const isPend=myOut.includes(u.id);
-    const L=(u.name||'?')[0].toUpperCase();
-    const item=document.createElement('div');item.className='fres-item';
-    item.innerHTML=`<div class="fres-av">${L}</div>
-      <div class="fres-info">
-        <div class="fres-nm">${esc(u.name)}</div>
-        <div class="fres-tg">${esc(u.full||u.name+(u.tag||''))}</div>
-      </div>
-      ${isFr?`<button class="fres-btn done">✓ Уже друзья</button>`
-      :isPend?`<button class="fres-btn done">⏳ Запрос отправлен</button>`
-      :`<button class="fres-btn" onclick="sendReq('${u.id}','${esc(u.name)}',this)">Добавить</button>`}`;
-    res.appendChild(item);
+    if(!results.length){
+      res.innerHTML='<div class="searching">Никого не найдено 😔</div>';
+      return;
+    }
+
+    // обновляем свои данные перед отображением
+    const ud=await getDoc(doc(db,'users',ME.uid));
+    myD=ud.data();
+    const myFr=myD?.friends||[];
+    const myOut=myD?.pendingOut||[];
+
+    res.innerHTML='';
+    for(const u of results){
+      const isFr=myFr.includes(u.id);
+      const isPend=myOut.includes(u.id);
+      const L=(u.name||'?')[0].toUpperCase();
+      const item=document.createElement('div');
+      item.className='fres-item';
+      item.innerHTML=`<div class="fres-av">${L}</div>
+        <div class="fres-info">
+          <div class="fres-nm">${esc(u.name)}</div>
+          <div class="fres-tg">${esc(u.full||u.name+(u.tag||''))}</div>
+        </div>
+        ${isFr
+          ?`<button class="fres-btn done">✓ Уже друзья</button>`
+          :isPend
+          ?`<button class="fres-btn done">⏳ Запрос отправлен</button>`
+          :`<button class="fres-btn" onclick="sendReq('${u.id}','${esc(u.name)}',this)">Добавить</button>`
+        }`;
+      res.appendChild(item);
+    }
+  } catch(ex){
+    console.error('Search error:',ex);
+    res.innerHTML=`<div class="searching" style="color:var(--re)">Ошибка поиска: ${ex.message}</div>`;
   }
 }
 
@@ -1125,7 +1147,6 @@ async function loadFriends(type){
   if(!ud.exists()){list.innerHTML='';return;}
   myD=ud.data();
   const fr=myD.friends||[],pIn=myD.pendingIn||[],pOut=myD.pendingOut||[];
-  // update badges
   G('pcount').textContent=pIn.length;G('pcount').style.display=pIn.length?'inline':'none';
   G('rpip').style.display=pIn.length?'flex':'none';G('rpip').textContent=pIn.length;
   list.innerHTML='';
@@ -1214,7 +1235,6 @@ window.dmFriend=async uid=>{
   const cr=doc(db,'conversations',cid);
   const cs=await getDoc(cr);
   if(!cs.exists())await setDoc(cr,{participants:[ME.uid,uid],type:'dm',createdAt:serverTimestamp(),lastMsg:'',lastAt:serverTimestamp()});
-  // switch to dm view
   curView='dm';
   document.querySelector('.sb').style.display='flex';
   G('vfriends').style.display='none';
@@ -1407,7 +1427,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeSet();closeOv('afmod');closeOv('cgmod');if(G('callv').classList.contains('on'))endCall();}
 });
 
-// close modals on overlay click
 ['afmod','cgmod'].forEach(id=>{G(id).addEventListener('click',e=>{if(e.target===G(id))closeOv(id);});});
 </script>
 </body>
